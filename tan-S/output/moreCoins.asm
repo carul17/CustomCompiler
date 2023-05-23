@@ -81,36 +81,125 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        32                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% nickels
-        PushI        11                        
+        Add                                    %% toonies
+        PushI        2                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        4                         
-        Add                                    %% pennies
-        PushI        5                         
+        Add                                    %% loonies
+        PushI        3                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        8                         
+        Add                                    %% quarters
+        PushI        5                         
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        12                        
+        Add                                    %% dimes
+        PushI        3                         
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% nickels
+        PushI        7                         
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        20                        
+        Add                                    %% pennies
+        PushI        17                        
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        24                        
         Add                                    %% value
         PushD        $global-memory-block      
         PushI        0                         
+        Add                                    %% toonies
+        LoadI                                  
+        PushI        200                       
+        Multiply                               
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% loonies
+        LoadI                                  
+        PushI        100                       
+        Multiply                               
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% quarters
+        LoadI                                  
+        PushI        25                        
+        Multiply                               
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        12                        
+        Add                                    %% dimes
+        LoadI                                  
+        PushI        10                        
+        Multiply                               
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        16                        
         Add                                    %% nickels
         LoadI                                  
         PushI        5                         
         Multiply                               
+        Add                                    
         PushD        $global-memory-block      
-        PushI        4                         
+        PushI        20                        
         Add                                    %% pennies
         LoadI                                  
         Add                                    
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        8                         
+        PushI        24                        
         Add                                    %% value
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        28                        
+        Add                                    %% ncoins
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% toonies
+        LoadI                                  
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% loonies
+        LoadI                                  
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% quarters
+        LoadI                                  
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        12                        
+        Add                                    %% dimes
+        LoadI                                  
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% nickels
+        LoadI                                  
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        20                        
+        Add                                    %% pennies
+        LoadI                                  
+        Add                                    
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        28                        
+        Add                                    %% ncoins
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
