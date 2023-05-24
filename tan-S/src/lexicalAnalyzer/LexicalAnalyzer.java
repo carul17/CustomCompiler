@@ -69,10 +69,10 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(firstChar.getCharacter());
 		appendSubsequentDigits(buffer);
-		System.out.println(buffer.toString());
+		//System.out.println(buffer.toString());
 		
 		//check if next character is a decimal point
-		System.out.println(input.peek().getCharacter());
+		//System.out.println(input.peek().getCharacter());
 		if(input.peek().getCharacter() == '.') {
 			LocatedChar decimal = input.peek();
 			input.next();
