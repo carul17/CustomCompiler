@@ -74,20 +74,37 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		//check if next character is a decimal point
 		//System.out.println(input.peek().getCharacter());
 		if(input.peek().getCharacter() == '.') {
-			LocatedChar decimal = input.peek();
-			input.next();
-			if(!decimal.isDigit() && decimal.getCharacter() != '.') {
+			LocatedChar decimal = input.next();
+			//input.next();
+			if(!decimal.isDigit() && decimal.getCharacter() != '.') {	//!decimal.isDigit() && decimal.getCharacter() != '.'
 				lexicalError("Malformed floating-point literal", decimal);
 				return findNextToken();
 			}
 			buffer.append(decimal.getCharacter());
 			appendSubsequentDigits(buffer);
 			//System.out.println("Bottom: " + buffer.toString());
-			LocatedChar next = input.peek();
-			//input.next(); UNCOMMENT THIS!!
+			LocatedChar next = input.peek(); //changed to .next it was .peek
 			if(next.getCharacter() == 'e' || next.getCharacter() == 'E') {
 				//ADD CODE
+				buffer.append(next.getCharacter());
+				appendSubsequentDigits(buffer);
+				input.next();
+				
+				LocatedChar num = input.peek();
+				//check if a number after e exist
+				if(num.isDigit()) {
+					//commented this buffer to fix
+					//buffer.append(num.getCharacter());
+					appendSubsequentDigits(buffer);
+					//input.pushback(num);
+					
+				} else {
+					lexicalError("Malformed floating-point literal", num);
+					return findNextToken();
+				}
+				
 			}
+			System.out.println(buffer.toString());
 			return FloatingLiteralToken.make(firstChar, buffer.toString());
 			
 		} else {

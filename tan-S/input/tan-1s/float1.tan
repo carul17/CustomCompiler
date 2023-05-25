@@ -1,4 +1,4 @@
 main {
-    const tester := 3.4;
+    const tester := 3.33;
     print tester \n;
 }
