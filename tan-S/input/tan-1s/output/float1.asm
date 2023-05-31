@@ -85,16 +85,55 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        8                         
+        DataZ        32                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% tester
-        PushF        3.330000                  
+        Add                                    %% test
+        PushF        5.500000                  
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% dimes
+        PushF        35000.000000              
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% nickels
+        PushF        0.000750                  
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        24                        
+        Add                                    %% pennies
+        PushF        1710000.000000            
         StoreF                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% tester
+        Add                                    %% test
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% dimes
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% nickels
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        24                        
+        Add                                    %% pennies
         LoadF                                  
         PushD        $print-format-floating    
         Printf                                 

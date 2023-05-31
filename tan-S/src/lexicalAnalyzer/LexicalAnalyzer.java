@@ -92,19 +92,27 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 				
 				LocatedChar num = input.peek();
 				//check if a number after e exist
-				if(num.isDigit()) {
+				if(num.getCharacter() =='-' || num.getCharacter() == '+') {
 					//commented this buffer to fix
-					//buffer.append(num.getCharacter());
-					appendSubsequentDigits(buffer);
+					buffer.append(num.getCharacter());
+					appendSubsequentDigits(buffer);//appends the rest of the digits
 					//input.pushback(num);
+					input.next();
+					//LocatedChar num2 = input.peek();
+					//check if a number after e exist
+					appendSubsequentDigits(buffer);
+					
+				} else if(num.isDigit()) {
+					appendSubsequentDigits(buffer);
 					
 				} else {
 					lexicalError("Malformed floating-point literal", num);
 					return findNextToken();
 				}
 				
+				
 			}
-			System.out.println(buffer.toString());
+			//System.out.println(buffer.toString());
 			return FloatingLiteralToken.make(firstChar, buffer.toString());
 			
 		} else {

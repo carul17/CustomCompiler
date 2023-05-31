@@ -1,4 +1,12 @@
 main {
-    const tester := 3.33;
-    print tester \n;
+	const test :=  5.5;
+	const dimes :=  3.5e4;
+	const nickels :=  7.5e-4;
+	const pennies := 17.1e+5;
+    
+
+	print test \n;
+	print dimes \n;
+	print nickels \n;
+	print pennies \n;
 }
