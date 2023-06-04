@@ -1,12 +1,7 @@
 main {
-	const test :=  5.5;
-	const dimes :=  3.5e4;
-	const nickels :=  7.5e-4;
-	const pennies := 17.1e+5;
+	const f := 50.1 + 50.2;
+	const i := 50 + 50;
     
-
-	print test \n;
-	print dimes \n;
-	print nickels \n;
-	print pennies \n;
+	print f \n;
+	print i \n;
 }

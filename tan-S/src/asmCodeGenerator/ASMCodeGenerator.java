@@ -1,10 +1,12 @@
 package asmCodeGenerator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
+import asmCodeGenerator.operators.SimpleCodeGenerator;
 import asmCodeGenerator.runtime.RunTime;
 import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
@@ -20,12 +22,14 @@ import parseTree.nodeTypes.OperatorNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.ProgramNode;
 import parseTree.nodeTypes.SpaceNode;
-import semanticAnalyzer.types.PrimitiveType;
+import semanticAnalyzer.signatures.FunctionSignature;
+import static semanticAnalyzer.types.PrimitiveType.*;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import symbolTable.Scope;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.*;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
+import java.util.ArrayList;
 
 // do not call the code generator if any errors have occurred during analysis.
 public class ASMCodeGenerator {
@@ -67,6 +71,8 @@ public class ASMCodeGenerator {
 		code.append( programCode());
 		code.add(    Halt );
 		
+		new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER);
+		new FunctionSignature(ASMOpcode.Nop, FLOATING, FLOATING);
 		return code;
 	}
 	private ASMCodeFragment programCode() {
@@ -107,6 +113,11 @@ public class ASMCodeGenerator {
 			codeMap.remove(node);
 			return result;
 		}
+		private ASMCodeFragment getCodeValue(ParseNode node) {
+			ASMCodeFragment result = codeMap.get(node);
+			//codeMap.remove(node);
+			return result;
+		}
 	    public  ASMCodeFragment removeRootCode(ParseNode tree) {
 			return getAndRemoveCode(tree);
 		}		
@@ -136,13 +147,13 @@ public class ASMCodeGenerator {
 			}	
 		}
 		private void turnAddressIntoValue(ASMCodeFragment code, ParseNode node) {
-			if(node.getType() == PrimitiveType.INTEGER) {
+			if(node.getType() == INTEGER) {
 				code.add(LoadI);
 			}	
-			else if(node.getType() == PrimitiveType.BOOLEAN) {
+			else if(node.getType() == BOOLEAN) {
 				code.add(LoadC);
 			}
-			else if(node.getType() == PrimitiveType.FLOATING) {
+			else if(node.getType() == FLOATING) {
 				code.add(LoadF);
 			}	
 			else {
@@ -207,13 +218,13 @@ public class ASMCodeGenerator {
 			code.add(opcodeForStore(type));
 		}
 		private ASMOpcode opcodeForStore(Type type) {
-			if(type == PrimitiveType.INTEGER) {
+			if(type == INTEGER) {
 				return StoreI;
 			}
-			if(type == PrimitiveType.BOOLEAN) {
+			if(type == BOOLEAN) {
 				return StoreC;
 			}
-			if(type == PrimitiveType.FLOATING) {
+			if(type == FLOATING) {
 				return StoreF;
 			}
 			assert false: "Type " + type + " unimplemented in opcodeForStore()";
@@ -224,7 +235,66 @@ public class ASMCodeGenerator {
 		///////////////////////////////////////////////////////////////////////////
 		// expressions
 		public void visitLeave(OperatorNode node) {
+			FunctionSignature signature = node.getSignature();
 			Lextant operator = node.getOperator();
+			Object variant = signature.getVariant();
+			//System.out.println(variant.toString());
+			
+			ASMCodeFragment arg1 = getCodeValue(node.child(0)); //this was remove and get value
+			ASMCodeFragment arg2 = getCodeValue(node.child(1)); //this was remove and get value
+			
+			Labeller labeller = new Labeller("compare");
+			
+			String startLabel = labeller.newLabel("arg1");
+			String arg2Label  = labeller.newLabel("arg2");
+			String subLabel   = labeller.newLabel("sub");
+			String trueLabel  = labeller.newLabel("true");
+			String falseLabel = labeller.newLabel("false");
+			String joinLabel  = labeller.newLabel("join");
+			String addLabel   = labeller.newLabel("add");
+			String faddLabel   = labeller.newLabel("fadd");
+			String pushLabel   = labeller.newLabel("psuhLabel");
+			
+			if(variant instanceof ASMOpcode) {
+			newValueCode(node);
+			for(ParseNode child: node.getChildren()) {	
+				if(getCodeValue(child) != null) {
+				code.append(getCodeValue(child));
+				}
+			}
+			newValueCode(node);
+			code.add(Label, startLabel);
+			code.append(arg1);//from first child
+			code.add(Label, arg2Label);
+			code.append(arg2);
+			
+//			code.add(Label, addLabel);
+//			code.add(Add);
+//			code.add(PushI, 0);
+			
+			newValueCode(node);
+			code.add(Label, faddLabel);
+			code.add(FAdd);
+			code.add(PushF, 0.0);
+			
+//			code.add(JumpPos, trueLabel);
+//			code.add(Jump, falseLabel);
+//
+//			code.add(Label, trueLabel);
+//			code.add(PushI, 1);
+//			code.add(Jump, joinLabel);
+//			code.add(Label, falseLabel);
+//			code.add(PushI, 0);
+//			code.add(Jump, joinLabel);
+//			code.add(Label, joinLabel);
+
+		} else if(variant instanceof SimpleCodeGenerator) {
+			SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
+			ASMCodeFragment fragment = generator.generate(node, childCode(node));
+			codeMap.put(node, fragment);
+			// NEED TO DOS OMETHING WITH SIMPLE CODE GENERATOR.JAVA
+		}
+			
 			
 			if(operator == Punctuator.SUBTRACT) {
 				visitUnaryOperatorNode(node);
@@ -234,10 +304,11 @@ public class ASMCodeGenerator {
 			}
 			else {
 				visitNormalBinaryOperatorNode(node);
-			}
+			};
 		}
 		private void visitComparisonOperatorNode(OperatorNode node,
 				Lextant operator) {
+
 
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
 			ASMCodeFragment arg2 = removeValueCode(node.child(1));
@@ -250,6 +321,25 @@ public class ASMCodeGenerator {
 			String trueLabel  = labeller.newLabel("true");
 			String falseLabel = labeller.newLabel("false");
 			String joinLabel  = labeller.newLabel("join");
+			
+//			if(variant instanceof ASMOpcode) {
+//				newValueCode(node);
+//				for(ParseNode child: node.getChildren()) {
+//					code.append(removeValueCode(child));
+//				}
+//				code.add(Label, startLabel);
+//				code.append(arg1);//from first child
+//				code.add(Label, arg2Label);
+//				code.append(arg2);
+//				code.add(Label, subLabel);
+//				code.add(Subtract);
+//
+//			} else if(variant instanceof SimpleCodeGenerator) {
+//				SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
+//				ASMCodeFragment fragment = generator.generate(node, childCode(node));
+//				codeMap.put(node, fragment);
+//				// NEED TO DOS OMETHING WITH SIMPLE CODE GENERATOR.JAVA
+//			}
 			
 			newValueCode(node);
 			code.add(Label, startLabel);
@@ -271,31 +361,61 @@ public class ASMCodeGenerator {
 			code.add(Label, joinLabel);
 
 		}		
+		private List<ASMCodeFragment> childCode(OperatorNode node) {
+			List<ASMCodeFragment> result = new ArrayList<>();
+			for(ParseNode child: node.getChildren()) {
+				result.add(getCodeValue(child));
+			}
+			return result;
+		}
+
+
 		private void visitUnaryOperatorNode(OperatorNode node) {
 			newValueCode(node);
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
+			FunctionSignature signature = node.getSignature();
+			Object variant = signature.getVariant();
 			
-			code.append(arg1);
-			
-			ASMOpcode opcode = opcodeForOperator(node.getOperator());
-			code.add(opcode);							// type-dependent! (opcode is different for floats and for ints)
+			if(variant instanceof ASMOpcode) {
+				ASMOpcode opcode = (ASMOpcode) variant;
+				code.append(arg1);
+				code.add(opcode);
+			} else {
+				
+				code.append(arg1);
+				
+				ASMOpcode opcode = opcodeForOperator(node.getOperator());
+				code.add(opcode);							// type-dependent! (opcode is different for floats and for ints)
+				}
+				
 		}
+		
 		private void visitNormalBinaryOperatorNode(OperatorNode node) {
 			newValueCode(node);
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
 			ASMCodeFragment arg2 = removeValueCode(node.child(1));
+			FunctionSignature signature = node.getSignature();
+			Object variant = signature.getVariant();
+			
 			
 			code.append(arg1);
 			code.append(arg2);
 			
-			ASMOpcode opcode = opcodeForOperator(node.getOperator());
-			code.add(opcode);							// type-dependent! (opcode is different for floats and for ints)
+			if(variant instanceof ASMOpcode) {
+				ASMOpcode opcode = (ASMOpcode) variant;
+				code.add(opcode);
+			} else {
+				ASMOpcode opcode = opcodeForOperator(node.getOperator());
+				code.add(opcode);
+				
+			}
+										// type-dependent! (opcode is different for floats and for ints)
 		}
 		private ASMOpcode opcodeForOperator(Lextant lextant) {
 			assert(lextant instanceof Punctuator);
 			Punctuator punctuator = (Punctuator)lextant;
 			switch(punctuator) {
-			case ADD: 	   		return Add;				// type-dependent!
+			case ADD: 	   		return Add;		// type-dependent!
 			case SUBTRACT:		return Negate;			// (unary subtract only) type-dependent!
 			case MULTIPLY: 		return Multiply;		// type-dependent!
 			default:
