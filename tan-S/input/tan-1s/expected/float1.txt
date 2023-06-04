@@ -1,2 +1,2 @@
-100.300000
-100
+[ 74 50 51 ]
+Not enough operands on stack for StoreI instruction at location 19.

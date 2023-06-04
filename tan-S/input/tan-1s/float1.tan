@@ -1,7 +1,4 @@
 main {
-	const f := 50.1 + 50.2;
-	const i := 50 + 50;
-    
-	print f \n;
-	print i \n;
+    const r := 50 + 51;
+	print r \n;
 }

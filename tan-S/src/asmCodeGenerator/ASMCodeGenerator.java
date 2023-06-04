@@ -267,16 +267,40 @@ public class ASMCodeGenerator {
 			code.append(arg1);//from first child
 			code.add(Label, arg2Label);
 			code.append(arg2);
+			code.add(PStack);
 			
 //			code.add(Label, addLabel);
 //			code.add(Add);
 //			code.add(PushI, 0);
+//			newValueCode(node);
+//			code.add(Label, subLabel);
+//			code.add(Subtract);
+//			code.add(PushF, 0.0);
 			
-			newValueCode(node);
-			code.add(Label, faddLabel);
-			code.add(FAdd);
-			code.add(PushF, 0.0);
+			//newValueCode(node);
+//			code.add(Label, startLabel);
+//			code.append(arg1);
+//			code.add(Label, arg2Label);
+//			code.append(arg2);
+//			newValueCode(node);
+//			code.add(Label, subLabel);
+//			code.add(Negate);
+//			code.add(Add);
+//			code.add(PushI, 0);
 			
+			//newValueCode(node);
+			//code.add(Label, subLabel);
+			//code.add(Negate);
+			//code.add(Subtract);
+//			code.add(PushI, 0);
+			//code.add(PStack);
+////			
+			
+		//	newValueCode(node);
+	//		code.add(Label, faddLabel);
+//			code.add(FAdd);
+//			code.add(PushF, 0.0);
+//			
 //			code.add(JumpPos, trueLabel);
 //			code.add(Jump, falseLabel);
 //
@@ -416,7 +440,7 @@ public class ASMCodeGenerator {
 			Punctuator punctuator = (Punctuator)lextant;
 			switch(punctuator) {
 			case ADD: 	   		return Add;		// type-dependent!
-			case SUBTRACT:		return Negate;			// (unary subtract only) type-dependent!
+			case SUBTRACT:		return Subtract;			// (unary subtract only) type-dependent! use to be negate
 			case MULTIPLY: 		return Multiply;		// type-dependent!
 			default:
 				assert false : "unimplemented operator in opcodeForOperator";

@@ -261,6 +261,15 @@ public class Parser {
 			
 			left = OperatorNode.withChildren(additiveToken, left, right);
 		}
+		
+		while(nowReading.isLextant(Punctuator.SUBTRACT)) {
+			Token additiveToken = nowReading;
+			readToken();
+			ParseNode right = parseMultiplicativeExpression();
+			
+			left = OperatorNode.withChildren(additiveToken, left, right);
+		}
+		
 		return left;
 	}
 	private boolean startsAdditiveExpression(Token token) {
