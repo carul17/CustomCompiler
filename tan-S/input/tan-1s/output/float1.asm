@@ -89,33 +89,18 @@
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% r
-        PushI        50                        
+        Add                                    %% s
+        PushF        0.200000                  
         Label        -compare-1-arg2           
-        PushI        51                        
+        PushF        1.100000                  
         PStack                                 
-        Add                                    
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% s
-        PushI        61                        
-        Label        -compare-2-arg2           
-        Subtract                               
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% s
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
+        FSubtract                              
+        StoreF                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% r
-        LoadI                                  
-        PushD        $print-format-integer     
+        Add                                    %% s
+        LoadF                                  
+        PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

@@ -237,8 +237,7 @@ public class ASMCodeGenerator {
 		public void visitLeave(OperatorNode node) {
 			FunctionSignature signature = node.getSignature();
 			Lextant operator = node.getOperator();
-			Object variant = signature.getVariant();
-			//System.out.println(variant.toString());
+			Object variant = signature.getVariant();;
 			
 			ASMCodeFragment arg1 = getCodeValue(node.child(0)); //this was remove and get value
 			ASMCodeFragment arg2 = getCodeValue(node.child(1)); //this was remove and get value
@@ -267,50 +266,7 @@ public class ASMCodeGenerator {
 			code.append(arg1);//from first child
 			code.add(Label, arg2Label);
 			code.append(arg2);
-			code.add(PStack);
 			
-//			code.add(Label, addLabel);
-//			code.add(Add);
-//			code.add(PushI, 0);
-//			newValueCode(node);
-//			code.add(Label, subLabel);
-//			code.add(Subtract);
-//			code.add(PushF, 0.0);
-			
-			//newValueCode(node);
-//			code.add(Label, startLabel);
-//			code.append(arg1);
-//			code.add(Label, arg2Label);
-//			code.append(arg2);
-//			newValueCode(node);
-//			code.add(Label, subLabel);
-//			code.add(Negate);
-//			code.add(Add);
-//			code.add(PushI, 0);
-			
-			//newValueCode(node);
-			//code.add(Label, subLabel);
-			//code.add(Negate);
-			//code.add(Subtract);
-//			code.add(PushI, 0);
-			//code.add(PStack);
-////			
-			
-		//	newValueCode(node);
-	//		code.add(Label, faddLabel);
-//			code.add(FAdd);
-//			code.add(PushF, 0.0);
-//			
-//			code.add(JumpPos, trueLabel);
-//			code.add(Jump, falseLabel);
-//
-//			code.add(Label, trueLabel);
-//			code.add(PushI, 1);
-//			code.add(Jump, joinLabel);
-//			code.add(Label, falseLabel);
-//			code.add(PushI, 0);
-//			code.add(Jump, joinLabel);
-//			code.add(Label, joinLabel);
 
 		} else if(variant instanceof SimpleCodeGenerator) {
 			SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
@@ -321,7 +277,7 @@ public class ASMCodeGenerator {
 			
 			
 			if(operator == Punctuator.SUBTRACT) {
-				visitUnaryOperatorNode(node);
+				visitNormalBinaryOperatorNode(node);    //this use to be visitUnaryOperatorNode. I think the prof wanted us to negate a number then add to subtract, but I just used the subtract op code
 			}
 			else if(operator == Punctuator.GREATER) {
 				visitComparisonOperatorNode(node, operator);
@@ -345,25 +301,6 @@ public class ASMCodeGenerator {
 			String trueLabel  = labeller.newLabel("true");
 			String falseLabel = labeller.newLabel("false");
 			String joinLabel  = labeller.newLabel("join");
-			
-//			if(variant instanceof ASMOpcode) {
-//				newValueCode(node);
-//				for(ParseNode child: node.getChildren()) {
-//					code.append(removeValueCode(child));
-//				}
-//				code.add(Label, startLabel);
-//				code.append(arg1);//from first child
-//				code.add(Label, arg2Label);
-//				code.append(arg2);
-//				code.add(Label, subLabel);
-//				code.add(Subtract);
-//
-//			} else if(variant instanceof SimpleCodeGenerator) {
-//				SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
-//				ASMCodeFragment fragment = generator.generate(node, childCode(node));
-//				codeMap.put(node, fragment);
-//				// NEED TO DOS OMETHING WITH SIMPLE CODE GENERATOR.JAVA
-//			}
 			
 			newValueCode(node);
 			code.add(Label, startLabel);
@@ -394,22 +331,21 @@ public class ASMCodeGenerator {
 		}
 
 
-		private void visitUnaryOperatorNode(OperatorNode node) {
+		private void visitUnaryOperatorNode(OperatorNode node) { //this method would be great for negating
 			newValueCode(node);
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
 			FunctionSignature signature = node.getSignature();
 			Object variant = signature.getVariant();
 			
+			code.append(arg1);
+			
 			if(variant instanceof ASMOpcode) {
 				ASMOpcode opcode = (ASMOpcode) variant;
-				code.append(arg1);
 				code.add(opcode);
 			} else {
 				
-				code.append(arg1);
-				
 				ASMOpcode opcode = opcodeForOperator(node.getOperator());
-				code.add(opcode);							// type-dependent! (opcode is different for floats and for ints)
+				code.add(opcode);
 				}
 				
 		}
@@ -420,7 +356,6 @@ public class ASMCodeGenerator {
 			ASMCodeFragment arg2 = removeValueCode(node.child(1));
 			FunctionSignature signature = node.getSignature();
 			Object variant = signature.getVariant();
-			
 			
 			code.append(arg1);
 			code.append(arg2);

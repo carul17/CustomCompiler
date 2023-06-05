@@ -1,4 +1,4 @@
 main {
-    const r := 50 + 51;
-	print r \n;
+    const s := 0.2 - 1.1;
+	print s \n;
 }

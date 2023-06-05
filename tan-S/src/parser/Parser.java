@@ -263,11 +263,11 @@ public class Parser {
 		}
 		
 		while(nowReading.isLextant(Punctuator.SUBTRACT)) {
-			Token additiveToken = nowReading;
+			Token subtractionToken = nowReading;
 			readToken();
 			ParseNode right = parseMultiplicativeExpression();
 			
-			left = OperatorNode.withChildren(additiveToken, left, right);
+			left = OperatorNode.withChildren(subtractionToken, left, right);
 		}
 		
 		return left;
@@ -322,7 +322,7 @@ public class Parser {
 		return OperatorNode.withChildren(operatorToken, child);
 	}
 	private boolean startsUnaryExpression(Token token) {
-		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD);
+		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.MULTIPLY);
 	}
 	
 	// literal -> number | identifier | booleanConstant
