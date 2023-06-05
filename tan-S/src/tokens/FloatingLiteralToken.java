@@ -16,7 +16,7 @@ public class FloatingLiteralToken extends TokenImp {
 	}
 	
 	public static FloatingLiteralToken make(Locator locator, String lexeme) {
-		System.out.println(lexeme);
+		//System.out.println(lexeme);
 		FloatingLiteralToken result = new FloatingLiteralToken(locator, lexeme);
 		result.setValue(Double.parseDouble(lexeme));
 		return result;

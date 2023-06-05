@@ -116,6 +116,8 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			node.setType(PrimitiveType.ERROR);
 		}
 	}
+	
+	
 	private Lextant operatorFor(OperatorNode node) {
 		LextantToken token = (LextantToken) node.getToken();
 		return token.getLextant();

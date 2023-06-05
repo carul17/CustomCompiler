@@ -1,2 +1,6 @@
-[ 74 50 51 ]
-Not enough operands on stack for StoreI instruction at location 19.
+9.000000
+4.500000
+3.000000
+9
+45
+2

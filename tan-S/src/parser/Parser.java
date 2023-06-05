@@ -270,6 +270,15 @@ public class Parser {
 			left = OperatorNode.withChildren(subtractionToken, left, right);
 		}
 		
+		while(nowReading.isLextant(Punctuator.DIVIDE)) {
+			Token subtractionToken = nowReading;
+			readToken();
+			ParseNode right = parseMultiplicativeExpression();
+			
+			left = OperatorNode.withChildren(subtractionToken, left, right);
+		}
+		
+		
 		return left;
 	}
 	private boolean startsAdditiveExpression(Token token) {
@@ -290,6 +299,7 @@ public class Parser {
 			
 			left = OperatorNode.withChildren(multiplicativeToken, left, right);
 		}
+		
 		return left;
 	}
 	private boolean startsMultiplicativeExpression(Token token) {
@@ -322,7 +332,7 @@ public class Parser {
 		return OperatorNode.withChildren(operatorToken, child);
 	}
 	private boolean startsUnaryExpression(Token token) {
-		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.MULTIPLY);
+		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.MULTIPLY, Punctuator.DIVIDE);
 	}
 	
 	// literal -> number | identifier | booleanConstant

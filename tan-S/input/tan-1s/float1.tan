@@ -1,4 +1,14 @@
 main {
-    const s := 0.2 - 1.1;
+    const r := 4.5 / 0.5;
+    const a := 4.5 / 1.0;
+    const b := 6.0 / 2.0;
+    const s := 45 / 5;
+    const z := 45 / 1;
+    const y := 6 / 3;
+	print r \n;
+	print a \n;
+	print b \n;
 	print s \n;
+	print z \n;
+	print y \n;
 }

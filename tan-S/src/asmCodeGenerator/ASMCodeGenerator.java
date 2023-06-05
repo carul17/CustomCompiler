@@ -363,6 +363,14 @@ public class ASMCodeGenerator {
 			if(variant instanceof ASMOpcode) {
 				ASMOpcode opcode = (ASMOpcode) variant;
 				code.add(opcode);
+			} else if(signature.resultType() == FLOATING) {
+				Lextant lextant = node.getOperator();
+				assert(lextant instanceof Punctuator);
+				Punctuator punctuator = (Punctuator)lextant;
+				if(punctuator.getLexeme().equals("DIVIDE")) {
+					code.add(FDivide);
+				}
+				
 			} else {
 				ASMOpcode opcode = opcodeForOperator(node.getOperator());
 				code.add(opcode);
@@ -377,6 +385,7 @@ public class ASMCodeGenerator {
 			case ADD: 	   		return Add;		// type-dependent!
 			case SUBTRACT:		return Subtract;			// (unary subtract only) type-dependent! use to be negate
 			case MULTIPLY: 		return Multiply;		// type-dependent!
+			case DIVIDE:		return Divide;
 			default:
 				assert false : "unimplemented operator in opcodeForOperator";
 			}

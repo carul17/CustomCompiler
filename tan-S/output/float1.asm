@@ -83,28 +83,118 @@
         Label        $$i-divide-by-zero        
         PushD        $errors-int-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $errors-float-divide-by-zero 
+        DataC        102                       %% "floating divide by zero"
+        DataC        108                       
+        DataC        111                       
+        DataC        97                        
+        DataC        116                       
+        DataC        105                       
+        DataC        110                       
+        DataC        103                       
+        DataC        32                        
+        DataC        100                       
+        DataC        105                       
+        DataC        118                       
+        DataC        105                       
+        DataC        100                       
+        DataC        101                       
+        DataC        32                        
+        DataC        98                        
+        DataC        121                       
+        DataC        32                        
+        DataC        122                       
+        DataC        101                       
+        DataC        114                       
+        DataC        111                       
+        DataC        0                         
+        Label        $$f-divide-by-zero        
+        PushD        $errors-float-divide-by-zero 
+        Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        8                         
+        DataZ        36                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% r
-        PushI        50                        
-        Label        -compare-1-arg2           
-        PushI        51                        
-        PStack                                 
-        Add                                    
-        StoreI                                 
+        PushF        4.500000                  
+        PushF        0.500000                  
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
         PushD        $global-memory-block      
-        PushI        4                         
+        PushI        8                         
+        Add                                    %% a
+        PushF        4.500000                  
+        PushF        1.000000                  
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% b
+        PushF        6.000000                  
+        PushF        2.000000                  
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        24                        
         Add                                    %% s
-        PushI        61                        
-        Label        -compare-2-arg2           
-        Subtract                               
+        PushI        45                        
+        PushI        5                         
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        4                         
+        PushI        28                        
+        Add                                    %% z
+        PushI        45                        
+        PushI        1                         
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        32                        
+        Add                                    %% y
+        PushI        6                         
+        PushI        3                         
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% r
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% a
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        16                        
+        Add                                    %% b
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        24                        
         Add                                    %% s
         LoadI                                  
         PushD        $print-format-integer     
@@ -112,8 +202,16 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% r
+        PushI        28                        
+        Add                                    %% z
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        32                        
+        Add                                    %% y
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
