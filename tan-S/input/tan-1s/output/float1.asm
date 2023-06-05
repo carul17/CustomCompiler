@@ -113,7 +113,7 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        36                        
+        DataZ        60                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
@@ -144,6 +144,22 @@
         StoreF                                 
         PushD        $global-memory-block      
         PushI        24                        
+        Add                                    %% bb
+        PushF        6.000000                  
+        Label        -compare-4-arg2           
+        PushF        2.000000                  
+        FSubtract                              
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        32                        
+        Add                                    %% bbb
+        PushF        6.000000                  
+        Label        -compare-5-arg2           
+        PushF        2.000000                  
+        FAdd                                   
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        40                        
         Add                                    %% s
         PushI        45                        
         PushI        5                         
@@ -152,7 +168,7 @@
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        28                        
+        PushI        44                        
         Add                                    %% z
         PushI        45                        
         PushI        1                         
@@ -161,13 +177,29 @@
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        32                        
+        PushI        48                        
         Add                                    %% y
         PushI        6                         
         PushI        3                         
         Duplicate                              
         JumpFalse    $$i-divide-by-zero        
         Divide                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        52                        
+        Add                                    %% yy
+        PushI        6                         
+        Label        -compare-9-arg2           
+        PushI        3                         
+        Add                                    
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        56                        
+        Add                                    %% x
+        PushI        6                         
+        Label        -compare-10-arg2          
+        PushI        3                         
+        Subtract                               
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
@@ -195,6 +227,22 @@
         Printf                                 
         PushD        $global-memory-block      
         PushI        24                        
+        Add                                    %% bb
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        32                        
+        Add                                    %% bbb
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        40                        
         Add                                    %% s
         LoadI                                  
         PushD        $print-format-integer     
@@ -202,7 +250,7 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        28                        
+        PushI        44                        
         Add                                    %% z
         LoadI                                  
         PushD        $print-format-integer     
@@ -210,8 +258,24 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        32                        
+        PushI        48                        
         Add                                    %% y
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        52                        
+        Add                                    %% yy
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        56                        
+        Add                                    %% x
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
