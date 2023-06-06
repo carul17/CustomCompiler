@@ -199,7 +199,7 @@
         PushI        6                         
         Label        -compare-10-arg2          
         PushI        3                         
-        Subtract                               
+        Add                                    
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         

@@ -10,14 +10,22 @@ public class Binding {
 	private TextLocation textLocation;
 	private MemoryLocation memoryLocation;
 	private String lexeme;
+	private Constancy constancy;
 	
-	public Binding(Type type, TextLocation location, MemoryLocation memoryLocation, String lexeme) {
+	public Binding(Type type, TextLocation location, MemoryLocation memoryLocation, String lexeme, Constancy constancy) {
 		super();
 		this.type = type;
 		this.textLocation = location;
 		this.memoryLocation = memoryLocation;
 		this.lexeme = lexeme;
+		this.setConstancy(constancy);
 	}
+	
+	public enum Constancy{
+		IS_CONSTANT,
+		IS_VARIABLE
+	}
+
 	
 
 	public String toString() {
@@ -49,14 +57,25 @@ public class Binding {
 	public static Binding nullInstance() {
 		return NullBinding.getInstance();
 	}
+	public Constancy getConstancy() {
+		return constancy;
+	}
+	public Boolean isConstant() {
+		return this.getConstancy() == Constancy.IS_CONSTANT;
+	}
+	public void setConstancy(Constancy constancy) {
+		this.constancy = constancy;
+	}
 	private static class NullBinding extends Binding {
 		private static NullBinding instance=null;
 		private NullBinding() {
 			super(PrimitiveType.ERROR,
 					TextLocation.nullInstance(),
 					MemoryLocation.nullInstance(),
-					"the-null-binding");
+					"the-null-binding",
+					Constancy.IS_CONSTANT);
 		}
+
 		public static NullBinding getInstance() {
 			if(instance==null)
 				instance = new NullBinding();

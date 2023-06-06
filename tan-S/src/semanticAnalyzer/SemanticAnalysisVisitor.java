@@ -3,10 +3,12 @@ package semanticAnalyzer;
 import java.util.Arrays;
 import java.util.List;
 
+import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
 import logging.TanLogger;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
+import parseTree.nodeTypes.AssignmentStatementNode;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.MainBlockNode;
 import parseTree.nodeTypes.DeclarationNode;
@@ -24,15 +26,20 @@ import semanticAnalyzer.signatures.FunctionSignatures;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
+import symbolTable.Binding.Constancy;
 import symbolTable.Scope;
 import tokens.LextantToken;
 import tokens.Token;
 
-class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
+public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
+	
 	@Override
 	public void visitLeave(ParseNode node) {
 		throw new RuntimeException("Node class unimplemented in SemanticAnalysisVisitor: " + node.getClass());
 	}
+	
+
+
 	
 	///////////////////////////////////////////////////////////////////////////
 	// constructs larger than statements
@@ -77,6 +84,14 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			return;
 		}
 		
+		Constancy constancy = null;
+		if (node.getToken().isLextant(Keyword.CONST)) {
+			constancy = Constancy.IS_CONSTANT;
+		} else {
+			constancy = Constancy.IS_VARIABLE;
+		}
+		
+		
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
 		ParseNode initializer = node.child(1);
 		
@@ -84,7 +99,38 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		node.setType(declarationType);
 		
 		identifier.setType(declarationType);
-		addBinding(identifier, declarationType);
+		addBinding(identifier, declarationType, constancy);
+	}
+	
+	public void visitLeave(AssignmentStatementNode node) {
+		if(node.child(0) instanceof ErrorNode) {
+			node.setType(PrimitiveType.ERROR);
+			return;
+		}
+		
+		IdentifierNode identifier = (IdentifierNode) node.child(0);
+		ParseNode initializer = node.child(1);
+		
+		Constancy constancy = null;
+		if (node.getToken().isLextant(Keyword.CONST)) {
+			constancy = Constancy.IS_CONSTANT;
+		} else {
+			constancy = Constancy.IS_VARIABLE;
+		}
+		
+		Type declarationType = initializer.getType();
+		if(initializer.equals(declarationType)) {
+			semanticError("type don’t match in assignment statement");
+			return;
+		}
+		
+		if(identifier.getBinding().isConstant()) {
+			semanticError("reassignment to const identifier"); //give some more description like give type
+		}
+		node.setType(declarationType);
+		
+		identifier.setType(declarationType);
+		addBinding(identifier, declarationType, constancy);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -116,6 +162,7 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			node.setType(PrimitiveType.ERROR);
 		}
 	}
+	
 	
 	
 	private Lextant operatorFor(OperatorNode node) {
@@ -164,9 +211,9 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		ParseNode parent = node.getParent();
 		return (parent instanceof DeclarationNode) && (node == parent.child(0));
 	}
-	private void addBinding(IdentifierNode identifierNode, Type type) {
+	private void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy) {
 		Scope scope = identifierNode.getLocalScope();
-		Binding binding = scope.createBinding(identifierNode, type);
+		Binding binding = scope.createBinding(identifierNode, type, constancy);
 		identifierNode.setBinding(binding);
 	}
 	
@@ -182,5 +229,11 @@ class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	private void logError(String message) {
 		TanLogger log = TanLogger.getLogger("compiler.semanticAnalyzer");
 		log.severe(message);
+	}
+	
+	private void semanticError(String message) {
+		TanLogger log = TanLogger.getLogger("compiler.semanticAnalyzer");
+		log.severe(message);
+		
 	}
 }

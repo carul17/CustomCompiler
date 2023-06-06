@@ -49,7 +49,7 @@ public class IdentifierNode extends ParseNode {
 		String identifier = token.getLexeme();
 
 		for(ParseNode current : pathToRoot()) {
-			if(current.containsBindingOf(identifier)) {
+			if(current.containsBindingOf(identifier) || !current.bindingOf(identifier).isConstant()) {
 				declarationScope = current.getScope();
 				return current.bindingOf(identifier);
 			}

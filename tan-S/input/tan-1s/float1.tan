@@ -8,7 +8,7 @@ main {
     const z := 45 / 1;
     const y := 6 / 3;
     const yy := 6 + 3;
-    const x := 6 - 3;
+    var x := 6 + 3;
 	print r \n;
 	print a \n;
 	print b \n;
