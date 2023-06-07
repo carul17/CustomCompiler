@@ -113,7 +113,7 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        60                        
+        DataZ        88                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
@@ -195,9 +195,46 @@
         StoreI                                 
         PushD        $global-memory-block      
         PushI        56                        
-        Add                                    %% x
+        Add                                    %% neg
+        PushI        -5                        
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        60                        
+        Add                                    %% subneg
         PushI        6                         
         Label        -compare-10-arg2          
+        PushI        -5                        
+        Subtract                               
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        64                        
+        Add                                    %% plusneg
+        PushI        6                         
+        Label        -compare-11-arg2          
+        PushI        -5                        
+        Add                                    
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        68                        
+        Add                                    %% plusnegfloat
+        PushF        6.200000                  
+        Label        -compare-12-arg2          
+        PushF        -5.100000                 
+        FAdd                                   
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        76                        
+        Add                                    %% plusplusfloat
+        PushF        6.200000                  
+        Label        -compare-13-arg2          
+        PushF        5.100000                  
+        FAdd                                   
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        84                        
+        Add                                    %% x
+        PushI        6                         
+        Label        -compare-14-arg2          
         PushI        3                         
         Add                                    
         StoreI                                 
@@ -274,10 +311,50 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        56                        
+        PushI        84                        
         Add                                    %% x
         LoadI                                  
         PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        56                        
+        Add                                    %% neg
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        60                        
+        Add                                    %% subneg
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        64                        
+        Add                                    %% plusneg
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        68                        
+        Add                                    %% plusnegfloat
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        76                        
+        Add                                    %% plusplusfloat
+        LoadF                                  
+        PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

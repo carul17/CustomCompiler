@@ -1,5 +1,5 @@
 main {
-    const r := 4.5 / 0.5;
+    var r := 4.5 / 0.5;
     const a := 4.5 / 1.0;
     const b := 6.0 / 2.0;
     const bb := 6.0 - 2.0;
@@ -8,6 +8,11 @@ main {
     const z := 45 / 1;
     const y := 6 / 3;
     const yy := 6 + 3;
+    const neg := -5;
+    const subneg := 6--5;
+    const plusneg := 6+-5;
+    const plusnegfloat := 6.2+-5.1;
+    const plusplusfloat := 6.2++5.1;
     var x := 6 + 3;
 	print r \n;
 	print a \n;
@@ -19,4 +24,9 @@ main {
 	print y \n;
 	print yy \n;
 	print x \n;
+	print neg \n;
+	print subneg \n;
+	print plusneg \n;
+	print plusnegfloat \n;
+	print plusplusfloat \n;
 }

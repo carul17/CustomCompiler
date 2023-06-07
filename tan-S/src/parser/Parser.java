@@ -59,7 +59,7 @@ public class Parser {
 		program.appendChild(mainBlock);
 		
 		if(!(nowReading instanceof NullToken)) {
-			System.out.println(nowReading.fullString());
+			//System.out.println(nowReading.fullString());
 			return syntaxErrorNode("end of program"); //crashing here!
 		}
 		

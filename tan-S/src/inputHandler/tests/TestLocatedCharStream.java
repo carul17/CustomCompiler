@@ -57,7 +57,7 @@ public class TestLocatedCharStream extends FileFixturesTestCase {
 			String actualOutput =	locCharStreamOutput(SIMPLE_FIXTURE_FILENAME);		
 			PrintStream out = forFile(SIMPLE_LCHAR_FILENAME);
 			out.print(actualOutput);
-			System.out.println("rewrote regression fixture " + SIMPLE_LCHAR_FILENAME);
+			//System.out.println("rewrote regression fixture " + SIMPLE_LCHAR_FILENAME);
 			fail();
 		}
 	}

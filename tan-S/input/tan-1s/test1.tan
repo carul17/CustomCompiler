@@ -1,0 +1,8 @@
+main {
+
+    const neg := -5;
+    const pos := 1+-1;
+
+	print neg \n;
+	print pos \n;
+}
