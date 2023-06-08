@@ -1,0 +1,4 @@
+main {
+	const s := "g";
+	print s \n;
+}

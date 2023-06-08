@@ -9,6 +9,8 @@ import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.MainBlockNode;
 import parseTree.nodeTypes.DeclarationNode;
 import parseTree.nodeTypes.ErrorNode;
+import parseTree.nodeTypes.CharacterNode;
+import parseTree.nodeTypes.StringNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.IntegerConstantNode;
 import parseTree.nodeTypes.FloatingConstantNode;
@@ -381,6 +383,12 @@ public class Parser {
 		if(startsFloatLiteral(nowReading)) {
 			return parseFloatLiteral();
 		}
+		if(startsCharLiteral(nowReading)) {
+			return parseCharLiteral();
+		}
+		if(startsStringLiteral(nowReading)) {
+			return parseStringLiteral();
+		}
 		if(startsIdentifier(nowReading)) {
 			return parseIdentifier();
 		}
@@ -391,7 +399,7 @@ public class Parser {
 		return syntaxErrorNode("literal");
 	}
 	private boolean startsLiteral(Token token) {
-		return startsIntLiteral(token) || startsIdentifier(token) || startsBooleanLiteral(token) || startsFloatLiteral(token);
+		return startsIntLiteral(token) || startsIdentifier(token) || startsBooleanLiteral(token) || startsFloatLiteral(token) || startsCharLiteral(token) || startsStringLiteral(token);
 	}
 
 	// number (literal)
@@ -418,6 +426,32 @@ public class Parser {
 	private boolean startsFloatLiteral(Token token) {
 		return token instanceof FloatingLiteralToken;
 	}
+	
+	//char
+		private ParseNode parseCharLiteral() {
+			if(!startsCharLiteral(nowReading)) {
+				return syntaxErrorNode("char");
+			}
+			readToken();
+			return new CharacterNode(previouslyRead);
+		}
+		
+		private boolean startsCharLiteral(Token token) {
+			return token instanceof CharacterToken;
+		}
+		
+	//string
+		private ParseNode parseStringLiteral() {
+			if(!startsStringLiteral(nowReading)) {
+				return syntaxErrorNode("string");
+			}
+			readToken();
+			return new StringNode(previouslyRead);
+		}
+		
+		private boolean startsStringLiteral(Token token) {
+			return token instanceof StringToken;
+		}
 	
 	// identifier (terminal)
 	private ParseNode parseIdentifier() {

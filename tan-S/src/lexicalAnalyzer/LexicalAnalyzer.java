@@ -13,6 +13,8 @@ import tokens.NullToken;
 import tokens.NumberToken;
 import tokens.Token;
 import tokens.FloatingLiteralToken;
+import tokens.CharacterToken;
+import tokens.StringToken;
 
 import static lexicalAnalyzer.PunctuatorScanningAids.*;
 
@@ -43,6 +45,12 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		else if(ch.isDigit()) { //PROBLEM IS - OR + IS NOT A DIGIT
 			return scanNumber(ch);
 		}
+		else if(ch.getCharacter() == '\'' || ch.getCharacter() == '%') { 
+			return scanChar(ch);
+		}
+		else if(ch.getCharacter() == '\"') { 
+			return scanString(ch);
+		}
 		else if(ch.isLowerCase()) {
 			return scanIdentifier(ch);
 		}
@@ -70,6 +78,87 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		return ch;
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////
+	// Char lexical analysis	
+	
+	private Token scanChar(LocatedChar firstChar) {
+		StringBuffer buffer = new StringBuffer();
+		
+		if(firstChar.getCharacter() == '%') {
+			
+			appendSubsequentDigits(buffer);
+			
+
+			
+			//convert octal ascii to char
+			String bufferString = buffer.toString();
+			int decimalValue = Integer.parseInt(bufferString, 8);
+			
+			char converted = (char)decimalValue;
+			LocatedChar newChar = new LocatedChar(converted, firstChar.getLocation());
+			
+			if(!(converted >= 32 && converted <= 126)) {
+				lexicalError("Invalid character", newChar);
+				return findNextToken();
+			}
+			
+			return CharacterToken.make(newChar, Character.toString(converted));
+			
+		}
+		else {
+			LocatedChar c = input.next();
+			char ch = c.getCharacter();
+			if(!(ch >= 32 && ch <= 126)) {
+				lexicalError("Invalid character", c);
+				return findNextToken();
+			}
+		
+			buffer.append(ch);
+			
+			LocatedChar end = input.next();
+			if(end.getCharacter() != '\'') {
+				lexicalError("Invalid character", end);
+				return findNextToken();
+			}
+			
+			LocatedChar sc = input.next();
+			input.pushback(sc);
+			return CharacterToken.make(c, buffer.toString());
+
+			
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	// String lexical analysis	
+	
+	private Token scanString(LocatedChar firstChar) {
+		StringBuffer buffer = new StringBuffer();
+		if(input.peek().getCharacter() < 32 || input.peek().getCharacter() > 126) {
+			System.out.println("error");
+			lexicalError("Invalid character in string", c);
+			return findNextToken();
+		}
+		LocatedChar c = input.next();
+		char ch = c.getCharacter();
+		buffer.append(ch);
+		
+		System.out.println(input.peek().getCharacter());
+		if(input.peek().getCharacter() != '\'') {
+			System.out.println("error");
+			lexicalError("Invalid character in string", c);
+			return findNextToken();
+		}
+		input.next();
+		
+		LocatedChar sc = input.next();
+		input.pushback(sc);
+		return StringToken.make(c, buffer.toString());
+		//appendSubsequentCharacters(buffer);
+		
+		//return StringToken.make(ch, buffer.toString());
+		
+	}
 	
 	//////////////////////////////////////////////////////////////////////////////
 	// Integer lexical analysis	
@@ -213,6 +302,25 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		LocatedChar c = input.next();
 		while(c.isDigit()) {
 			buffer.append(c.getCharacter());
+			c = input.next();
+		}
+		input.pushback(c);
+	}
+	
+	private void appendSubsequentDigitsForChar(StringBuffer buffer) {
+		LocatedChar c = input.next();
+		while(c.isDigit() &&  ((int)c.getCharacter() >= 0 && (int)c.getCharacter() <=7)) {
+			buffer.append(c.getCharacter());
+			c = input.next();
+		}
+		input.pushback(c);
+	}
+	
+	private void appendSubsequentCharacters(StringBuffer buffer) {
+		LocatedChar c = input.next();
+		char ch = c.getCharacter();
+		while(ch >= 32 && ch <= 126 && ch != '\"') {
+			buffer.append(ch);
 			c = input.next();
 		}
 		input.pushback(c);

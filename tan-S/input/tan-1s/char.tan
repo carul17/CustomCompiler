@@ -1,0 +1,6 @@
+main {
+	const c := %141;
+	const b := 'j';
+	print c \n;
+	print b \n;
+}
