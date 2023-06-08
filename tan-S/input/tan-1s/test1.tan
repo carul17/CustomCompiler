@@ -1,8 +1,9 @@
 main {
 
-    const neg := -5;
-    const pos := 1+-1;
-
-	print neg \n;
+    var pos := 6 + 7;
+    
+	pos := 2;
+    
+    
 	print pos \n;
 }

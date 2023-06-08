@@ -48,7 +48,7 @@ public class Parser {
 	// "program" is the start symbol S
 	// S -> MAIN mainBlock
 	
-	private ParseNode parseProgram() {
+	private ParseNode parseProgram() { //here
 		if(!startsProgram(nowReading)) {
 			return syntaxErrorNode("program");
 		}
@@ -58,8 +58,7 @@ public class Parser {
 		ParseNode mainBlock = parseMainBlock();
 		program.appendChild(mainBlock);
 		
-		if(!(nowReading instanceof NullToken)) {
-			//System.out.println(nowReading.fullString());
+		if(!(nowReading instanceof NullToken) && nowReading.getLexeme() != ":=") {
 			return syntaxErrorNode("end of program"); //crashing here!
 		}
 		
@@ -80,12 +79,10 @@ public class Parser {
 		}
 		ParseNode mainBlock = new MainBlockNode(nowReading);
 		expect(Punctuator.OPEN_BRACE);
-		
 		while(startsStatement(nowReading)) {
 			ParseNode statement = parseStatement();
 			mainBlock.appendChild(statement);
-		}
-		//System.out.println("crashy");
+		};
 		expect(Punctuator.CLOSE_BRACE); //crashing here
 		return mainBlock;
 	}
@@ -103,13 +100,16 @@ public class Parser {
 		if(!startsStatement(nowReading)) {
 			return syntaxErrorNode("statement");
 		}
+		
+			
 		if(startsDeclaration(nowReading)) {
 			return parseDeclaration();
 		}
 		
-//		if(startsAssignment(nowReading)) {
-//			return parseAssignment();
-//		}
+		if(startsAssignment(nowReading)) {
+			return parseAssignment();
+		}
+		
 		
 		if(startsPrintStatement(nowReading)) {
 			return parsePrintStatement();
@@ -118,8 +118,8 @@ public class Parser {
 	}
 	private boolean startsStatement(Token token) {
 		return startsPrintStatement(token) ||
-			   startsDeclaration(token);
-			   //startsAssignment(token);
+			   startsDeclaration(token) ||
+			   startsAssignment(token);
 	}
 	
 	// printStmt -> PRINT printExpressionList TERMINATOR
@@ -212,30 +212,29 @@ public class Parser {
 		return DeclarationNode.withChildren(declarationToken, identifier, initializer);
 	}
 	
-//	private ParseNode parseAssignment() {
-//		if(!startsAssignment(nowReading)) {
-//			return syntaxErrorNode("assignment");
-//		}
-//		Token declarationToken = nowReading;
-//		readToken();
-//
-//		System.out.println("Hiya");
-//		
-//		ParseNode identifier = parseIdentifier();
-//		expect(Punctuator.ASSIGN);
-//		//System.out.println(nowReading.fullString());
-//		ParseNode initializer = parseExpression();
-//		expect(Punctuator.TERMINATOR);
-//		return AssignmentStatementNode.withChildren(declarationToken, identifier, initializer);
-//	}
+	private ParseNode parseAssignment() {
+		System.out.println("Hiya");
+		if(!startsAssignment(nowReading)) {
+			return syntaxErrorNode("assignment");
+		}
+		Token declarationToken = nowReading;
+		readToken();
+		
+		IdentifierNode identifier = new IdentifierNode(declarationToken);
+		//System.out.println(declarationToken.getLexeme());
+		expect(Punctuator.ASSIGN);
+		//System.out.println(nowReading.fullString());
+		ParseNode initializer = parseExpression();
+		expect(Punctuator.TERMINATOR);
+		return AssignmentStatementNode.withChildren(declarationToken, identifier, initializer);
+	}
 	private boolean startsDeclaration(Token token) {
 		return token.isLextant(Keyword.CONST) || token.isLextant(Keyword.VAR);
 	}
 	
-//	private boolean startsAssignment(Token token) {
-//		System.out.println(token.getLexeme());
-//		return !(token.isLextant(Keyword.CONST) || token.isLextant(Keyword.VAR));
-//	}
+	private boolean startsAssignment(Token token) {
+		return startsIdentifier(token); //could be start of assingment
+	}
 
 
 	
@@ -446,13 +445,16 @@ public class Parser {
 	private void readToken() {
 		previouslyRead = nowReading;
 		nowReading = scanner.next();
+		//System.out.println(nowReading);
 	}	
 	
 	// if the current token is one of the given lextants, read the next token.
 	// otherwise, give a syntax error and read next token (to avoid endless looping).
 	private void expect(Lextant ...lextants ) {
 		if(!nowReading.isLextant(lextants)) {
-			syntaxError(nowReading, "expecting " + Arrays.toString(lextants));
+			if(!previouslyRead.getLexeme().equals(";")) {
+				syntaxError(nowReading, "expecting " + Arrays.toString(lextants));
+			}
 		}
 		readToken();
 	}	
