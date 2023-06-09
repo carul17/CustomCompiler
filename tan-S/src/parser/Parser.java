@@ -313,6 +313,14 @@ public class Parser {
 			left = OperatorNode.withChildren(subtractionToken, left, right);
 		}
 		
+		while(nowReading.isLextant(Punctuator.GREATEREQUAL)) {
+			Token subtractionToken = nowReading;
+			readToken();
+			ParseNode right = parseMultiplicativeExpression();
+			
+			left = OperatorNode.withChildren(subtractionToken, left, right);
+		}
+		
 		
 		return left;
 	}

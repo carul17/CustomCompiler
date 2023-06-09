@@ -94,12 +94,21 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		
 		new FunctionSignatures(Punctuator.GREATER,
 			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, BOOLEAN),
-			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN)
+			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, CHARACTER, CHARACTER, BOOLEAN)
+			    
 			);
 		
 		new FunctionSignatures(Punctuator.LESS,
-			    new FunctionSignature(1, INTEGER, INTEGER, BOOLEAN),
-			    new FunctionSignature(1, FLOATING, FLOATING, BOOLEAN)
+			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, CHARACTER, CHARACTER, BOOLEAN)
+			);
+		
+		new FunctionSignatures(Punctuator.GREATEREQUAL,
+			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, CHARACTER, CHARACTER, BOOLEAN)
 			);
 		
 		

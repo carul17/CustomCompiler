@@ -39,7 +39,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	@Override
 	protected Token findNextToken() {
 		LocatedChar ch = nextNonWhitespaceChar();
-		if ((ch.getCharacter() == '-' || ch.getCharacter() == '+') && (this.chPrev != null && (this.chPrev.getCharacter() == ':') || (this.chPrev.getCharacter() == '+')|| (this.chPrev.getCharacter() == '-')|| (this.chPrev.getCharacter() == '/')|| (this.chPrev.getCharacter() == '*'))) {
+		if ((ch.getCharacter() == '-' || ch.getCharacter() == '+') && (this.chPrev != null && (this.chPrev.getCharacter() == ':') || (this.chPrev.getCharacter() == '+')|| (this.chPrev.getCharacter() == '-')|| (this.chPrev.getCharacter() == '/')|| (this.chPrev.getCharacter() == '*')|| (this.chPrev.getCharacter() == '>')|| (this.chPrev.getCharacter() == '<'))) {
 			return unaryScan(ch);
 		}
 		else if(ch.isDigit()) { //PROBLEM IS - OR + IS NOT A DIGIT
@@ -236,6 +236,11 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	private Token unaryScan(LocatedChar firstChar) {
 		StringBuffer buffer = new StringBuffer();
 		//System.out.println(buffer.toString());
+		
+//		if(firstChar.getCharacter() == '=' || firstChar.getCharacter() == '<') {
+//			buffer.append(firstChar.getCharacter());
+//			input.next();
+//		}
 		
 		if(firstChar.getCharacter() == '-' || firstChar.getCharacter() == '+') {
 			buffer.append(firstChar.getCharacter());

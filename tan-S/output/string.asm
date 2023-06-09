@@ -121,19 +121,86 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        1                         
+        DataZ        9                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% s
-        DataC        103                       %% "g"
+        DLabel       -string-1-ghjdfh \n nbsjh 
+        DataI        3                         
+        DataI        9                         
+        DataI        15                        
+        DataC        103                       %% "ghjdfh \n nbsjh"
+        DataC        104                       
+        DataC        106                       
+        DataC        100                       
+        DataC        102                       
+        DataC        104                       
+        DataC        32                        
+        DataC        92                        
+        DataC        110                       
+        DataC        32                        
+        DataC        110                       
+        DataC        98                        
+        DataC        115                       
+        DataC        106                       
+        DataC        104                       
         DataC        0                         
-        StoreF                                 
+        PushD        -string-1-ghjdfh \n nbsjh 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% t
+        DLabel       -string-2-sfd098#varfgs   
+        DataI        3                         
+        DataI        9                         
+        DataI        13                        
+        DataC        115                       %% "sfd098#varfgs"
+        DataC        102                       
+        DataC        100                       
+        DataC        48                        
+        DataC        57                        
+        DataC        56                        
+        DataC        35                        
+        DataC        118                       
+        DataC        97                        
+        DataC        114                       
+        DataC        102                       
+        DataC        103                       
+        DataC        115                       
+        DataC        0                         
+        PushD        -string-2-sfd098#varfgs   
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% c
+        PushI        115                       
+        StoreC                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% s
-        LoadF                                  
+        LoadI                                  
+        PushI        12                        
+        Add                                    
         PushD        $print-format-string      
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% t
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% c
+        LoadC                                  
+        PushD        $print-format-character   
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

@@ -1,5 +1,5 @@
 main {
 
-    var pos := 2.2 > 2.1;   
+    var pos := 2 >= 2;
 	print pos \n;
 }

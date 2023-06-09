@@ -9,6 +9,14 @@
         DataC        37                        %% "%f"
         DataC        102                       
         DataC        0                         
+        DLabel       $print-format-character   
+        DataC        37                        %% "%c"
+        DataC        99                        
+        DataC        0                         
+        DLabel       $print-format-string      
+        DataC        37                        %% "%s"
+        DataC        115                       
+        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -119,13 +127,13 @@
         PushI        0                         
         Add                                    %% pos
         Label        -compare-2-arg1           
-        PushF        -2.200000                 
+        PushI        2                         
         Label        -compare-1-arg2           
         Label        -compare-2-arg2           
-        PushF        2.100000                  
+        PushI        2                         
         Label        -compare-2-sub            
-        FSubtract                              
-        JumpFPos     -compare-2-true           
+        Subtract                               
+        JumpPos      -compare-2-true           
         Jump         -compare-2-false          
         Label        -compare-2-true           
         PushI        1                         
