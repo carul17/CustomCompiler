@@ -121,18 +121,31 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        1                         
+        DataZ        2                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% s
-        PushD        g                         
+        Add                                    %% c
+        PushI        97                        
+        StoreC                                 
+        PushD        $global-memory-block      
+        PushI        1                         
+        Add                                    %% b
+        PushI        106                       
         StoreC                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% s
+        Add                                    %% c
         LoadC                                  
-        PushD        $print-format-string      
+        PushD        $print-format-character   
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        1                         
+        Add                                    %% b
+        LoadC                                  
+        PushD        $print-format-character   
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

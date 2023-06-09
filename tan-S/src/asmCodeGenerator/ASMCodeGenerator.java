@@ -160,10 +160,9 @@ public class ASMCodeGenerator {
 			}
 			else if(node.getType() == CHARACTER) {
 				code.add(LoadC);
-				//code.add(LoadC);
 			}
 			else if(node.getType() == STRING) {
-				code.add(LoadF);
+				code.add(LoadI);
 			}
 			else {
 				assert false : "node " + node;
@@ -240,7 +239,7 @@ public class ASMCodeGenerator {
 				return StoreC;
 			}
 			if(type == STRING) {
-				return StoreF;
+				return StoreI;
 			}
 			assert false: "Type " + type + " unimplemented in opcodeForStore()";
 			return null;
@@ -432,21 +431,21 @@ public class ASMCodeGenerator {
 		}
 		public void visit(CharacterNode node) {
 			newValueCode(node);
-			Labeller labeller = new Labeller("character");
-			String dlabel = labeller.newLabel("this");
-			
-			code.add(DLabel, dlabel);
-			code.add(DataC, node.getValue());
-			code.add(PushD, dlabel);
-			code.add(LoadI);
+			code.add(PushI, node.getValue());
 			
 			
-			//code.add(LoadC);
 		}
 		public void visit(StringNode node) {
 			newValueCode(node);
 			
+			Labeller labeller = new Labeller("string");
+			String dlabel = labeller.newLabel(node.getValue());
+			code.add(DLabel, dlabel);
+			code.add(DataI, 3);
+			code.add(DataI, 9);
+			code.add(DataI, node.getValue().length());
 			code.add(DataS, node.getValue());
+			code.add(PushD, dlabel);
 		}
 	}
 

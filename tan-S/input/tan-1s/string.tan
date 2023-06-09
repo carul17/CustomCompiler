@@ -1,4 +1,9 @@
 main {
-	const s := "g";
+	const s := "ghjdfh \n nbsjh";
+	var t := "sfd098";
+	const c := 's';
+	
 	print s \n;
+	print t \n;
+	print c \n;
 }
