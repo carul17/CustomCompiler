@@ -1,5 +1,0 @@
-main {
-
-    var pos := 2 >= 2;
-	print pos \n;
-}

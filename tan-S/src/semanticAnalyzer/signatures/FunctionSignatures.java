@@ -110,6 +110,25 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN),
 			    new FunctionSignature(ASMOpcode.Subtract, CHARACTER, CHARACTER, BOOLEAN)
 			);
+		new FunctionSignatures(Punctuator.LESSEREQUAL,
+			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, CHARACTER, CHARACTER, BOOLEAN)
+			);
+		new FunctionSignatures(Punctuator.EQUAL,
+			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, CHARACTER, CHARACTER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, BOOLEAN, BOOLEAN, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, STRING, STRING, BOOLEAN)
+			);
+		new FunctionSignatures(Punctuator.NOTEQUAL,
+			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, CHARACTER, CHARACTER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, BOOLEAN, BOOLEAN, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.Subtract, STRING, STRING, BOOLEAN)
+			);
 		
 		
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.

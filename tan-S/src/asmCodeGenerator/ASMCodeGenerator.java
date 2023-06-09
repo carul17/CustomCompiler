@@ -307,189 +307,28 @@ public class ASMCodeGenerator {
 			Punctuator punctuator = (Punctuator)lextant;
 			//System.out.print(node.child(0).getType().toString());
 			
-			if(operator == Punctuator.SUBTRACT) {
-				visitNormalBinaryOperatorNode(node);    //this use to be visitUnaryOperatorNode. I think the prof wanted us to negate a number then add to subtract, but I just used the subtract op code
-			}
-			else if(operator == Punctuator.GREATER && ((node.child(0).getType() == INTEGER) || node.child(0).getType() == CHARACTER)) { //handing greater than symbol
+			
+			if(operator == Punctuator.GREATER
+					|| operator == Punctuator.LESS
+					|| operator == Punctuator.GREATEREQUAL
+					|| operator == Punctuator.LESSEREQUAL
+					|| operator == Punctuator.EQUAL
+					|| operator == Punctuator.NOTEQUAL)
+				{ //handing greater than symbol
 				visitComparisonOperatorNode(node, operator);
-			}
-			else if(operator == Punctuator.GREATER && node.child(0).getType() == FLOATING) {
-				visitComparisonOperatorNodeFloat(node, operator);
-			}
-			else if (operator == Punctuator.LESS && (node.child(0).getType() == INTEGER || node.child(0).getType() == CHARACTER)) {//handing less than symbol
-				visitComparisonOperatorNodeLessThan(node, operator);
-			}
-			else if (operator == Punctuator.LESS && node.child(0).getType() == FLOATING) {
-				visitComparisonOperatorNodeLessThanFloat(node, operator);
-			}
-			else if(operator == Punctuator.GREATEREQUAL && ((node.child(0).getType() == INTEGER) || node.child(0).getType() == CHARACTER)) { //handing greater than or equal to symbol
-				visitComparisonOperatorNodeGE(node, operator);
-			}
-			else if(operator == Punctuator.GREATEREQUAL && node.child(0).getType() == FLOATING) {
-				visitComparisonOperatorNodeFloat(node, operator);
 			}
 			else {
 				visitNormalBinaryOperatorNode(node);
 			};
 		}
-		private void visitComparisonOperatorNodeGE(OperatorNode node, Lextant operator) {
-			ASMCodeFragment arg1 = removeValueCode(node.child(0));
-			ASMCodeFragment arg2 = removeValueCode(node.child(1));
-			//FunctionSignature signature = node.getSignature();
-			
-			Labeller labeller = new Labeller("compare");
-			
-			String startLabel = labeller.newLabel("arg1");
-			String arg2Label  = labeller.newLabel("arg2");
-			String subLabel   = labeller.newLabel("sub");
-			//String equalLabel  = labeller.newLabel("equal");
-			String trueLabel  = labeller.newLabel("true");
-			String falseLabel = labeller.newLabel("false");
-			String joinLabel  = labeller.newLabel("join");
-			
-			
-			
-			newValueCode(node);
-			code.add(Label, startLabel);
-			code.append(arg1);
-			code.add(Label, arg2Label);
-			code.append(arg2);
-			code.add(Label, subLabel);
-			code.add(Subtract);
-			
-			code.add(JumpPos, trueLabel);
-			code.add(Jump, falseLabel);
-
-			code.add(Label, trueLabel);
-			code.add(PushI, 1);
-			code.add(Jump, joinLabel);
-			code.add(Label, falseLabel);
-			code.add(PushI, 0);
-			code.add(Jump, joinLabel);
-			code.add(Label, joinLabel);
-			
-		}
-
-
-		private void visitComparisonOperatorNodeLessThanFloat(OperatorNode node, Lextant operator) {
-			ASMCodeFragment arg1 = removeValueCode(node.child(0));
-			ASMCodeFragment arg2 = removeValueCode(node.child(1));
-			//FunctionSignature signature = node.getSignature();
-			
-			Labeller labeller = new Labeller("compare");
-			
-			String startLabel = labeller.newLabel("arg1");
-			String arg2Label  = labeller.newLabel("arg2");
-			String subLabel   = labeller.newLabel("sub");
-			String trueLabel  = labeller.newLabel("true");
-			String falseLabel = labeller.newLabel("false");
-			String joinLabel  = labeller.newLabel("join");
-			
-			
-			
-			newValueCode(node);
-			code.add(Label, startLabel);
-			code.append(arg1);
-			code.add(Label, arg2Label);
-			code.append(arg2);
-			code.add(Label, subLabel);
-			code.add(FSubtract);
-			
-			code.add(JumpFPos, trueLabel);
-			code.add(Jump, falseLabel);
-			code.add(Label, trueLabel);
-			code.add(PushI, 0);
-			code.add(Jump, joinLabel);
-			code.add(Label, falseLabel);
-			code.add(PushI, 1);
-			code.add(Jump, joinLabel);
-			code.add(Label, joinLabel);
-			
-		}
-
-
-		private void visitComparisonOperatorNodeLessThan(OperatorNode node, Lextant operator) {
-			ASMCodeFragment arg1 = removeValueCode(node.child(0));
-			ASMCodeFragment arg2 = removeValueCode(node.child(1));
-			//FunctionSignature signature = node.getSignature();
-			
-			Labeller labeller = new Labeller("compare");
-			
-			String startLabel = labeller.newLabel("arg1");
-			String arg2Label  = labeller.newLabel("arg2");
-			String subLabel   = labeller.newLabel("sub");
-			String trueLabel  = labeller.newLabel("true");
-			String falseLabel = labeller.newLabel("false");
-			String joinLabel  = labeller.newLabel("join");
-			
-			
-			
-			newValueCode(node);
-			code.add(Label, startLabel);
-			code.append(arg1);
-			code.add(Label, arg2Label);
-			code.append(arg2);
-			code.add(Label, subLabel);
-			code.add(Subtract);
-			
-			code.add(JumpPos, trueLabel);
-			code.add(Jump, falseLabel);
-
-			code.add(Label, trueLabel);
-			code.add(PushI, 0);
-			code.add(Jump, joinLabel);
-			code.add(Label, falseLabel);
-			code.add(PushI, 1);
-			code.add(Jump, joinLabel);
-			code.add(Label, joinLabel);
-			
-		}
-
-
-		private void visitComparisonOperatorNodeFloat(OperatorNode node, Lextant operator) {
-			ASMCodeFragment arg1 = removeValueCode(node.child(0));
-			ASMCodeFragment arg2 = removeValueCode(node.child(1));
-			//FunctionSignature signature = node.getSignature();
-			
-			Labeller labeller = new Labeller("compare");
-			
-			String startLabel = labeller.newLabel("arg1");
-			String arg2Label  = labeller.newLabel("arg2");
-			String subLabel   = labeller.newLabel("sub");
-			String trueLabel  = labeller.newLabel("true");
-			String falseLabel = labeller.newLabel("false");
-			String joinLabel  = labeller.newLabel("join");
-			
-			
-			
-			newValueCode(node);
-			code.add(Label, startLabel);
-			code.append(arg1);
-			code.add(Label, arg2Label);
-			code.append(arg2);
-			code.add(Label, subLabel);
-			code.add(FSubtract);
-			
-			code.add(JumpFPos, trueLabel);
-			code.add(Jump, falseLabel);
-			code.add(Label, trueLabel);
-			code.add(PushI, 1);
-			code.add(Jump, joinLabel);
-			code.add(Label, falseLabel);
-			code.add(PushI, 0);
-			code.add(Jump, joinLabel);
-			code.add(Label, joinLabel);
-			
-		}
-
-
+		
 		private void visitComparisonOperatorNode(OperatorNode node,
 				Lextant operator) {
 
 
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
 			ASMCodeFragment arg2 = removeValueCode(node.child(1));
-			//FunctionSignature signature = node.getSignature();
+			
 			
 			Labeller labeller = new Labeller("compare");
 			
@@ -501,18 +340,97 @@ public class ASMCodeGenerator {
 			String joinLabel  = labeller.newLabel("join");
 			
 			
-			
 			newValueCode(node);
 			code.add(Label, startLabel);
 			code.append(arg1);
 			code.add(Label, arg2Label);
 			code.append(arg2);
 			code.add(Label, subLabel);
-			code.add(Subtract);
 			
-			code.add(JumpPos, trueLabel);
-			code.add(Jump, falseLabel);
+			ASMOpcode subtract;
+			ASMOpcode jumpPos;
+			ASMOpcode jumpNeg;
+			ASMOpcode jumpTrue;
+			ASMOpcode jumpFalse;
+			
+			Type type = node.child(0).getType();
+			
+				
+			if(type == INTEGER
+				|| type == CHARACTER
+				|| type == BOOLEAN) {
+				
+				subtract = Subtract;
+				jumpPos = JumpPos;
+				jumpNeg = JumpNeg;
+				jumpPos = JumpPos;
+				jumpFalse = JumpFalse;
+				jumpTrue = JumpTrue;
+				
+			} else {
+				subtract = FSubtract;
+				jumpPos = JumpFPos;
+				jumpNeg = JumpFNeg;
+				jumpPos = JumpFPos;
+				jumpFalse = JumpFZero;
+				jumpTrue = JumpTrue;
+			}
+			
+			
+			code.add(subtract);
+			
+			
+			if(operator == Punctuator.GREATER) {
+				code.add(jumpPos, trueLabel);
+				code.add(Jump, falseLabel);
+			}
+			else if(operator == Punctuator.GREATEREQUAL) {
+				String tempLabel  = labeller.newLabel("temp");
+				code.add(Duplicate);
+				
+				code.add(jumpPos, tempLabel);
+				code.add(jumpFalse, trueLabel);
+				code.add(Jump, falseLabel);
+				
+				
+				code.add(Label, tempLabel);
+				code.add(Pop);
+				code.add(Jump, trueLabel);
+			}
+			else if(operator == Punctuator.LESS) {
+				code.add(jumpNeg, trueLabel);
+				code.add(Jump, falseLabel);
+			}
+			
+			else if(operator == Punctuator.LESSEREQUAL) {
+				String tempLabel  = labeller.newLabel("temp");
+				code.add(Duplicate);
+				
+				code.add(jumpNeg, tempLabel);
+				code.add(jumpFalse, trueLabel);
+				code.add(Jump, falseLabel);
+				
 
+				code.add(Label, tempLabel);
+				code.add(Pop);
+				code.add(Jump, trueLabel);
+			}
+			else if(operator == Punctuator.EQUAL) {
+					code.add(jumpFalse, trueLabel);
+					code.add(Jump, falseLabel);
+			}
+			else if(operator == Punctuator.NOTEQUAL) {
+				if(type == FLOATING) {
+					code.add(jumpFalse, falseLabel);
+					code.add(Jump, trueLabel);
+				}
+				else {
+					code.add(jumpTrue, trueLabel);
+					code.add(Jump, falseLabel);
+				}
+			}
+		
+			
 			code.add(Label, trueLabel);
 			code.add(PushI, 1);
 			code.add(Jump, joinLabel);
@@ -522,6 +440,9 @@ public class ASMCodeGenerator {
 			code.add(Label, joinLabel);
 
 		}		
+		
+		
+		
 		private List<ASMCodeFragment> childCode(OperatorNode node) {
 			List<ASMCodeFragment> result = new ArrayList<>();
 			for(ParseNode child: node.getChildren()) {

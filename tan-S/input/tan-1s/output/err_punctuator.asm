@@ -127,13 +127,13 @@
         PushI        0                         
         Add                                    %% pos
         Label        -compare-2-arg1           
-        PushI        2                         
+        PushI        -2                        
         Label        -compare-1-arg2           
         Label        -compare-2-arg2           
         PushI        2                         
         Label        -compare-2-sub            
         Subtract                               
-        JumpPos      -compare-2-true           
+        JumpFalse    -compare-2-true           
         Jump         -compare-2-false          
         Label        -compare-2-true           
         PushI        1                         

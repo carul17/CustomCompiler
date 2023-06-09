@@ -1,0 +1,64 @@
+main {
+
+    var pos := -3.3 != 3.3; # true
+    
+    
+    
+    var pos2 := 2.2 > 1.5; # true
+    
+    var pos3 := 2.2 < 1.5; #false
+    
+    
+    
+    var pos4 := 2.2 <= 1.5; #false
+    
+    var pos5 := 2.2 >= 1.5; # true
+    
+    var pos6 := 2.2 >= 2.2; # true
+    
+    var pos7 := 2.2 <= 2.2; # true
+    
+    
+    
+    var pos8 := 2.2 == 2.2; # true
+    
+    var pos9 := 2.2 == 3.3; #false
+    
+    
+    
+    var pos10 := 2.2 != 2.2; #false
+    
+    var pos11 := 2.2 != 3.3; # true
+    
+    
+    
+    var pos12 := true != true; # false
+    
+    var pos13 := true != false; # true
+    
+    var pos14 := true == true; # true
+    
+    var pos15 := true == false; # false
+    
+    
+	print pos \n;
+	print \n;
+	print pos2 \n;
+	print pos3 \n;
+	print \n;
+	print pos4 \n;
+	print pos5 \n;
+	print pos6 \n;
+	print pos7 \n;
+	print \n;
+	print pos8 \n;
+	print pos9 \n;
+	print \n;
+	print pos10 \n;
+	print pos11 \n;
+	print \n;
+	print pos12 \n;
+	print pos13 \n;
+	print pos14 \n;
+	print pos15 \n;
+}

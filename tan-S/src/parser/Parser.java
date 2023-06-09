@@ -265,7 +265,12 @@ public class Parser {
 		}
 		
 		ParseNode left = parseAdditiveExpression();
-		if(nowReading.isLextant(Punctuator.GREATER) || nowReading.isLextant(Punctuator.LESS)) {
+		if(nowReading.isLextant(Punctuator.GREATER) 
+				|| nowReading.isLextant(Punctuator.LESS)
+				|| nowReading.isLextant(Punctuator.LESSEREQUAL)
+				|| nowReading.isLextant(Punctuator.GREATEREQUAL)
+				|| nowReading.isLextant(Punctuator.EQUAL)
+				|| nowReading.isLextant(Punctuator.NOTEQUAL)) {
 			Token compareToken = nowReading;
 			readToken();
 			ParseNode right = parseAdditiveExpression();
@@ -403,7 +408,12 @@ public class Parser {
 		return syntaxErrorNode("literal");
 	}
 	private boolean startsLiteral(Token token) {
-		return startsIntLiteral(token) || startsIdentifier(token) || startsBooleanLiteral(token) || startsFloatLiteral(token) || startsCharLiteral(token) || startsStringLiteral(token);
+		return startsIntLiteral(token)
+				|| startsIdentifier(token)
+				|| startsBooleanLiteral(token)
+				|| startsFloatLiteral(token)
+				|| startsCharLiteral(token)
+				|| startsStringLiteral(token);
 	}
 
 	// number (literal)
