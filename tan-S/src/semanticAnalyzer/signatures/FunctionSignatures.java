@@ -92,6 +92,16 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 			    new FunctionSignature(new FloatDivideCodeGenerator(), FLOATING, FLOATING, FLOATING)
 			);
 		
+		new FunctionSignatures(Punctuator.GREATER,
+			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, BOOLEAN),
+			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, BOOLEAN)
+			);
+		
+		new FunctionSignatures(Punctuator.LESS,
+			    new FunctionSignature(1, INTEGER, INTEGER, BOOLEAN),
+			    new FunctionSignature(1, FLOATING, FLOATING, BOOLEAN)
+			);
+		
 		
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other
