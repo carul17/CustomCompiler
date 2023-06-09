@@ -14,6 +14,8 @@ import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.MainBlockNode;
 import parseTree.nodeTypes.DeclarationNode;
+import parseTree.nodeTypes.CharacterNode;
+import parseTree.nodeTypes.StringNode;
 import parseTree.nodeTypes.FloatingConstantNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.IntegerConstantNode;
@@ -155,7 +157,13 @@ public class ASMCodeGenerator {
 			}
 			else if(node.getType() == FLOATING) {
 				code.add(LoadF);
-			}	
+			}
+			else if(node.getType() == CHARACTER) {
+				code.add(LoadC);
+			}
+			else if(node.getType() == STRING) {
+				code.add(LoadI);
+			}
 			else {
 				assert false : "node " + node;
 			}
@@ -227,6 +235,12 @@ public class ASMCodeGenerator {
 			if(type == FLOATING) {
 				return StoreF;
 			}
+			if(type == CHARACTER) {
+				return StoreC;
+			}
+			if(type == STRING) {
+				return StoreI;
+			}
 			assert false: "Type " + type + " unimplemented in opcodeForStore()";
 			return null;
 		}
@@ -252,7 +266,7 @@ public class ASMCodeGenerator {
 			String joinLabel  = labeller.newLabel("join");
 			String addLabel   = labeller.newLabel("add");
 			String faddLabel   = labeller.newLabel("fadd");
-			String pushLabel   = labeller.newLabel("psuhLabel");
+			String pushLabel   = labeller.newLabel("pushLabel");
 			
 			if(variant instanceof ASMOpcode) {
 			newValueCode(node);
@@ -462,6 +476,24 @@ public class ASMCodeGenerator {
 			newValueCode(node);
 			
 			code.add(PushF, node.getValue());
+		}
+		public void visit(CharacterNode node) {
+			newValueCode(node);
+			code.add(PushI, node.getValue());
+			
+			
+		}
+		public void visit(StringNode node) {
+			newValueCode(node);
+			
+			Labeller labeller = new Labeller("string");
+			String dlabel = labeller.newLabel(node.getValue());
+			code.add(DLabel, dlabel);
+			code.add(DataI, 3);
+			code.add(DataI, 9);
+			code.add(DataI, node.getValue().length());
+			code.add(DataS, node.getValue());
+			code.add(PushD, dlabel);
 		}
 	}
 

@@ -13,6 +13,8 @@ import tokens.NullToken;
 import tokens.NumberToken;
 import tokens.Token;
 import tokens.FloatingLiteralToken;
+import tokens.CharacterToken;
+import tokens.StringToken;
 
 import static lexicalAnalyzer.PunctuatorScanningAids.*;
 
@@ -43,6 +45,16 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		else if(ch.isDigit()) { //PROBLEM IS - OR + IS NOT A DIGIT
 			return scanNumber(ch);
 		}
+		else if(ch.isChar('\'') || ch.isChar('%')) { 
+			return scanChar(ch);
+		}
+		else if(ch.isChar('"')) { 
+			return scanString(ch);
+		}
+		else if(ch.isChar('#')) { 
+			ignoreComment(ch);
+			return findNextToken();
+		}
 		else if(ch.isLowerCase()) {
 			return scanIdentifier(ch);
 		}
@@ -70,6 +82,95 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		return ch;
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////
+	// Comment lexical analysis	
+		
+	private void ignoreComment(LocatedChar firstChar) {
+		LocatedChar c = input.next();
+		while(!(c.isChar('#') || c.isChar('\n'))) {
+			c = input.next();
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////////
+	// Char lexical analysis	
+	
+	private Token scanChar(LocatedChar firstChar) {
+		StringBuffer buffer = new StringBuffer();
+		
+		if(firstChar.getCharacter() == '%') {
+			
+			appendSubsequentDigits(buffer);
+			
+
+			
+			//convert octal ascii to char
+			String bufferString = buffer.toString();
+			if(bufferString.length() < 1 || bufferString.length() > 3) {
+				lexicalError("Invalid octal form", firstChar);
+				return findNextToken();
+			}
+			
+			
+			int decimalValue = Integer.parseInt(bufferString, 8);
+			
+			char converted = (char)decimalValue;
+			LocatedChar newChar = new LocatedChar(converted, firstChar.getLocation());
+			
+			
+			
+			
+			
+			return CharacterToken.make(newChar, Character.toString(converted));
+			
+		}
+		else {
+			LocatedChar c = input.next();
+			char ch = c.getCharacter();
+			if(!(ch >= 32 && ch <= 126)) {
+				lexicalError("Invalid character", c);
+				return findNextToken();
+			}
+		
+			buffer.append(ch);
+			
+			LocatedChar end = input.next();
+			if(end.getCharacter() != '\'') {
+				lexicalError("Invalid character", end);
+				return findNextToken();
+			}
+			
+			LocatedChar sc = input.next();
+			input.pushback(sc);
+			return CharacterToken.make(c, buffer.toString());
+
+			
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	// String lexical analysis	
+	
+	private Token scanString(LocatedChar firstChar) {
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		LocatedChar chars = input.next();
+		
+		while(!chars.isChar('"')) {
+			buffer.append(chars.getCharacter());
+			chars = input.next();
+		}
+		if(chars.isChar('"')){
+			chars = input.next();
+			input.pushback(chars);
+			
+			return StringToken.make(firstChar, buffer.toString());
+		}
+		else {
+			lexicalError("Incorrect string format", chars);
+			return findNextToken();
+		}
+	}
 	
 	//////////////////////////////////////////////////////////////////////////////
 	// Integer lexical analysis	
@@ -217,6 +318,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		}
 		input.pushback(c);
 	}
+
 	
 	
 	//////////////////////////////////////////////////////////////////////////////
