@@ -2,7 +2,7 @@ main {
 	const c := %77;
 	const b := 'j'; 
 	#comment 
-	#comments
+	#comments print c \n;
 	
 	print c \n;
 	
