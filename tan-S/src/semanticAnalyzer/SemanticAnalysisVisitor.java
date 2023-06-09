@@ -111,28 +111,19 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		}
 		
 		IdentifierNode identifier = (IdentifierNode) node.child(0);
-		ParseNode initializer = node.child(1);
+		ParseNode expression = node.child(1);
 		
-		Constancy constancy = null;
-		if (node.getToken().isLextant(Keyword.CONST)) {
-			constancy = Constancy.IS_CONSTANT;
-		} else {
-			constancy = Constancy.IS_VARIABLE;
-		}
+		Type identifierType = identifier.getType();
+		Type expressionType = expression.getType();
 		
-		Type declarationType = initializer.getType();
-		if(initializer.equals(declarationType)) {
-			semanticError("type don’t match in assignment statement");
+		if(!expressionType.equals(identifierType)) {
+			semanticError("types don’t match in assignment statement");
 			return;
 		}
 		
 		if(identifier.getBinding().isConstant()) {
 			semanticError("reassignment to const identifier"); //give some more description like give type
 		}
-		node.setType(declarationType);
-		
-		identifier.setType(declarationType);
-		addBinding(identifier, declarationType, constancy);
 	}
 
 	///////////////////////////////////////////////////////////////////////////

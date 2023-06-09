@@ -14,6 +14,7 @@ import parseTree.*;
 import parseTree.nodeTypes.BooleanConstantNode;
 import parseTree.nodeTypes.MainBlockNode;
 import parseTree.nodeTypes.DeclarationNode;
+import parseTree.nodeTypes.AssignmentStatementNode;
 import parseTree.nodeTypes.CharacterNode;
 import parseTree.nodeTypes.StringNode;
 import parseTree.nodeTypes.FloatingConstantNode;
@@ -225,6 +226,19 @@ public class ASMCodeGenerator {
 			Type type = node.getType();
 			code.add(opcodeForStore(type));
 		}
+		
+		public void visitLeave(AssignmentStatementNode node) {
+			newVoidCode(node);
+			ASMCodeFragment lvalue = removeAddressCode(node.child(0));	
+			ASMCodeFragment rvalue = removeValueCode(node.child(1));
+			
+			code.append(lvalue);
+			code.append(rvalue);
+			
+			Type type = node.child(0).getType();
+			code.add(opcodeForStore(type));
+		}
+		
 		private ASMOpcode opcodeForStore(Type type) {
 			if(type == INTEGER) {
 				return StoreI;

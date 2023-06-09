@@ -215,20 +215,17 @@ public class Parser {
 	}
 	
 	private ParseNode parseAssignment() {
-		System.out.println("Hiya");
 		if(!startsAssignment(nowReading)) {
 			return syntaxErrorNode("assignment");
 		}
-		Token declarationToken = nowReading;
-		readToken();
+		Token identifierToken = nowReading;
 		
-		IdentifierNode identifier = new IdentifierNode(declarationToken);
-		//System.out.println(declarationToken.getLexeme());
+		ParseNode identifier = parseIdentifier();
 		expect(Punctuator.ASSIGN);
-		//System.out.println(nowReading.fullString());
-		ParseNode initializer = parseExpression();
+		ParseNode expression = parseExpression();
 		expect(Punctuator.TERMINATOR);
-		return AssignmentStatementNode.withChildren(declarationToken, identifier, initializer);
+		
+		return AssignmentStatementNode.withChildren(identifierToken, identifier, expression);
 	}
 	private boolean startsDeclaration(Token token) {
 		return token.isLextant(Keyword.CONST) || token.isLextant(Keyword.VAR);

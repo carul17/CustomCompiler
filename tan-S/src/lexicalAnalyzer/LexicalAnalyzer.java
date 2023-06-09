@@ -55,7 +55,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 			ignoreComment(ch);
 			return findNextToken();
 		}
-		else if(ch.isLowerCase()) {
+		else if(ch.isLowerCase() || ch.isChar('@') || ch.isChar('_')) {
 			return scanIdentifier(ch);
 		}
 		else if(isPunctuatorStart(ch)) {
@@ -100,9 +100,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		if(firstChar.getCharacter() == '%') {
 			
 			appendSubsequentDigits(buffer);
-			
 
-			
 			//convert octal ascii to char
 			String bufferString = buffer.toString();
 			if(bufferString.length() < 1 || bufferString.length() > 3) {
@@ -110,15 +108,9 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 				return findNextToken();
 			}
 			
-			
 			int decimalValue = Integer.parseInt(bufferString, 8);
-			
 			char converted = (char)decimalValue;
 			LocatedChar newChar = new LocatedChar(converted, firstChar.getLocation());
-			
-			
-			
-			
 			
 			return CharacterToken.make(newChar, Character.toString(converted));
 			
@@ -156,10 +148,16 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		
 		LocatedChar chars = input.next();
 		
-		while(!chars.isChar('"')) {
+		while(!chars.isChar('"') && !isEndOfInput(chars) && !chars.isChar('\n')) {
 			buffer.append(chars.getCharacter());
 			chars = input.next();
 		}
+		
+		if(isEndOfInput(chars) || chars.isChar('\n')) {
+			lexicalError("No terminator for string", firstChar);
+			return findNextToken();
+		}
+		
 		if(chars.isChar('"')){
 			chars = input.next();
 			input.pushback(chars);
@@ -332,7 +330,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	private Token scanIdentifier(LocatedChar firstChar) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(firstChar.getCharacter());
-		appendSubsequentLowercase(buffer);
+		appendSubsequentCharacters(buffer);
 
 		String lexeme = buffer.toString();
 		if(Keyword.isAKeyword(lexeme)) {
@@ -345,6 +343,16 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	private void appendSubsequentLowercase(StringBuffer buffer) {
 		LocatedChar c = input.next();
 		while(c.isLowerCase()) {
+			buffer.append(c.getCharacter());
+			c = input.next();
+		}
+		input.pushback(c);
+	}
+	
+	private void appendSubsequentCharacters(StringBuffer buffer) {
+		LocatedChar c = input.next();
+		
+		while(Character.isLetterOrDigit(c.getCharacter()) || c.isChar('@') || c.isChar('_')) {
 			buffer.append(c.getCharacter());
 			c = input.next();
 		}

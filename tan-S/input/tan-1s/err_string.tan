@@ -1,0 +1,5 @@
+main {
+	var a := "avb 
+	cba";
+	print a \n;
+}

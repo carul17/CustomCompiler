@@ -1,0 +1,11 @@
+main {
+	const abcABC965@_ := 5;
+	
+	
+	var "abc:= 7;
+	
+	
+	print abcABC965@_ \n;
+	
+	print "abc" \n;
+}

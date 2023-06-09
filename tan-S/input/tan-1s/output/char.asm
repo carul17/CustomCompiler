@@ -134,6 +134,11 @@
         PushI        106                       
         StoreC                                 
         PushD        $global-memory-block      
+        PushI        1                         
+        Add                                    %% b
+        PushI        126                       
+        StoreC                                 
+        PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% c
         LoadC                                  

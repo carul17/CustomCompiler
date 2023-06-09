@@ -121,7 +121,7 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        9                         
+        DataZ        12                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
@@ -174,8 +174,14 @@
         PushD        $global-memory-block      
         PushI        8                         
         Add                                    %% c
-        PushI        115                       
-        StoreC                                 
+        DLabel       -string-3-s               
+        DataI        3                         
+        DataI        9                         
+        DataI        1                         
+        DataC        115                       %% "s"
+        DataC        0                         
+        PushD        -string-3-s               
+        StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% s
@@ -199,8 +205,10 @@
         PushD        $global-memory-block      
         PushI        8                         
         Add                                    %% c
-        LoadC                                  
-        PushD        $print-format-character   
+        LoadI                                  
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

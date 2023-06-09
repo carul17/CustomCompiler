@@ -125,90 +125,40 @@
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% s
-        DLabel       -string-1-ghjdfh \n nbsjh 
-        DataI        3                         
-        DataI        9                         
-        DataI        15                        
-        DataC        103                       %% "ghjdfh \n nbsjh"
-        DataC        104                       
-        DataC        106                       
-        DataC        100                       
-        DataC        102                       
-        DataC        104                       
-        DataC        32                        
-        DataC        92                        
-        DataC        110                       
-        DataC        32                        
-        DataC        110                       
-        DataC        98                        
-        DataC        115                       
-        DataC        106                       
-        DataC        104                       
-        DataC        0                         
-        PushD        -string-1-ghjdfh \n nbsjh 
+        Add                                    %% abcABC965@_
+        PushI        5                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        4                         
-        Add                                    %% t
-        DLabel       -string-2-sfd098#varfgs   
-        DataI        3                         
-        DataI        9                         
-        DataI        13                        
-        DataC        115                       %% "sfd098#varfgs"
-        DataC        102                       
-        DataC        100                       
-        DataC        48                        
-        DataC        57                        
-        DataC        56                        
-        DataC        35                        
-        DataC        118                       
-        DataC        97                        
-        DataC        114                       
-        DataC        102                       
-        DataC        103                       
-        DataC        115                       
-        DataC        0                         
-        PushD        -string-2-sfd098#varfgs   
+        Add                                    %% _A
+        PushI        6                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        8                         
-        Add                                    %% c
-        DLabel       -string-3-s               
-        DataI        3                         
-        DataI        9                         
-        DataI        1                         
-        DataC        115                       %% "s"
-        DataC        0                         
-        PushD        -string-3-s               
+        Add                                    %% @_
+        PushI        7                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% s
+        Add                                    %% abcABC965@_
         LoadI                                  
-        PushI        12                        
-        Add                                    
-        PushD        $print-format-string      
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
         PushI        4                         
-        Add                                    %% t
+        Add                                    %% _A
         LoadI                                  
-        PushI        12                        
-        Add                                    
-        PushD        $print-format-string      
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
         PushI        8                         
-        Add                                    %% c
+        Add                                    %% @_
         LoadI                                  
-        PushI        12                        
-        Add                                    
-        PushD        $print-format-string      
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

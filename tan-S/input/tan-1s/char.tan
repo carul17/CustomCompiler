@@ -1,8 +1,9 @@
 main {
 	const c := %77;
-	const b := 'j'; 
+	var b := 'j'; 
+	b := '~';
 	#comment 
-	#comments print c \n;
+	#print c;
 	
 	print c \n;
 	
