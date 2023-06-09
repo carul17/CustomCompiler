@@ -1,6 +1,12 @@
 main {
 	const c := %77;
-	const b := 'j';
+	const b := 'j'; 
+	#comment 
+	#comments
+	
 	print c \n;
+	
 	print b \n;
 }
+
+#more comments#

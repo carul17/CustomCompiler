@@ -1,6 +1,6 @@
 main {
 	const s := "ghjdfh \n nbsjh";
-	var t := "sfd098";
+	var t := "sfd098#varfgs";
 	const c := 's';
 	
 	print s \n;

@@ -51,9 +51,10 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		else if(ch.isChar('"')) { 
 			return scanString(ch);
 		}
-		/*else if(ch.isChar('#')) { 
-			return ignoreComment(ch));
-		}*/
+		else if(ch.isChar('#')) { 
+			ignoreComment(ch);
+			return findNextToken();
+		}
 		else if(ch.isLowerCase()) {
 			return scanIdentifier(ch);
 		}
@@ -84,7 +85,12 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	//////////////////////////////////////////////////////////////////////////////
 	// Comment lexical analysis	
 		
-	
+	private void ignoreComment(LocatedChar firstChar) {
+		LocatedChar c = input.next();
+		while(!(c.isChar('#') || c.isChar('\n'))) {
+			c = input.next();
+		}
+	}
 	//////////////////////////////////////////////////////////////////////////////
 	// Char lexical analysis	
 	
@@ -145,12 +151,12 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 	// String lexical analysis	
 	
 	private Token scanString(LocatedChar firstChar) {
-		assert firstChar.isChar('"');
+		
 		StringBuffer buffer = new StringBuffer();
 		
 		LocatedChar chars = input.next();
 		
-		while(!chars.isChar('"') && !isEndOfInput(chars)) {
+		while(!chars.isChar('"')) {
 			buffer.append(chars.getCharacter());
 			chars = input.next();
 		}
