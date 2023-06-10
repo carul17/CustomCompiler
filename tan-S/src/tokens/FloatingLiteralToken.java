@@ -1,6 +1,7 @@
 package tokens;
 
 import inputHandler.Locator;
+import logging.TanLogger;
 
 public class FloatingLiteralToken extends TokenImp {
 	protected double value;
@@ -16,9 +17,13 @@ public class FloatingLiteralToken extends TokenImp {
 	}
 	
 	public static FloatingLiteralToken make(Locator locator, String lexeme) {
-		//System.out.println(lexeme);
 		FloatingLiteralToken result = new FloatingLiteralToken(locator, lexeme);
-		result.setValue(Double.parseDouble(lexeme));
+		double floatValue = Double.parseDouble(lexeme);
+		if(floatValue == Double.POSITIVE_INFINITY) {
+			TanLogger log = TanLogger.getLogger("compiler.FloatingLiteralToken");
+			log.severe("Input float value is too large ");
+		}
+		result.setValue(floatValue);
 		return result;
 	}
 	

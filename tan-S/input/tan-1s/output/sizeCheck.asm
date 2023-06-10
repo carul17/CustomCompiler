@@ -124,36 +124,18 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        2                         
+        DataZ        8                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% c
-        PushI        63                        
-        StoreC                                 
-        PushD        $global-memory-block      
-        PushI        1                         
-        Add                                    %% b
-        PushI        106                       
-        StoreC                                 
-        PushD        $global-memory-block      
-        PushI        1                         
-        Add                                    %% b
-        PushI        126                       
-        StoreC                                 
+        Add                                    %% a
+        PushF        20000.000000              
+        StoreF                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% c
-        LoadC                                  
-        PushD        $print-format-character   
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        1                         
-        Add                                    %% b
-        LoadC                                  
-        PushD        $print-format-character   
+        Add                                    %% a
+        LoadF                                  
+        PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

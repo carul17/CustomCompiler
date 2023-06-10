@@ -1,0 +1,11 @@
+main {
+	const a := 5;
+	print a \n;
+	{
+		const b := 6;
+		print a \n;
+		print b \n;
+	}
+	print b \n;
+	print a \n;
+}

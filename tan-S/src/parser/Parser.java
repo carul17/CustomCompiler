@@ -78,6 +78,23 @@ public class Parser {
 		return token.isLextant(Punctuator.OPEN_BRACE);
 	}
 	
+	private ParseNode parseBlockStatement() {
+		if(!startsBlockStatement(nowReading)) {
+			return syntaxErrorNode("BlockStatement");
+		}
+		ParseNode BlockStatement = new BlockStatementNode(nowReading);
+		expect(Punctuator.OPEN_BRACE);
+		while(startsStatement(nowReading)) {
+			ParseNode statement = parseStatement();
+			BlockStatement.appendChild(statement);
+		};
+		expect(Punctuator.CLOSE_BRACE); //crashing here
+		return BlockStatement;
+	}
+	private boolean startsBlockStatement(Token token) {
+		return token.isLextant(Punctuator.OPEN_BRACE);
+	}
+	
 	
 	///////////////////////////////////////////////////////////
 	// statements
@@ -102,12 +119,18 @@ public class Parser {
 		if(startsPrintStatement(nowReading)) {
 			return parsePrintStatement();
 		}
+		
+		if(startsBlockStatement(nowReading)) {
+			return parseBlockStatement();
+		}
+		
 		return syntaxErrorNode("statement");
 	}
 	private boolean startsStatement(Token token) {
 		return startsPrintStatement(token) ||
 			   startsDeclaration(token) ||
-			   startsAssignment(token);
+			   startsAssignment(token) ||
+			   startsBlockStatement(token);
 	}
 	
 	// printStmt -> PRINT printExpressionList TERMINATOR

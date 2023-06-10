@@ -1,6 +1,7 @@
 package tokens;
 
 import inputHandler.Locator;
+import logging.TanLogger;
 
 public class NumberToken extends TokenImp {
 	protected int value;
@@ -17,7 +18,13 @@ public class NumberToken extends TokenImp {
 	
 	public static NumberToken make(Locator locator, String lexeme) {
 		NumberToken result = new NumberToken(locator, lexeme);
-		result.setValue(Integer.parseInt(lexeme));
+		try {
+			int number = Integer.parseInt(lexeme);
+			result.setValue(number);
+		} catch(NumberFormatException e) {
+			TanLogger log = TanLogger.getLogger("compiler.NumberToken");
+			log.severe("Input integer value is too large ");
+		}
 		return result;
 	}
 	

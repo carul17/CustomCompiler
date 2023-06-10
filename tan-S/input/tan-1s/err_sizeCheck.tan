@@ -1,0 +1,5 @@
+main {
+	const a := %202;
+	
+	print a \n;
+}

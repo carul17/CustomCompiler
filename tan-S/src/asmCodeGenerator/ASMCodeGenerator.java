@@ -182,6 +182,14 @@ public class ASMCodeGenerator {
 				code.append(childCode);
 			}
 		}
+		
+		public void visitLeave(BlockStatementNode node) {
+			newVoidCode(node);
+			for(ParseNode child : node.getChildren()) {
+				ASMCodeFragment childCode = removeVoidCode(child);
+				code.append(childCode);
+			}
+		}
 
 		///////////////////////////////////////////////////////////////////////////
 		// statements and declarations

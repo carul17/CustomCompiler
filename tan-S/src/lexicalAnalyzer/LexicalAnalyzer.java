@@ -108,7 +108,19 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 				return findNextToken();
 			}
 			
-			int decimalValue = Integer.parseInt(bufferString, 8);
+			int decimalValue = 0;
+			try {
+				decimalValue = Integer.parseInt(bufferString, 8);
+			} catch(NumberFormatException e) {
+				TanLogger log = TanLogger.getLogger("compiler.CharToken");
+				log.severe("Input char value is too large ");
+			}
+			
+			if(decimalValue < 0 || decimalValue > 127) {
+				TanLogger log = TanLogger.getLogger("compiler.CharToken");
+				log.severe("Input char value is too large ");
+			}
+			
 			char converted = (char)decimalValue;
 			LocatedChar newChar = new LocatedChar(converted, firstChar.getLocation());
 			

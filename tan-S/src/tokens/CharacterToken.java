@@ -16,7 +16,6 @@ public class CharacterToken extends TokenImp {
 	}
 	
 	public static CharacterToken make(Locator locator, String lexeme) {
-		//System.out.println(lexeme);
 		CharacterToken result = new CharacterToken(locator, lexeme);
 		result.setValue(lexeme.charAt(0));
 		return result;
