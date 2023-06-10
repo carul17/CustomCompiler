@@ -9,6 +9,14 @@
         DataC        37                        %% "%f"
         DataC        102                       
         DataC        0                         
+        DLabel       $print-format-character   
+        DataC        37                        %% "%c"
+        DataC        99                        
+        DataC        0                         
+        DLabel       $print-format-string      
+        DataC        37                        %% "%s"
+        DataC        115                       
+        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -18,6 +26,9 @@
         DataC        0                         
         DLabel       $print-format-space       
         DataC        32                        %% " "
+        DataC        0                         
+        DLabel       $print-format-tab         
+        DataC        9                         %% "\t"
         DataC        0                         
         DLabel       $boolean-true-string      
         DataC        116                       %% "true"

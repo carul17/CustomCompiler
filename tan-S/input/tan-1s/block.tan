@@ -6,6 +6,6 @@ main {
 		print a \n;
 		print b \n;
 	}
-	print b \n;
+	#print b \n;
 	print a \n;
 }

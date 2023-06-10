@@ -14,7 +14,7 @@ main {
     const plusnegfloat := 6.2+-5.1;
     const plusplusfloat := 6.2++5.1;
     var x := 6 + 3;
-    const compare := 8 > 6;
+    const compare := -6 != -6;
 	print r \n;
 	print a \n;
 	print b \n;
