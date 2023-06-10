@@ -3,12 +3,15 @@ true
 true
 true
 
+strings ////
 false
 abc
 false
 false
 bde
-abc
+	abc
+false
+5	end strings ///
 
 true
 false

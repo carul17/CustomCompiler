@@ -4,21 +4,7 @@ import java.util.Arrays;
 
 import logging.TanLogger;
 import parseTree.*;
-import parseTree.nodeTypes.AssignmentStatementNode;
-import parseTree.nodeTypes.BooleanConstantNode;
-import parseTree.nodeTypes.MainBlockNode;
-import parseTree.nodeTypes.DeclarationNode;
-import parseTree.nodeTypes.ErrorNode;
-import parseTree.nodeTypes.CharacterNode;
-import parseTree.nodeTypes.StringNode;
-import parseTree.nodeTypes.IdentifierNode;
-import parseTree.nodeTypes.IntegerConstantNode;
-import parseTree.nodeTypes.FloatingConstantNode;
-import parseTree.nodeTypes.NewlineNode;
-import parseTree.nodeTypes.OperatorNode;
-import parseTree.nodeTypes.PrintStatementNode;
-import parseTree.nodeTypes.ProgramNode;
-import parseTree.nodeTypes.SpaceNode;
+import parseTree.nodeTypes.*;
 import symbolTable.Binding;
 import tokens.*;
 import lexicalAnalyzer.Keyword;
@@ -169,7 +155,7 @@ public class Parser {
 
 	
 	// This adds the printSeparator it parses to the children of the given parent
-	// printSeparator -> PRINT_SEPARATOR | PRINT_SPACE | PRINT_NEWLINE 
+	// printSeparator -> PRINT_SEPARATOR | PRINT_SPACE | PRINT_NEWLINE | PRINT_TAB
 	
 	private void parsePrintSeparator(ParseNode parent) {
 		if(!startsPrintSeparator(nowReading)) {
@@ -188,12 +174,17 @@ public class Parser {
 			ParseNode child = new SpaceNode(previouslyRead);
 			parent.appendChild(child);
 		}
+		else if(nowReading.isLextant(Punctuator.PRINT_TAB)) {
+			readToken();
+			ParseNode child = new TabNode(previouslyRead);
+			parent.appendChild(child);
+		}
 		else if(nowReading.isLextant(Punctuator.PRINT_SEPARATOR)) {
 			readToken();
 		} 
 	}
 	private boolean startsPrintSeparator(Token token) {
-		return token.isLextant(Punctuator.PRINT_SEPARATOR, Punctuator.PRINT_SPACE, Punctuator.PRINT_NEWLINE);
+		return token.isLextant(Punctuator.PRINT_SEPARATOR, Punctuator.PRINT_SPACE, Punctuator.PRINT_NEWLINE, Punctuator.PRINT_TAB);
 	}
 	
 	

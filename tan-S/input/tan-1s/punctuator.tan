@@ -18,6 +18,8 @@ main {
     var s3 := "abc";
     var s4 := s2;
     
+    const thing := "abc" == "abc";
+    
     var pos2 := 2 > 1; # true
     
     var pos3 := 2 < 1; #false
@@ -52,12 +54,15 @@ main {
 	print pos==d \n; #true
 	print pos==e \n; #true
 	print \n;
+	print "strings ////" \n;
 	print s == s2 \n; 
 	print s2 \n;
 	print s == s3 \n; 
 	print s == s4 \n; 
 	print s \n;
-	print s4 \n;
+	print \t s4 \n;  #testing tab space
+	print thing \n; 
+	print 5 \t "end strings ///" \n;
 	print \n;
 	print pos2 \n;
 	print pos3 \n;

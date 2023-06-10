@@ -12,6 +12,11 @@ public enum Keyword implements Lextant {
 	TRUE("true"),
 	FALSE("false"),
 	MAIN("main"),
+	BOOL("bool"),
+	CHAR("char"),
+	STRING("string"),
+	INT("int"),
+	FLOAT("float"),
 	NULL_KEYWORD("");
 
 	private String lexeme;

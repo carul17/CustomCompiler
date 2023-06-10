@@ -11,20 +11,7 @@ import asmCodeGenerator.runtime.RunTime;
 import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
 import parseTree.*;
-import parseTree.nodeTypes.BooleanConstantNode;
-import parseTree.nodeTypes.MainBlockNode;
-import parseTree.nodeTypes.DeclarationNode;
-import parseTree.nodeTypes.AssignmentStatementNode;
-import parseTree.nodeTypes.CharacterNode;
-import parseTree.nodeTypes.StringNode;
-import parseTree.nodeTypes.FloatingConstantNode;
-import parseTree.nodeTypes.IdentifierNode;
-import parseTree.nodeTypes.IntegerConstantNode;
-import parseTree.nodeTypes.NewlineNode;
-import parseTree.nodeTypes.OperatorNode;
-import parseTree.nodeTypes.PrintStatementNode;
-import parseTree.nodeTypes.ProgramNode;
-import parseTree.nodeTypes.SpaceNode;
+import parseTree.nodeTypes.*;
 import semanticAnalyzer.signatures.FunctionSignature;
 import static semanticAnalyzer.types.PrimitiveType.*;
 import semanticAnalyzer.types.Type;
@@ -211,6 +198,11 @@ public class ASMCodeGenerator {
 		public void visit(SpaceNode node) {
 			newVoidCode(node);
 			code.add(PushD, RunTime.SPACE_PRINT_FORMAT);
+			code.add(Printf);
+		}
+		public void visit(TabNode node) {
+			newVoidCode(node);
+			code.add(PushD, RunTime.TAB_PRINT_FORMAT);
 			code.add(Printf);
 		}
 		
