@@ -232,7 +232,7 @@ public class Parser {
 	}
 	
 	private boolean startsAssignment(Token token) {
-		return startsIdentifier(token); //could be start of assingment
+		return startsIdentifier(token); //could be start of assignment
 	}
 
 

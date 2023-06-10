@@ -1,6 +1,22 @@
 main {
 
-    var pos := -3 != 3; # true
+    const pos := 'a' ; # true
+    
+    const b := 'a';
+    var c := b;
+    var d := 'a';
+    var e := 'd';
+    e := d;
+    
+    
+    var s := "abc";
+    var s2 := s;
+    
+    s := "bde";
+    
+    
+    var s3 := "abc";
+    var s4 := s2;
     
     var pos2 := 2 > 1; # true
     
@@ -31,7 +47,17 @@ main {
     var pos15 := true == false; # false
     
     
-	print pos \n;
+	print pos==b \n; #true
+	print pos==c \n; #true
+	print pos==d \n; #true
+	print pos==e \n; #true
+	print \n;
+	print s == s2 \n; 
+	print s2 \n;
+	print s == s3 \n; 
+	print s == s4 \n; 
+	print s \n;
+	print s4 \n;
 	print \n;
 	print pos2 \n;
 	print pos3 \n;

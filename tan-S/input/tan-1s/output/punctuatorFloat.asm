@@ -150,7 +150,7 @@
         PushF        2.200000                  
         Label        -compare-3-arg2           
         Label        -compare-4-arg2           
-        PushF        1.500000                  
+        PushF        1.567800                  
         Label        -compare-4-sub            
         FSubtract                              
         JumpFPos     -compare-4-true           

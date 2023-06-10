@@ -229,8 +229,10 @@ public class ASMCodeGenerator {
 		
 		public void visitLeave(AssignmentStatementNode node) {
 			newVoidCode(node);
-			ASMCodeFragment lvalue = removeAddressCode(node.child(0));	
+			ASMCodeFragment lvalue = removeAddressCode(node.child(0));
+			
 			ASMCodeFragment rvalue = removeValueCode(node.child(1));
+			
 			
 			code.append(lvalue);
 			code.append(rvalue);
@@ -356,23 +358,20 @@ public class ASMCodeGenerator {
 			Type type = node.child(0).getType();
 			
 				
-			if(type == INTEGER
-				|| type == CHARACTER
-				|| type == BOOLEAN) {
-				
-				subtract = Subtract;
-				jumpPos = JumpPos;
-				jumpNeg = JumpNeg;
-				jumpPos = JumpPos;
-				jumpFalse = JumpFalse;
-				jumpTrue = JumpTrue;
-				
-			} else {
+			if(type == FLOATING){
 				subtract = FSubtract;
 				jumpPos = JumpFPos;
 				jumpNeg = JumpFNeg;
 				jumpPos = JumpFPos;
 				jumpFalse = JumpFZero;
+				jumpTrue = JumpTrue;
+				
+			} else {
+				subtract = Subtract;
+				jumpPos = JumpPos;
+				jumpNeg = JumpNeg;
+				jumpPos = JumpPos;
+				jumpFalse = JumpFalse;
 				jumpTrue = JumpTrue;
 			}
 			

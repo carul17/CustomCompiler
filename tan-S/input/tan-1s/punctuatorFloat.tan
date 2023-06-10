@@ -4,7 +4,7 @@ main {
     
     
     
-    var pos2 := 2.2 > 1.5; # true
+    var pos2 := 2.2 > 1.5678; # true
     
     var pos3 := 2.2 < 1.5; #false
     
