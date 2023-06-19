@@ -253,13 +253,13 @@
         PushI        88                        
         Add                                    %% compare
         Label        -compare-16-arg1          
-        PushI        8                         
+        PushI        -6                        
         Label        -compare-15-arg2          
         Label        -compare-16-arg2          
-        PushI        6                         
+        PushI        -6                        
         Label        -compare-16-sub           
         Subtract                               
-        JumpPos      -compare-16-true          
+        JumpTrue     -compare-16-true          
         Jump         -compare-16-false         
         Label        -compare-16-true          
         PushI        1                         

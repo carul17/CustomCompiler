@@ -124,33 +124,45 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        4                         
+        DataZ        8                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        PushI        5                         
-        StoreI                                 
+        PushF        5.500000                  
+        StoreF                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        Label        -compare-2-arg2           
+        LoadF                                  
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
         Label        -compare-1-arg2           
-        LoadI                                  
-        PushI        6                         
-        Add                                    
-        PushI        3                         
+        LoadF                                  
+        PushF        7.500000                  
+        FAdd                                   
+        FAdd                                   
+        Label        -compare-3-arg2           
+        PushF        6.000000                  
+        FSubtract                              
+        Label        -compare-5-arg2           
+        PushF        7.000000                  
+        PushF        7.000000                  
         Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
-        StoreI                                 
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        FSubtract                              
+        StoreF                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        LoadI                                  
-        PushD        $print-format-integer     
+        LoadF                                  
+        PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
