@@ -129,7 +129,13 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 			    new FunctionSignature(ASMOpcode.Subtract, BOOLEAN, BOOLEAN, BOOLEAN),
 			    new FunctionSignature(ASMOpcode.Subtract, STRING, STRING, BOOLEAN)
 			);
+		new FunctionSignatures(Punctuator.AND,
+			    new FunctionSignature(ASMOpcode.And, BOOLEAN, BOOLEAN, BOOLEAN)
+			);
 		
+		new FunctionSignatures(Punctuator.OR,
+			    new FunctionSignature(ASMOpcode.Or, BOOLEAN, BOOLEAN, BOOLEAN)
+			);
 		
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other

@@ -124,7 +124,7 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        89                        
+        DataZ        90                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
@@ -253,13 +253,13 @@
         PushI        88                        
         Add                                    %% compare
         Label        -compare-16-arg1          
-        PushI        8                         
+        PushI        1                         
         Label        -compare-15-arg2          
         Label        -compare-16-arg2          
-        PushI        6                         
+        PushI        0                         
         Label        -compare-16-sub           
         Subtract                               
-        JumpPos      -compare-16-true          
+        JumpTrue     -compare-16-true          
         Jump         -compare-16-false         
         Label        -compare-16-true          
         PushI        1                         
@@ -268,6 +268,26 @@
         PushI        0                         
         Jump         -compare-16-join          
         Label        -compare-16-join          
+        StoreC                                 
+        PushD        $global-memory-block      
+        PushI        89                        
+        Add                                    %% testand
+        Label        -compare-18-arg1          
+        PushI        1                         
+        Label        -compare-17-arg2          
+        Label        -compare-18-arg2          
+        PushI        0                         
+        Label        -compare-18-sub           
+        Subtract                               
+        JumpFalse    -compare-18-true          
+        Jump         -compare-18-false         
+        Label        -compare-18-true          
+        PushI        1                         
+        Jump         -compare-18-join          
+        Label        -compare-18-false         
+        PushI        0                         
+        Jump         -compare-18-join          
+        Label        -compare-18-join          
         StoreC                                 
         PushD        $global-memory-block      
         PushI        0                         
@@ -393,12 +413,12 @@
         PushI        88                        
         Add                                    %% compare
         LoadC                                  
-        JumpTrue     -print-boolean-17-true    
+        JumpTrue     -print-boolean-19-true    
         PushD        $boolean-false-string     
-        Jump         -print-boolean-17-join    
-        Label        -print-boolean-17-true    
+        Jump         -print-boolean-19-join    
+        Label        -print-boolean-19-true    
         PushD        $boolean-true-string      
-        Label        -print-boolean-17-join    
+        Label        -print-boolean-19-join    
         PushD        $print-format-boolean     
         Printf                                 
         PushD        $print-format-newline     

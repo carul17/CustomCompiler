@@ -315,7 +315,8 @@ public class ASMCodeGenerator {
 					|| operator == Punctuator.GREATEREQUAL
 					|| operator == Punctuator.LESSEREQUAL
 					|| operator == Punctuator.EQUAL
-					|| operator == Punctuator.NOTEQUAL)
+					|| operator == Punctuator.NOTEQUAL
+					|| operator == Punctuator.AND)
 				{ //handing greater than symbol
 				visitComparisonOperatorNode(node, operator);
 			}
@@ -354,6 +355,8 @@ public class ASMCodeGenerator {
 			ASMOpcode jumpNeg;
 			ASMOpcode jumpTrue;
 			ASMOpcode jumpFalse;
+			ASMOpcode and;
+			ASMOpcode or;
 			
 			Type type = node.child(0).getType();
 			
@@ -375,8 +378,18 @@ public class ASMCodeGenerator {
 				jumpTrue = JumpTrue;
 			}
 			
+			and = And;
+			or= Or;
 			
-			code.add(subtract);
+			if(operator == Punctuator.AND) {
+				code.add(and);
+				return;
+			} else if(operator == Punctuator.OR){
+				code.add(or);
+			}else {
+				code.add(subtract);
+			}
+			
 			
 			
 			if(operator == Punctuator.GREATER) {
@@ -509,6 +522,8 @@ public class ASMCodeGenerator {
 			case GREATER:		return FSubtract;
 			case LESS:			return FSubtract;
 			case GREATEREQUAL: 	return FSubtract;
+			case AND:			return And;
+			case OR:			return Or;
 			default:
 				assert false : "unimplemented operator in opcodeForOperator";
 			}
