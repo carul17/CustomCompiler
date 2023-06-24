@@ -520,14 +520,11 @@ public class ASMCodeGenerator {
 			case SUBTRACT:		return Subtract;			// (unary subtract only) type-dependent! use to be negate
 			case MULTIPLY: 		return Multiply;		// type-dependent!
 			case DIVIDE:		return Divide;
-<<<<<<< HEAD
 			case GREATER:		return FSubtract;
 			case LESS:			return FSubtract;
 			case GREATEREQUAL: 	return FSubtract;
 			case AND:			return And;
 			case OR:			return Or;
-=======
->>>>>>> a99c42e59e343d3cc51964360e647706e77f6d33
 			default:
 				assert false : "unimplemented operator in opcodeForOperator";
 			}

@@ -24,13 +24,10 @@ public enum Punctuator implements Lextant {
 	TERMINATOR(";"), 
 	OPEN_BRACE("{"),
 	CLOSE_BRACE("}"),
-<<<<<<< HEAD
 	AND("&&"),
 	OR("||"),
-=======
 	OPEN_ROUND_BRACE("("),
 	CLOSE_ROUND_BRACE(")"),
->>>>>>> a99c42e59e343d3cc51964360e647706e77f6d33
 	NULL_PUNCTUATOR("");
 
 	private String lexeme;

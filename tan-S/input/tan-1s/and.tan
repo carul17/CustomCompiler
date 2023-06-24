@@ -1,4 +1,4 @@
 main {
-	const a := false || false;
+	const a := false || true;
 	print a \n;
 }

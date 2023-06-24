@@ -13,7 +13,7 @@ main {
     const plusneg := 6+-5;
     const plusnegfloat := 6.2+-5.1;
     const plusplusfloat := 6.2++5.1;
-    var x := 6 + 3;
+    var x := 6 + 3 * 5;
     const compare := true != false;
 	print r \n;
 	print a \n;
