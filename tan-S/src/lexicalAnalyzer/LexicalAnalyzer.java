@@ -42,7 +42,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		if ((ch.getCharacter() == '-' || ch.getCharacter() == '+') && (this.chPrev != null && (this.chPrev.getCharacter() == ':') || (this.chPrev.getCharacter() == '+')|| (this.chPrev.getCharacter() == '-')|| (this.chPrev.getCharacter() == '/')|| (this.chPrev.getCharacter() == '*')|| (this.chPrev.getCharacter() == '>')|| (this.chPrev.getCharacter() == '<')|| (this.chPrev.getCharacter() == '=') || (this.chPrev.getCharacter() == '!') || (this.chPrev.getCharacter() == '&') || (this.chPrev.getCharacter() == '|'))) {
 			return unaryScan(ch);
 		}
-		else if(ch.isDigit()) { //PROBLEM IS - OR + IS NOT A DIGIT
+		else if(ch.isDigit()) { 
 			return scanNumber(ch);
 		}
 		else if(ch.isChar('\'') || ch.isChar('%')) { 
@@ -190,67 +190,18 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(firstChar.getCharacter());
 		appendSubsequentDigits(buffer);
-		//System.out.println(buffer.toString());
 		
 		//check if next character is a decimal point
-		//System.out.println(input.peek().getCharacter());
-		if(input.peek().getCharacter() == '.') {
-			LocatedChar decimal = input.next();
-			//input.next();
-			if(!decimal.isDigit() && decimal.getCharacter() != '.') {	//!decimal.isDigit() && decimal.getCharacter() != '.'
-				lexicalError("Malformed floating-point literal", decimal);
-				return findNextToken();
-			}
-			buffer.append(decimal.getCharacter());
-			appendSubsequentDigits(buffer);
-			//System.out.println("Bottom: " + buffer.toString());
-			LocatedChar next = input.peek(); //changed to .next it was .peek
-			if(next.getCharacter() == 'e' || next.getCharacter() == 'E') {
-				//ADD CODE
-				buffer.append(next.getCharacter());
-				appendSubsequentDigits(buffer);
-				input.next();
-				
-				LocatedChar num = input.peek();
-				//check if a number after e exist
-				if(num.getCharacter() =='-' || num.getCharacter() == '+') {
-					//commented this buffer to fix
-					buffer.append(num.getCharacter());
-					appendSubsequentDigits(buffer);//appends the rest of the digits
-					//input.pushback(num);
-					input.next();
-					//LocatedChar num2 = input.peek();
-					//check if a number after e exist
-					appendSubsequentDigits(buffer);
-					
-				} else if(num.isDigit()) {
-					appendSubsequentDigits(buffer);
-					
-				} else {
-					lexicalError("Malformed floating-point literal", num);
-					return findNextToken();
-				}
-				
-				
-			}
-			//System.out.println(buffer.toString());
-			return FloatingLiteralToken.make(firstChar, buffer.toString());
-			
-		} else {
-			return NumberToken.make(firstChar, buffer.toString());
-		}
+		return scanDecimal(firstChar, buffer);
+		
 		
 	}
 	
 	
+	
 	private Token unaryScan(LocatedChar firstChar) {
 		StringBuffer buffer = new StringBuffer();
-		//System.out.println(buffer.toString());
 		
-//		if(firstChar.getCharacter() == '=' || firstChar.getCharacter() == '<') {
-//			buffer.append(firstChar.getCharacter());
-//			input.next();
-//		}
 		
 //		if(firstChar.getCharacter() == '&') {
 //			if(input.peek().getCharacter() == '&') {
@@ -261,42 +212,42 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 		
 		if(firstChar.getCharacter() == '-' || firstChar.getCharacter() == '+') {
 			buffer.append(firstChar.getCharacter());
-			//appendSubsequentDigits(buffer);
-			//input.next();
-			//System.out.println(firstChar.getCharacter());
+			
 			LocatedChar decimal = input.next();
-			//System.out.println(decimal.getCharacter());
-			if(!decimal.isDigit()) {	//!decimal.isDigit() && decimal.getCharacter() != '.'
+			
+			if(!decimal.isDigit()) {	
 				lexicalError("incorrect unary operator", decimal);
 				return findNextToken();
 			} else {
 				buffer.append(decimal.getCharacter());
-				//appendSubsequentDigits(buffer);
-				
 			}
-			//System.out.println(decimal.getCharacter());
+			
 		} else {
 			buffer.append(firstChar.getCharacter());
 			appendSubsequentDigits(buffer);
 		}
 		
-		//input.next();
 		
 		//check if next character is a decimal point
-		//System.out.println(input.peek().getCharacter());
+		
+		return scanDecimal(firstChar, buffer);
+		
+	}
+	
+	
+	private Token scanDecimal(LocatedChar firstChar, StringBuffer buffer) {
 		if(input.peek().getCharacter() == '.') {
 			LocatedChar decimal = input.next();
 			//input.next();
-			if(!decimal.isDigit() && decimal.getCharacter() != '.') {	//!decimal.isDigit() && decimal.getCharacter() != '.'
+			if(!decimal.isDigit() && decimal.getCharacter() != '.') {	
 				lexicalError("Malformed floating-point literal", decimal);
 				return findNextToken();
 			}
 			buffer.append(decimal.getCharacter());
 			appendSubsequentDigits(buffer);
-			//System.out.println("Bottom: " + buffer.toString());
+			
 			LocatedChar next = input.peek(); //changed to .next it was .peek
 			if(next.getCharacter() == 'e' || next.getCharacter() == 'E') {
-				//ADD CODE
 				buffer.append(next.getCharacter());
 				appendSubsequentDigits(buffer);
 				input.next();
@@ -304,12 +255,11 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 				LocatedChar num = input.peek();
 				//check if a number after e exist
 				if(num.getCharacter() =='-' || num.getCharacter() == '+') {
-					//commented this buffer to fix
 					buffer.append(num.getCharacter());
-					appendSubsequentDigits(buffer);//appends the rest of the digits
-					//input.pushback(num);
+					appendSubsequentDigits(buffer);
+					
 					input.next();
-					//LocatedChar num2 = input.peek();
+					
 					//check if a number after e exist
 					appendSubsequentDigits(buffer);
 					
@@ -323,15 +273,16 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 				
 				
 			}
-			//System.out.println(buffer.toString());
+			
 			return FloatingLiteralToken.make(firstChar, buffer.toString());
 			
 		} else {
 			return NumberToken.make(firstChar, buffer.toString());
 		}
-		
-	}
 
+	}
+	
+	
 	private void appendSubsequentDigits(StringBuffer buffer) {
 		LocatedChar c = input.next();
 		while(c.isDigit()) {

@@ -141,10 +141,6 @@
         LoadI                                  
         PushI        6                         
         Add                                    
-        PushI        3                         
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         

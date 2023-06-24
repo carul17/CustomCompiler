@@ -323,21 +323,7 @@ public class Parser {
 			left = OperatorNode.withChildren(subtractionToken, left, right);
 		}
 		
-		while(nowReading.isLextant(Punctuator.DIVIDE)) {
-			Token subtractionToken = nowReading;
-			readToken();
-			ParseNode right = parseMultiplicativeExpression();
-			
-			left = OperatorNode.withChildren(subtractionToken, left, right);
-		}
 		
-		while(nowReading.isLextant(Punctuator.GREATEREQUAL)) {
-			Token subtractionToken = nowReading;
-			readToken();
-			ParseNode right = parseMultiplicativeExpression();
-			
-			left = OperatorNode.withChildren(subtractionToken, left, right);
-		}
 		
 		
 		return left;
@@ -361,6 +347,15 @@ public class Parser {
 			left = OperatorNode.withChildren(multiplicativeToken, left, right);
 		}
 		
+		while(nowReading.isLextant(Punctuator.DIVIDE)) {
+			Token subtractionToken = nowReading;
+			readToken();
+			ParseNode right = parseMultiplicativeExpression();
+			
+			left = OperatorNode.withChildren(subtractionToken, left, right);
+		}
+		
+		
 		return left;
 	}
 	private boolean startsMultiplicativeExpression(Token token) {
@@ -375,10 +370,13 @@ public class Parser {
 		if(startsUnaryExpression(nowReading)) {
 			return parseUnaryExpression();
 		}
+		if(startsBracketExpression(nowReading)) {
+			return parseBracketExpression();
+		}
 		return parseLiteral();
 	}
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsUnaryExpression(token);
+		return startsLiteral(token) || startsUnaryExpression(token) || startsBracketExpression(token);
 	}
 
 	// unaryExpression			-> UNARYOP atomicExpression
@@ -393,7 +391,22 @@ public class Parser {
 		return OperatorNode.withChildren(operatorToken, child);
 	}
 	private boolean startsUnaryExpression(Token token) {
-		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.MULTIPLY, Punctuator.DIVIDE);
+		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD);
+	}
+	
+	// bracket expresssion 
+	private ParseNode parseBracketExpression() {
+		if(!startsBracketExpression(nowReading)) {
+			return syntaxErrorNode("bracket expression");
+		}
+		expect(Punctuator.OPEN_ROUND_BRACE);
+		ParseNode expr = parseExpression();
+		expect(Punctuator.CLOSE_ROUND_BRACE);
+		
+		return expr;
+	}
+	private boolean startsBracketExpression(Token token) {
+		return token.isLextant(Punctuator.OPEN_ROUND_BRACE);
 	}
 	
 	// literal -> number | identifier | booleanConstant

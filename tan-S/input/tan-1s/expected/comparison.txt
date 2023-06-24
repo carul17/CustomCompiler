@@ -1,0 +1,33 @@
+true
+true
+true
+true
+
+strings ////
+false
+abc
+false
+false
+bde
+	abc
+false
+5	end strings ///
+
+true
+false
+
+false
+true
+true
+true
+
+true
+false
+
+false
+true
+
+false
+true
+true
+false
