@@ -72,6 +72,12 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	public void visitLeave(PrintStatementNode node) {
 	}
 	@Override
+	public void visitLeave(IfStatementNode node) {
+	}
+	@Override
+	public void visitLeave(WhileNode node) {
+	}
+	@Override
 	public void visitLeave(DeclarationNode node) {
 		if(node.child(0) instanceof ErrorNode) {
 			node.setType(PrimitiveType.ERROR);
@@ -114,7 +120,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		}
 		
 		if(identifier.getBinding().isConstant()) {
-			semanticError("reassignment to const identifier"); //give some more description like give type
+			semanticError("reassignment to const identifier");
 		}
 	}
 

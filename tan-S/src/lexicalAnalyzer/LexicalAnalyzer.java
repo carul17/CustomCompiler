@@ -216,7 +216,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 			LocatedChar decimal = input.next();
 			
 			if(!decimal.isDigit()) {	
-				lexicalError("incorrect unary operator", decimal);
+				lexicalError("incorrect unary operator", firstChar);
 				return findNextToken();
 			} else {
 				buffer.append(decimal.getCharacter());

@@ -241,6 +241,54 @@ public class ASMCodeGenerator {
 			code.add(opcodeForStore(type));
 		}
 		
+		public void visitLeave(IfStatementNode node) {
+			newVoidCode(node);
+			
+			Labeller labeller = new Labeller("if");
+			String endLabel = labeller.newLabel("end");
+			String elseLabel = labeller.newLabel("else");
+			String jumpLabel = endLabel;
+
+			ASMCodeFragment conditionValue = removeValueCode(node.child(0));
+			ASMCodeFragment block = removeVoidCode(node.child(1));
+			ASMCodeFragment elseBlock = block;
+			boolean hasElse = node.nChildren() == 3;
+			if(hasElse) {
+				elseBlock = removeVoidCode(node.child(2));
+				jumpLabel = elseLabel;
+			}
+			
+			code.append(conditionValue);
+			code.add(JumpFalse, jumpLabel);
+			code.append(block);
+			code.add(Jump, endLabel);
+			if(hasElse) {
+				code.add(Label, elseLabel);
+				code.append(elseBlock);
+			}
+			code.add(Label, endLabel);
+		}
+		
+		public void visitLeave(WhileNode node) {
+			newVoidCode(node);
+			
+			Labeller labeller = new Labeller("while");
+			String conditionLabel = labeller.newLabel("condition");
+			String endLabel = labeller.newLabel("end");
+
+			ASMCodeFragment conditionValue = removeValueCode(node.child(0));
+			ASMCodeFragment block = removeVoidCode(node.child(1));
+			ASMCodeFragment elseBlock = block;
+			
+			code.add(Label, conditionLabel);
+			code.append(conditionValue);
+			code.add(JumpFalse, endLabel);
+			code.append(block);
+			code.add(Jump, conditionLabel);
+			
+			code.add(Label, endLabel);
+		}
+		
 		private ASMOpcode opcodeForStore(Type type) {
 			if(type == INTEGER) {
 				return StoreI;

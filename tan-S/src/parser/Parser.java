@@ -123,14 +123,23 @@ public class Parser {
 		if(startsBlockStatement(nowReading)) {
 			return parseBlockStatement();
 		}
+		if(startsIfStatement(nowReading)) {
+			return parseIfStatement();
+		}
+		if(startsWhile(nowReading)) {
+			return parseWhile();
+		}
 		
 		return syntaxErrorNode("statement");
 	}
+	
 	private boolean startsStatement(Token token) {
 		return startsPrintStatement(token) ||
 			   startsDeclaration(token) ||
 			   startsAssignment(token) ||
-			   startsBlockStatement(token);
+			   startsBlockStatement(token) ||
+			   startsIfStatement(token) ||
+			   startsWhile(token);
 	}
 	
 	// printStmt -> PRINT printExpressionList TERMINATOR
@@ -228,6 +237,11 @@ public class Parser {
 		return DeclarationNode.withChildren(declarationToken, identifier, initializer);
 	}
 	
+	private boolean startsDeclaration(Token token) {
+		return token.isLextant(Keyword.CONST) || token.isLextant(Keyword.VAR);
+	}
+	
+	//assignment
 	private ParseNode parseAssignment() {
 		if(!startsAssignment(nowReading)) {
 			return syntaxErrorNode("assignment");
@@ -241,13 +255,51 @@ public class Parser {
 		
 		return AssignmentStatementNode.withChildren(identifierToken, identifier, expression);
 	}
-	private boolean startsDeclaration(Token token) {
-		return token.isLextant(Keyword.CONST) || token.isLextant(Keyword.VAR);
-	}
 	
 	private boolean startsAssignment(Token token) {
 		return startsIdentifier(token); //could be start of assignment
 	}
+	
+	//if statement
+	private ParseNode parseIfStatement() {
+		if(!startsIfStatement(nowReading)) {
+			return syntaxErrorNode("if statement");
+		}
+		Token ifToken = nowReading;
+		readToken();
+		
+		ParseNode condition = parseBracketExpression();
+		ParseNode block = parseBlockStatement();
+		if(nowReading.isLextant(Keyword.ELSE)) {
+			readToken();
+			ParseNode elseParseNode = parseBlockStatement();
+			return IfStatementNode.withChildren(ifToken, condition, block, elseParseNode);
+		}
+		
+		return IfStatementNode.withChildren(ifToken, condition, block);
+		
+	}
+	private boolean startsIfStatement(Token token) {
+		return token.isLextant(Keyword.IF);
+	}
+	
+	private ParseNode parseWhile() {
+		if(!startsWhile(nowReading)) {
+			return syntaxErrorNode("while statement");
+		}
+		Token whileToken = nowReading;
+		readToken();
+		
+		ParseNode condition = parseBracketExpression();
+		ParseNode block = parseBlockStatement();
+		
+		return WhileNode.withChildren(whileToken, condition, block);
+		
+	}
+	private boolean startsWhile(Token token) {
+		return token.isLextant(Keyword.WHILE);
+	}
+
 
 
 	
