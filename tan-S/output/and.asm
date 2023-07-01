@@ -129,9 +129,9 @@
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        PushI        1                         
-        Label        -compare-1-arg2           
         PushI        0                         
+        Label        -compare-1-arg2           
+        PushI        1                         
         Or                                     
         StoreC                                 
         PushD        $global-memory-block      

@@ -15,6 +15,7 @@ main {
     const plusplusfloat := 6.2++5.1;
     var x := 6 + 3 * 5;
     const compare := true != false;
+    const word := "test";
 	print r \n;
 	print a \n;
 	print b \n;
@@ -31,4 +32,5 @@ main {
 	print plusnegfloat \n;
 	print plusplusfloat \n;
 	print compare \n;
+	print word \n;
 }
