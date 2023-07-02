@@ -21,7 +21,7 @@ main {
     const thing := "abc" == "abc";
     
     
-    ///greater, less than
+    #greater, less than
     var pos2 := 2 > 1; # true
     
     var pos3 := 2 < 1; #false

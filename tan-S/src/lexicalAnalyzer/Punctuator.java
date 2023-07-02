@@ -17,7 +17,7 @@ public enum Punctuator implements Lextant {
 	EQUAL("=="),
 	NOTEQUAL("!="),
 	ASSIGN(":="),
-	CAST(" "),
+	CAST(""),
 	CAST_END(">"),
 	PRINT_SEPARATOR("\\"),
 	PRINT_SPACE("\\s"),
