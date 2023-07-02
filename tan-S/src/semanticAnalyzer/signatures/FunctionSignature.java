@@ -65,7 +65,7 @@ public class FunctionSignature {
 		if(valueType == PrimitiveType.ERROR && ALL_TYPES_ACCEPT_ERROR_TYPES) {
 			return true;
 		}	
-		return variableType.equals(valueType);
+		return variableType.equivalent(valueType);
 	}
 	
 	// Null object pattern

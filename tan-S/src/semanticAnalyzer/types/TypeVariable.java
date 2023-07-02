@@ -1,5 +1,10 @@
 package semanticAnalyzer.types;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class TypeVariable implements Type {
 	
 	String name;
@@ -45,6 +50,19 @@ public class TypeVariable implements Type {
 		} else {
 			return constraint.equivalent(otherType);
 		}
+	}
+
+	@Override
+	public void addTypeVariables(Set<TypeVariable> typeVariables) {
+		typeVariables.add(this);
+		
+	}
+
+	@Override
+	public Type concreteType() {
+		// TODO Auto-generated method stub
+		//we want to return the constraint
+		return constraint.concreteType();
 	}
 	
 

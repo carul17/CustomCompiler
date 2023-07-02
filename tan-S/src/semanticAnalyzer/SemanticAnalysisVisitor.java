@@ -146,7 +146,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		
 		if(signature.accepts(childTypes)) {
 			node.setSignature(signature.acceptingSignature(childTypes));
-			node.setType(signature.acceptingSignature(childTypes).resultType());
+			node.setType(signature.acceptingSignature(childTypes).resultType());//.concreteType());
 		}
 		else {
 			typeCheckError(node, childTypes);
