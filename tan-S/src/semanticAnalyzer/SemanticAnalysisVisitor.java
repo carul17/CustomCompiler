@@ -78,6 +78,10 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	public void visitLeave(WhileNode node) {
 	}
 	@Override
+	public void visitLeave(TypeNode node) {
+		node.setType(PrimitiveType.getTypeFromString(node.getTypeString()));
+	}
+	@Override
 	public void visitLeave(DeclarationNode node) {
 		if(node.child(0) instanceof ErrorNode) {
 			node.setType(PrimitiveType.ERROR);
@@ -143,6 +147,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		
 		Lextant operator = operatorFor(node);
 		FunctionSignatures signature = FunctionSignatures.signaturesOf(operator);//might need child parameter
+		
 		
 		if(signature.accepts(childTypes)) {
 			node.setSignature(signature.acceptingSignature(childTypes));

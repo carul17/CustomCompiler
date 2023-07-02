@@ -14,6 +14,8 @@ import parseTree.*;
 import parseTree.nodeTypes.*;
 import semanticAnalyzer.signatures.FunctionSignature;
 import static semanticAnalyzer.types.PrimitiveType.*;
+
+import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import symbolTable.Scope;
@@ -312,6 +314,11 @@ public class ASMCodeGenerator {
 
 		///////////////////////////////////////////////////////////////////////////
 		// expressions
+		
+		public void visitLeave(TypeNode node) {
+			newValueCode(node);
+		}
+		
 		public void visitLeave(OperatorNode node) {
 			FunctionSignature signature = node.getSignature();
 			Lextant operator = node.getOperator();
@@ -341,10 +348,11 @@ public class ASMCodeGenerator {
 				}
 			}
 			newValueCode(node);
-			code.add(Label, startLabel);
+			//code.add(Label, startLabel);
 			code.append(arg1);//from first child
-			code.add(Label, arg2Label);
+			//code.add(Label, arg2Label);
 			code.append(arg2);
+			
 			
 
 		} else if(variant instanceof SimpleCodeGenerator) {
@@ -369,6 +377,7 @@ public class ASMCodeGenerator {
 				{ //handing greater than symbol
 				visitComparisonOperatorNode(node, operator);
 			}
+			
 			else {
 				visitNormalBinaryOperatorNode(node);
 			};
@@ -545,6 +554,8 @@ public class ASMCodeGenerator {
 			if(variant instanceof ASMOpcode) {
 				ASMOpcode opcode = (ASMOpcode) variant;
 				code.add(opcode);
+				
+				
 			} else if(signature.resultType() == FLOATING) {
 				Lextant lextant = node.getOperator();
 				assert(lextant instanceof Punctuator);

@@ -35,6 +35,17 @@ public enum PrimitiveType implements Type {
 		return this == otherType;
 	}
 	
+	public static Type getTypeFromString(String typeString) {
+		switch(typeString) {
+			case "int": return PrimitiveType.INTEGER;
+			case "char": return PrimitiveType.CHARACTER;
+			case "string": return PrimitiveType.STRING;
+			case "float": return PrimitiveType.FLOATING;
+			case "bool": return PrimitiveType.BOOLEAN;
+			default: return PrimitiveType.ERROR;
+		}
+	}
+	
 	
     /* no type variables here */
     @Override

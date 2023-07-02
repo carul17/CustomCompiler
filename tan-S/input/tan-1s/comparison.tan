@@ -20,6 +20,8 @@ main {
     
     const thing := "abc" == "abc";
     
+    
+    ///greater, less than
     var pos2 := 2 > 1; # true
     
     var pos3 := 2 < 1; #false
@@ -64,6 +66,7 @@ main {
 	print thing \n; 
 	print 5 \t "end strings ///" \n;
 	print \n;
+	print "greater, less than" \n;
 	print pos2 \n;
 	print pos3 \n;
 	print \n;

@@ -52,7 +52,7 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				return functionSignature;
 			}
 		}
-		resetTypeVariables();
+		//resetTypeVariables(); //had to comment this because iterator was null when types are not accepted by signature
 		return FunctionSignature.nullInstance();
 	}
 	public boolean accepts(List<Type> types) {
@@ -167,6 +167,18 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 			    new FunctionSignature(ASMOpcode.Or, BOOLEAN, BOOLEAN, BOOLEAN)
 			);
 		
+		new FunctionSignatures(Punctuator.CAST,
+				new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER, INTEGER),
+				new FunctionSignature(ASMOpcode.Nop, FLOATING, FLOATING, FLOATING),
+				new FunctionSignature(ASMOpcode.Nop, CHARACTER, CHARACTER, CHARACTER),
+				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, BOOLEAN, BOOLEAN),
+				new FunctionSignature(ASMOpcode.Nop, INTEGER, CHARACTER, INTEGER),
+				new FunctionSignature(ASMOpcode.ConvertI, INTEGER, FLOATING, INTEGER),
+				new FunctionSignature(ASMOpcode.Nop, CHARACTER, INTEGER, CHARACTER),
+				new FunctionSignature(ASMOpcode.ConvertF, FLOATING, INTEGER, FLOATING),
+				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, CHARACTER, BOOLEAN),
+				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, INTEGER, BOOLEAN)
+			);
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other
 		// a (FLOAT x FLOAT -> FLOAT).  Each signature has a "whichVariant" parameter where

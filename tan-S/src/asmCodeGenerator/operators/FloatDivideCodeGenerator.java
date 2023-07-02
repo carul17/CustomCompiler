@@ -22,7 +22,7 @@ public class FloatDivideCodeGenerator implements SimpleCodeGenerator{
 		result.add(ASMOpcode.JumpFZero, RunTime.FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR);
 		result.add(ASMOpcode.FDivide); //didn't need to add this since I'm already adding divide to the stack
 		
-		return null;
+		return result;
 	}
 
 }

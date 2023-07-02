@@ -1,0 +1,4 @@
+main {
+	var f := 'c';
+	print <float>(f) \n;
+}

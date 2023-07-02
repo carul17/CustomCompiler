@@ -1,0 +1,21 @@
+main {
+	var a := 5;
+	print <bool>(a) \n;
+	print <float>(a) \n;
+	
+	var c := -5.5;
+	print <int>(c) \n;
+
+	var b := %00;
+	print <bool>(b) \n;
+	
+	var g := 'a';
+	print <bool>(g) \n;
+	
+	var d := 'a';
+	print <int>(d) \n;
+	
+	var e := 100;
+	print <char>(e) \n;
+	
+}

@@ -425,10 +425,42 @@ public class Parser {
 		if(startsBracketExpression(nowReading)) {
 			return parseBracketExpression();
 		}
+		if(startsCast(nowReading)) {
+			return parseCast();
+		}
 		return parseLiteral();
 	}
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsUnaryExpression(token) || startsBracketExpression(token);
+		return startsLiteral(token) || startsUnaryExpression(token) || startsBracketExpression(token) || startsCast(token);
+	}
+	
+	private ParseNode parseCast() {
+		if(!startsCast(nowReading)) {
+			return syntaxErrorNode("cast expression");
+		}
+		Token castToken = LextantToken.make(nowReading,"<>()", Punctuator.CAST);
+		readToken();
+		ParseNode typeNode = parseType();
+		readToken();
+		ParseNode expr = parseBracketExpression();
+		
+		return OperatorNode.withChildren(castToken, typeNode, expr);
+	}
+	
+	private boolean startsCast(Token token) {
+		return token.isLextant(Punctuator.LESS);
+	}
+	
+	private ParseNode parseType() {
+		if(!startsType(nowReading)) {
+			return syntaxErrorNode("type expression");
+		}
+		readToken();
+		return new TypeNode(previouslyRead);
+	}
+	
+	private boolean startsType(Token token) {
+		return token.isLextant(Keyword.BOOL) || token.isLextant(Keyword.CHAR) || token.isLextant(Keyword.INT) || token.isLextant(Keyword.FLOAT);
 	}
 
 	// unaryExpression			-> UNARYOP atomicExpression
