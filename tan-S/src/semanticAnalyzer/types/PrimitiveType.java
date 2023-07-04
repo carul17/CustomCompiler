@@ -55,6 +55,6 @@ public enum PrimitiveType implements Type {
 	@Override
 	public Type concreteType() {
 		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 }
