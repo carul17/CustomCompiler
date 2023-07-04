@@ -157,7 +157,6 @@
         PushI        24                        
         Add                                    %% bb
         PushF        6.000000                  
-        Label        -compare-4-arg2           
         PushF        2.000000                  
         FSubtract                              
         StoreF                                 
@@ -165,7 +164,6 @@
         PushI        32                        
         Add                                    %% bbb
         PushF        6.000000                  
-        Label        -compare-5-arg2           
         PushF        2.000000                  
         FAdd                                   
         StoreF                                 
@@ -200,7 +198,6 @@
         PushI        52                        
         Add                                    %% yy
         PushI        6                         
-        Label        -compare-9-arg2           
         PushI        3                         
         Add                                    
         StoreI                                 
@@ -213,7 +210,6 @@
         PushI        60                        
         Add                                    %% subneg
         PushI        6                         
-        Label        -compare-10-arg2          
         PushI        -5                        
         Subtract                               
         StoreI                                 
@@ -221,7 +217,6 @@
         PushI        64                        
         Add                                    %% plusneg
         PushI        6                         
-        Label        -compare-11-arg2          
         PushI        -5                        
         Add                                    
         StoreI                                 
@@ -229,7 +224,6 @@
         PushI        68                        
         Add                                    %% plusnegfloat
         PushF        6.200000                  
-        Label        -compare-12-arg2          
         PushF        -5.100000                 
         FAdd                                   
         StoreF                                 
@@ -237,7 +231,6 @@
         PushI        76                        
         Add                                    %% plusplusfloat
         PushF        6.200000                  
-        Label        -compare-13-arg2          
         PushF        5.100000                  
         FAdd                                   
         StoreF                                 
@@ -245,9 +238,7 @@
         PushI        84                        
         Add                                    %% x
         PushI        6                         
-        Label        -compare-15-arg2          
         PushI        3                         
-        Label        -compare-14-arg2          
         PushI        5                         
         Multiply                               
         Add                                    
@@ -257,7 +248,6 @@
         Add                                    %% compare
         Label        -compare-17-arg1          
         PushI        1                         
-        Label        -compare-16-arg2          
         Label        -compare-17-arg2          
         PushI        0                         
         Label        -compare-17-sub           
