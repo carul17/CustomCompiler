@@ -1,9 +1,11 @@
 package semanticAnalyzer.signatures;
 
+import java.util.HashSet;
 import java.util.List;
 
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
+import semanticAnalyzer.types.TypeVariable;
 import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
 
@@ -13,6 +15,7 @@ public class FunctionSignature {
 	private Type resultType;
 	private Type[] paramTypes;
 	Object whichVariant;
+	 private HashSet<TypeVariable> typeVariables;
 	
 	
 	///////////////////////////////////////////////////////////////
@@ -23,6 +26,7 @@ public class FunctionSignature {
 		storeParamTypes(types);
 		resultType = types[types.length-1];
 		this.whichVariant = whichVariant;
+		findTypeVariables();
 	}
 	private void storeParamTypes(Type[] types) {
 		paramTypes = new Type[types.length-1];
@@ -53,6 +57,7 @@ public class FunctionSignature {
 		if(types.size() != paramTypes.length) {
 			return false;
 		}
+		resetTypeVariables();
 		
 		for(int i=0; i<paramTypes.length; i++) {
 			if(!assignableTo(paramTypes[i], types.get(i))) {
@@ -106,5 +111,23 @@ public class FunctionSignature {
 			return neverMatchedSignature;
 		}
 	}
+	
+	
+    private void resetTypeVariables() {
+        for(TypeVariable variable: typeVariables) {
+            variable.reset();
+        }
+    }
+	
+    private void findTypeVariables() {
+        typeVariables = new HashSet<TypeVariable>();
+        
+        for(Type type: paramTypes) {
+            
+            type.addTypeVariables(typeVariables);
+        }
+        
+        resultType.addTypeVariables(typeVariables);
+    }
 
 }

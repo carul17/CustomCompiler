@@ -22,10 +22,7 @@ import static semanticAnalyzer.types.PrimitiveType.*;
 public class FunctionSignatures extends ArrayList<FunctionSignature> {
 	private static final long serialVersionUID = -4907792488209670697L;
 	private static Map<Object, FunctionSignatures> signaturesForKey = new HashMap<Object, FunctionSignatures>();
-    private Type resultType;
-    private Type[] paramTypes;
     Object whichVariant;
-    private HashSet<TypeVariable> typeVariables;
 	
 	Object key;
 	
@@ -35,7 +32,6 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 			add(functionSignature);
 		}
 		signaturesForKey.put(key, this);
-		//findTypeVariables(); //not 100% sure
 	}
 	
 	public Object getKey() {
@@ -48,7 +44,6 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 	public FunctionSignature acceptingSignature(List<Type> types) {
 		for(FunctionSignature functionSignature: this) {
 			if(functionSignature.accepts(types)) {
-				//resetTypeVariables();//I think
 				return functionSignature;
 			}
 		}
@@ -76,22 +71,6 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		return signatures.acceptingSignature(types);
 	}
 	
-    private void resetTypeVariables() {
-        for(TypeVariable variable: typeVariables) {
-            variable.reset();
-        }
-    }
-	
-    private void findTypeVariables() {
-        typeVariables = new HashSet<TypeVariable>();
-        
-        for(Type type: paramTypes) {
-            
-            type.addTypeVariables(typeVariables);
-        }
-        
-        resultType.addTypeVariables(typeVariables);
-    }
 
 	
 	
