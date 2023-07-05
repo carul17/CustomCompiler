@@ -86,6 +86,9 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 		    new FunctionSignature(ASMOpcode.FAdd, FLOATING, FLOATING, FLOATING)
 		);
 		
+		
+			
+		
 		new FunctionSignatures(Punctuator.SUBTRACT,
 			    new FunctionSignature(ASMOpcode.Subtract, INTEGER, INTEGER, INTEGER),
 			    new FunctionSignature(ASMOpcode.FSubtract, FLOATING, FLOATING, FLOATING)
@@ -158,6 +161,9 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, CHARACTER, BOOLEAN),
 				new FunctionSignature(ASMOpcode.Nop, BOOLEAN, INTEGER, BOOLEAN)
 			);
+		new FunctionSignatures(Punctuator.NOT,
+				new FunctionSignature(ASMOpcode.BNegate, BOOLEAN, BOOLEAN)
+				);
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other
 		// a (FLOAT x FLOAT -> FLOAT).  Each signature has a "whichVariant" parameter where

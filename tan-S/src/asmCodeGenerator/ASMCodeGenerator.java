@@ -13,6 +13,8 @@ import lexicalAnalyzer.Punctuator;
 import parseTree.*;
 import parseTree.nodeTypes.*;
 import semanticAnalyzer.signatures.FunctionSignature;
+import semanticAnalyzer.signatures.PromotedSignature;
+
 import static semanticAnalyzer.types.PrimitiveType.*;
 
 import semanticAnalyzer.types.PrimitiveType;
@@ -320,9 +322,10 @@ public class ASMCodeGenerator {
 		}
 		
 		public void visitLeave(OperatorNode node) {
-			FunctionSignature signature = node.getSignature();
+			PromotedSignature signature = node.getSignature();
 			Lextant operator = node.getOperator();
 			Object variant = signature.getVariant();
+			
 			
 			
 			ASMCodeFragment arg1 = getCodeValue(node.child(0)); //this was remove and get value
@@ -341,12 +344,15 @@ public class ASMCodeGenerator {
 			String pushLabel   = labeller.newLabel("pushLabel");
 			
 			if(variant instanceof ASMOpcode) {
-			newValueCode(node);
-			for(ParseNode child: node.getChildren()) {	
-				if(getCodeValue(child) != null) {
-				code.append(getCodeValue(child));
+				newValueCode(node);
+				int i =0;
+				for(ParseNode child: node.getChildren()) {	
+					if(getCodeValue(child) != null) {
+					code.append(getCodeValue(child));
+					code.append(signature.promotion(i).codeFor());
+					}
+					i++; //might need to put in if
 				}
-			}
 			newValueCode(node);
 			//code.add(Label, startLabel);
 			code.append(arg1);//from first child
@@ -365,7 +371,6 @@ public class ASMCodeGenerator {
 			assert(lextant instanceof Punctuator);
 			Punctuator punctuator = (Punctuator)lextant;
 			//System.out.print(node.child(0).getType().toString());
-			
 			
 			if(operator == Punctuator.GREATER
 					|| operator == Punctuator.LESS
@@ -515,8 +520,12 @@ public class ASMCodeGenerator {
 		
 		private List<ASMCodeFragment> childCode(OperatorNode node) {
 			List<ASMCodeFragment> result = new ArrayList<>();
+			int i = 0;
 			for(ParseNode child: node.getChildren()) {
-				result.add(getCodeValue(child));
+				ASMCodeFragment code  = removeValueCode(child);
+				code.append(node.getSignature().promotion(i).codeFor());
+				result.add(code);
+				i++;
 			}
 			return result;
 		}
@@ -525,7 +534,7 @@ public class ASMCodeGenerator {
 		private void visitUnaryOperatorNode(OperatorNode node) { //this method would be great for negating
 			newValueCode(node);
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
-			FunctionSignature signature = node.getSignature();
+			PromotedSignature signature = node.getSignature();
 			Object variant = signature.getVariant();
 			
 			code.append(arg1);
@@ -545,7 +554,7 @@ public class ASMCodeGenerator {
 			newValueCode(node);
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
 			ASMCodeFragment arg2 = removeValueCode(node.child(1));
-			FunctionSignature signature = node.getSignature();
+			PromotedSignature signature = node.getSignature();
 			Object variant = signature.getVariant();
 			
 			code.append(arg1);

@@ -1,0 +1,7 @@
+true
+5.000000
+-5
+false
+true
+97
+d

@@ -8,6 +8,7 @@ import semanticAnalyzer.types.Type;
 import semanticAnalyzer.types.TypeVariable;
 import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
+import java.util.ArrayList;
 
 //immutable
 public class FunctionSignature {
@@ -15,7 +16,7 @@ public class FunctionSignature {
 	private Type resultType;
 	private Type[] paramTypes;
 	Object whichVariant;
-	 private HashSet<TypeVariable> typeVariables;
+	private HashSet<TypeVariable> typeVariables;
 	
 	
 	///////////////////////////////////////////////////////////////
@@ -129,5 +130,23 @@ public class FunctionSignature {
         
         resultType.addTypeVariables(typeVariables);
     }
+    
+    public List<Type> typeVariableSettings(){
+    	List<Type> results = new ArrayList<Type>();
+    	for(TypeVariable typeVariable: typeVariables){
+    		results.add(typeVariable.concreteType());
+    	}
+    	return results;
+    }
+	
+    public void setTypeVariables(List<Type> typeVariableSettings){
+    	int i = 0;
+    	for(TypeVariable typeVariable: typeVariables){
+    		typeVariable.setConstraint(typeVariableSettings.get(i));
+    		i = i + 1;
+    	}
+    }
+
+
 
 }

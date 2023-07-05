@@ -2,6 +2,7 @@ package semanticAnalyzer;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
@@ -11,6 +12,7 @@ import parseTree.ParseNodeVisitor;
 import parseTree.nodeTypes.*;
 import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
+import semanticAnalyzer.signatures.PromotedSignature;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -146,12 +148,51 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		}
 		
 		Lextant operator = operatorFor(node);
-		FunctionSignatures signature = FunctionSignatures.signaturesOf(operator);//might need child parameter
 		
+
+		FunctionSignatures signatures = FunctionSignatures.signaturesOf(operator);//might need child parameter
+		
+		List<PromotedSignature> promotedSignatures = PromotedSignature.promotedSignatures(signatures, childTypes);
+		List <List<PromotedSignature>> byNumPromotions = new ArrayList <>();
+		
+		for(int i = 0; i<promotedSignatures.size(); i++) {
+			System.out.println("num = " + promotedSignatures.get(i).numPromotions());
+		}
+
+		for(int i = 0; i < 2; i++){
+			byNumPromotions.add(new ArrayList<PromotedSignature>());
+		}
+
+		
+		for(PromotedSignature promotedSignature: promotedSignatures){
+			byNumPromotions.get(promotedSignature.numPromotions()).add(promotedSignature);
+		}
+
+		PromotedSignature signature = PromotedSignature.nullInstance(); //need to create nullInstance
+
+		for(int i=0; i < 2; i++){
+			boolean keepGoing = false; //our flag
+			switch(byNumPromotions.get(i).size()) { //how many of our promoted characters have promotions{
+				case 0:	keepGoing = true; 
+						break;
+				case 1:	signature = byNumPromotions.get(i).get(0);	//found our signature this is what we want	
+						break;
+				default: //by default we want to be in case 2
+					multipleInterpretationError();
+					break;	
+			}
+
+			if(!keepGoing){
+				break;
+			}
+		}
+		
+		node.setSignature(signature);
+		node.setType(signature.resultType());//changed to concreteType
 		
 		if(signature.accepts(childTypes)) {
-			node.setSignature(signature.acceptingSignature(childTypes));
-			node.setType(signature.acceptingSignature(childTypes).resultType().concreteType());//changed to concreteType
+			node.setSignature(signature);
+			node.setType(signature.resultType());//changed to concreteType
 		}
 		else {
 			typeCheckError(node, childTypes);
@@ -243,4 +284,8 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		log.severe(message);
 		
 	}
+	private void multipleInterpretationError(){
+		logError("multiple interpretations of operator possible");
+	}
+
 }

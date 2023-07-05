@@ -1,1 +1,5 @@
 /semanticAnalyzer/
+/asmCodeGenerator/
+/lexicalAnalyzer/
+/parseTree/
+/parser/
