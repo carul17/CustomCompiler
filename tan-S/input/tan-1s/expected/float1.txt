@@ -1,17 +1,1 @@
-9.000000
-4.500000
-3.000000
-4.000000
-8.000000
-9
-45
-2
-9
-21
--5
-11
-1
-1.100000
-11.300000
-true
-test
+Bad operand type for FDivide instruction at location 16.

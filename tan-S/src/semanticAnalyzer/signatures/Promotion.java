@@ -20,8 +20,17 @@ public enum Promotion {
 		this.opcode = opcode;
 	}
 	
+	public String stringValue() {
+		switch(this) {
+		case CHAR_TO_INT: return "charToInt";
+		case CHAR_TO_FLOAT: return "charToFloat";
+		case INT_TO_FLOAT: return "intToFloat";
+		default: return "none";
+		}
+	}
+	
 	Boolean isNull(){
-	 return true;
+	 return this == NONE;
 	}
 	
 	Boolean appliesTo(Type type){
@@ -33,10 +42,10 @@ public enum Promotion {
 		return toType;
 	}	
 	
-	public ASMCodeFragment codeFor(){
-		ASMCodeFragment result = new ASMCodeFragment(CodeType.GENERATES_VALUE);
-		result.add(opcode); //int to float and char float needs an opcode
-		return null;
+	public ASMOpcode codeFor(){
+		//ASMCodeFragment result = new ASMCodeFragment(CodeType.GENERATES_VALUE);
+		//result.add(opcode); //int to float and char float needs an opcode
+		return this.opcode;
 	}
 
 	

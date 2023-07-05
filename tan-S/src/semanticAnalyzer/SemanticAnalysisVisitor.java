@@ -155,27 +155,27 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		List<PromotedSignature> promotedSignatures = PromotedSignature.promotedSignatures(signatures, childTypes);
 		List <List<PromotedSignature>> byNumPromotions = new ArrayList <>();
 		
-		for(int i = 0; i<promotedSignatures.size(); i++) {
-			System.out.println("num = " + promotedSignatures.get(i).numPromotions());
-		}
-
+		
 		for(int i = 0; i < 2; i++){
 			byNumPromotions.add(new ArrayList<PromotedSignature>());
 		}
-
+		//System.out.println(promotedSignatures.size());
 		
 		for(PromotedSignature promotedSignature: promotedSignatures){
+			System.out.println("Num promotions: " + promotedSignature.numPromotions());
 			byNumPromotions.get(promotedSignature.numPromotions()).add(promotedSignature);
 		}
 
 		PromotedSignature signature = PromotedSignature.nullInstance(); //need to create nullInstance
 
 		for(int i=0; i < 2; i++){
+			System.out.println(byNumPromotions.get(i).size());
 			boolean keepGoing = false; //our flag
 			switch(byNumPromotions.get(i).size()) { //how many of our promoted characters have promotions{
 				case 0:	keepGoing = true; 
 						break;
-				case 1:	signature = byNumPromotions.get(i).get(0);	//found our signature this is what we want	
+				case 1:	signature = byNumPromotions.get(i).get(0);
+				//found our signature this is what we want	
 						break;
 				default: //by default we want to be in case 2
 					multipleInterpretationError();
@@ -190,7 +190,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		node.setSignature(signature);
 		node.setType(signature.resultType());//changed to concreteType
 		
-		if(signature.accepts(childTypes)) {
+		if(true) {
 			node.setSignature(signature);
 			node.setType(signature.resultType());//changed to concreteType
 		}

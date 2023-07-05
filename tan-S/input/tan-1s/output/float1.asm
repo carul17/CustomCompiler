@@ -130,7 +130,24 @@
         PushI        0                         
         Add                                    %% r
         PushF        4.500000                  
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
         PushF        0.500000                  
+        PushF        4.500000                  
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
+        PushF        0.500000                  
+        PushF        4.500000                  
+        Nop                                    
+        Nop                                    
         Duplicate                              
         JumpFZero    $$f-divide-by-zero        
         FDivide                                
@@ -139,7 +156,24 @@
         PushI        8                         
         Add                                    %% a
         PushF        4.500000                  
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
         PushF        1.000000                  
+        PushF        4.500000                  
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
+        PushF        1.000000                  
+        PushF        4.500000                  
+        Nop                                    
+        Nop                                    
         Duplicate                              
         JumpFZero    $$f-divide-by-zero        
         FDivide                                
@@ -148,7 +182,24 @@
         PushI        16                        
         Add                                    %% b
         PushF        6.000000                  
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
         PushF        2.000000                  
+        PushF        6.000000                  
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        StoreF                                 
+        PushF        2.000000                  
+        PushF        6.000000                  
+        Nop                                    
+        Nop                                    
         Duplicate                              
         JumpFZero    $$f-divide-by-zero        
         FDivide                                
@@ -157,21 +208,48 @@
         PushI        24                        
         Add                                    %% bb
         PushF        6.000000                  
+        Nop                                    
+        PStack                                 
+        Label        -compare-4-arg2           
         PushF        2.000000                  
+        Nop                                    
+        PStack                                 
         FSubtract                              
         StoreF                                 
         PushD        $global-memory-block      
         PushI        32                        
         Add                                    %% bbb
         PushF        6.000000                  
+        Nop                                    
+        PStack                                 
+        Label        -compare-5-arg2           
         PushF        2.000000                  
+        Nop                                    
+        PStack                                 
         FAdd                                   
         StoreF                                 
         PushD        $global-memory-block      
         PushI        40                        
         Add                                    %% s
         PushI        45                        
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
         PushI        5                         
+        PushI        45                        
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
+        PushI        5                         
+        PushI        45                        
+        Nop                                    
+        Nop                                    
         Duplicate                              
         JumpFalse    $$i-divide-by-zero        
         Divide                                 
@@ -180,7 +258,24 @@
         PushI        44                        
         Add                                    %% z
         PushI        45                        
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
         PushI        1                         
+        PushI        45                        
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
+        PushI        1                         
+        PushI        45                        
+        Nop                                    
+        Nop                                    
         Duplicate                              
         JumpFalse    $$i-divide-by-zero        
         Divide                                 
@@ -189,7 +284,24 @@
         PushI        48                        
         Add                                    %% y
         PushI        6                         
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
         PushI        3                         
+        PushI        6                         
+        Nop                                    
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
+        Divide                                 
+        StoreI                                 
+        PushI        3                         
+        PushI        6                         
+        Nop                                    
+        Nop                                    
         Duplicate                              
         JumpFalse    $$i-divide-by-zero        
         Divide                                 
@@ -198,7 +310,12 @@
         PushI        52                        
         Add                                    %% yy
         PushI        6                         
+        Nop                                    
+        PStack                                 
+        Label        -compare-9-arg2           
         PushI        3                         
+        Nop                                    
+        PStack                                 
         Add                                    
         StoreI                                 
         PushD        $global-memory-block      
@@ -210,37 +327,67 @@
         PushI        60                        
         Add                                    %% subneg
         PushI        6                         
+        Nop                                    
+        PStack                                 
+        Label        -compare-10-arg2          
         PushI        -5                        
+        Nop                                    
+        PStack                                 
         Subtract                               
         StoreI                                 
         PushD        $global-memory-block      
         PushI        64                        
         Add                                    %% plusneg
         PushI        6                         
+        Nop                                    
+        PStack                                 
+        Label        -compare-11-arg2          
         PushI        -5                        
+        Nop                                    
+        PStack                                 
         Add                                    
         StoreI                                 
         PushD        $global-memory-block      
         PushI        68                        
         Add                                    %% plusnegfloat
         PushF        6.200000                  
+        Nop                                    
+        PStack                                 
+        Label        -compare-12-arg2          
         PushF        -5.100000                 
+        Nop                                    
+        PStack                                 
         FAdd                                   
         StoreF                                 
         PushD        $global-memory-block      
         PushI        76                        
         Add                                    %% plusplusfloat
         PushF        6.200000                  
+        Nop                                    
+        PStack                                 
+        Label        -compare-13-arg2          
         PushF        5.100000                  
+        Nop                                    
+        PStack                                 
         FAdd                                   
         StoreF                                 
         PushD        $global-memory-block      
         PushI        84                        
         Add                                    %% x
         PushI        6                         
+        Nop                                    
+        PStack                                 
+        Label        -compare-15-arg2          
         PushI        3                         
+        Nop                                    
+        PStack                                 
+        Label        -compare-14-arg2          
         PushI        5                         
+        Nop                                    
+        PStack                                 
         Multiply                               
+        Nop                                    
+        PStack                                 
         Add                                    
         StoreI                                 
         PushD        $global-memory-block      
@@ -248,8 +395,13 @@
         Add                                    %% compare
         Label        -compare-17-arg1          
         PushI        1                         
+        Nop                                    
+        PStack                                 
+        Label        -compare-16-arg2          
         Label        -compare-17-arg2          
         PushI        0                         
+        Nop                                    
+        PStack                                 
         Label        -compare-17-sub           
         Subtract                               
         JumpTrue     -compare-17-true          

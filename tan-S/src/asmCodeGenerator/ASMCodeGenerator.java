@@ -349,14 +349,20 @@ public class ASMCodeGenerator {
 				for(ParseNode child: node.getChildren()) {	
 					if(getCodeValue(child) != null) {
 					code.append(getCodeValue(child));
-					code.append(signature.promotion(i).codeFor());
+					
+					code.add(signature.promotion(i).codeFor());
+					
+					//print for debugging
+					code.add(PStack);
+					
+					
 					}
 					i++; //might need to put in if
 				}
 			newValueCode(node);
-			//code.add(Label, startLabel);
+			code.add(Label, startLabel);
 			code.append(arg1);//from first child
-			//code.add(Label, arg2Label);
+			code.add(Label, arg2Label);
 			code.append(arg2);
 			
 			
@@ -369,7 +375,7 @@ public class ASMCodeGenerator {
 		}
 			Lextant lextant = node.getOperator();
 			assert(lextant instanceof Punctuator);
-			Punctuator punctuator = (Punctuator)lextant;
+			//Punctuator punctuator = (Punctuator)lextant;
 			//System.out.print(node.child(0).getType().toString());
 			
 			if(operator == Punctuator.GREATER
@@ -519,11 +525,14 @@ public class ASMCodeGenerator {
 		
 		
 		private List<ASMCodeFragment> childCode(OperatorNode node) {
+			System.out.println("hloo");
 			List<ASMCodeFragment> result = new ArrayList<>();
 			int i = 0;
 			for(ParseNode child: node.getChildren()) {
-				ASMCodeFragment code  = removeValueCode(child);
-				code.append(node.getSignature().promotion(i).codeFor());
+				code.append(getCodeValue(child));
+				
+				code.add(node.getSignature().promotion(i).codeFor());
+				
 				result.add(code);
 				i++;
 			}
@@ -580,6 +589,7 @@ public class ASMCodeGenerator {
 			}
 										// type-dependent! (opcode is different for floats and for ints)
 		}
+		
 		private ASMOpcode opcodeForOperator(Lextant lextant) {
 			assert(lextant instanceof Punctuator);
 			Punctuator punctuator = (Punctuator)lextant;
