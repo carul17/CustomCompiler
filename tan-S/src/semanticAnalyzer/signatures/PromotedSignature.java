@@ -9,11 +9,14 @@ public class PromotedSignature{
 	List <Promotion> promotions;
 	List<Type> typeVariableSettings;
 	public static List<Promotion> nullPromotions = new ArrayList<>();
+	public static List<Type> nullTypes = new ArrayList<>();
 	static boolean matchFound = false;
+	List<Type> promotedTypesAfterApply;
 
-	public PromotedSignature(FunctionSignature signature, List<Promotion>promotions){
+	public PromotedSignature(FunctionSignature signature, List<Promotion>promotions, List<Type> promotedTypes){
 		this.signature = signature;
-		this.promotions = new ArrayList<Promotion>(promotions); //copies the list promotions
+		this.promotions = new ArrayList<Promotion>(promotions);
+		this.promotedTypesAfterApply = promotedTypes;
 		this.typeVariableSettings = signature.typeVariableSettings(); //create typeVariableSettings method inside of FunctionSignature
 	}
 	public static List<PromotedSignature> promotedSignatures(FunctionSignatures signatures, List<Type> types){
@@ -26,7 +29,7 @@ public class PromotedSignature{
 				for(int i = 0; i < types.size(); i++){
 					promotions.add(Promotion.NONE);
 				}
-				result.add(new PromotedSignature(signature, promotions));
+				result.add(new PromotedSignature(signature, promotions, types));
 				return result;
 			}
 		}
@@ -36,9 +39,9 @@ public class PromotedSignature{
 			
 			result.addAll(findAll(signature, types));
 			if(matchFound) {
-				break;
+				//break;
 			}
-			System.out.println("Entering next signature of operator");
+			//System.out.println("Entering next signature of operator");
 		}
 		
 		return result;
@@ -63,12 +66,12 @@ public class PromotedSignature{
 			if(signature.accepts(promotedTypes)){
 				
 				//print for debugging
-				System.out.println("base case: " + signature.accepts(promotedTypes));
+				/*System.out.println("base case: " + signature.accepts(promotedTypes));
 				for(Type promotedType : promotedTypes) {
 					System.out.println("promoted types: " + promotedType.infoString());
-				}
+				}*/
 				
-				PromotedSignature found = new PromotedSignature(signature, promotions);
+				PromotedSignature found = new PromotedSignature(signature, promotions, promotedTypes);
 				promotedSignatures.add(found);
 				//System.out.println(found.resultType().infoString());
 				return true;
@@ -78,25 +81,25 @@ public class PromotedSignature{
 		Type type = types.get(index);
 		
 		for(Promotion promotion: Promotion.values()){
-			 System.out.println("enter for each promotion");
+			 //System.out.println("enter for each promotion");
 			
 			if(promotion.appliesTo(type)){
-				System.out.println(promotion.stringValue());
+				
 				promotedTypes.set(index, promotion.apply(type));
 				promotions.set(index, promotion);
 				//System.out.println(type.infoString() + promotion.apply(type).infoString());
 			}
 			
 			if(findAllRecursive(signature, types, promotions, promotedTypes, promotedSignatures, index + 1)) {
-				System.out.println("break");
+				
 				matchFound = true;
-				System.out.println("matchfound: " + matchFound);
+				//System.out.println("matchfound: " + matchFound);
 				return true;
 			}
 			
 		}
 		
-		//promotedTypes.set(index, type);
+		promotedTypes.set(index, type);
 		//might be somewhere else 
 		return false;
 	}
@@ -122,7 +125,7 @@ public class PromotedSignature{
 	}
 	
 	
-	private static PromotedSignature neverMatchedSignature = new PromotedSignature(FunctionSignature.nullInstance(), nullPromotions ) {
+	private static PromotedSignature neverMatchedSignature = new PromotedSignature(FunctionSignature.nullInstance(), nullPromotions, nullTypes) {
 		public boolean accepts(List<Type> types) {
 			System.out.println("hi");
 			return false;
@@ -137,8 +140,10 @@ public class PromotedSignature{
 	
 	
 	public boolean accepts(List<Type> types) {
-		return this.signature.accepts(types);
-		}
+		//signature.setTypeVariables(typeVariableSettings);
+		
+        return signature.accepts(this.promotedTypesAfterApply);
+	}
 	
 	public Object getVariant() {
 		

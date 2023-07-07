@@ -131,25 +131,11 @@
         Add                                    %% r
         PushF        4.500000                  
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
-        FDivide                                
-        StoreF                                 
+        PStack                                 
+        Label        -compare-1-arg2           
         PushF        0.500000                  
-        PushF        4.500000                  
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
-        FDivide                                
-        StoreF                                 
-        PushF        0.500000                  
-        PushF        4.500000                  
-        Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
+        PStack                                 
         FDivide                                
         StoreF                                 
         PushD        $global-memory-block      
@@ -157,25 +143,11 @@
         Add                                    %% a
         PushF        4.500000                  
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
-        FDivide                                
-        StoreF                                 
+        PStack                                 
+        Label        -compare-2-arg2           
         PushF        1.000000                  
-        PushF        4.500000                  
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
-        FDivide                                
-        StoreF                                 
-        PushF        1.000000                  
-        PushF        4.500000                  
-        Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
+        PStack                                 
         FDivide                                
         StoreF                                 
         PushD        $global-memory-block      
@@ -183,25 +155,11 @@
         Add                                    %% b
         PushF        6.000000                  
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
-        FDivide                                
-        StoreF                                 
+        PStack                                 
+        Label        -compare-3-arg2           
         PushF        2.000000                  
-        PushF        6.000000                  
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
-        FDivide                                
-        StoreF                                 
-        PushF        2.000000                  
-        PushF        6.000000                  
-        Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFZero    $$f-divide-by-zero        
+        PStack                                 
         FDivide                                
         StoreF                                 
         PushD        $global-memory-block      
@@ -233,25 +191,11 @@
         Add                                    %% s
         PushI        45                        
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
-        StoreI                                 
+        PStack                                 
+        Label        -compare-6-arg2           
         PushI        5                         
-        PushI        45                        
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
-        StoreI                                 
-        PushI        5                         
-        PushI        45                        
-        Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
+        PStack                                 
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
@@ -259,25 +203,11 @@
         Add                                    %% z
         PushI        45                        
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
-        StoreI                                 
+        PStack                                 
+        Label        -compare-7-arg2           
         PushI        1                         
-        PushI        45                        
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
-        StoreI                                 
-        PushI        1                         
-        PushI        45                        
-        Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
+        PStack                                 
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
@@ -285,25 +215,11 @@
         Add                                    %% y
         PushI        6                         
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
-        StoreI                                 
+        PStack                                 
+        Label        -compare-8-arg2           
         PushI        3                         
-        PushI        6                         
         Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
-        Divide                                 
-        StoreI                                 
-        PushI        3                         
-        PushI        6                         
-        Nop                                    
-        Nop                                    
-        Duplicate                              
-        JumpFalse    $$i-divide-by-zero        
+        PStack                                 
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      

@@ -124,43 +124,25 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        1                         
+        DataZ        8                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        Label        -compare-2-arg1           
         PushI        97                        
-        Nop                                    
+        ConvertF                               
         PStack                                 
         Label        -compare-1-arg2           
-        Label        -compare-2-arg2           
-        PushI        97                        
+        PushF        5.500000                  
         Nop                                    
         PStack                                 
-        Label        -compare-2-sub            
-        Subtract                               
-        JumpFalse    -compare-2-true           
-        Jump         -compare-2-false          
-        Label        -compare-2-true           
-        PushI        1                         
-        Jump         -compare-2-join           
-        Label        -compare-2-false          
-        PushI        0                         
-        Jump         -compare-2-join           
-        Label        -compare-2-join           
-        StoreC                                 
+        FAdd                                   
+        StoreF                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        LoadC                                  
-        JumpTrue     -print-boolean-3-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-3-join     
-        Label        -print-boolean-3-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-3-join     
-        PushD        $print-format-boolean     
+        LoadF                                  
+        PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

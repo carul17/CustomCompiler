@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
+import lexicalAnalyzer.Punctuator;
 import logging.TanLogger;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
@@ -121,6 +122,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		Type expressionType = expression.getType();
 		
 		if(!expressionType.equals(identifierType)) {
+			FunctionSignatures signatures = FunctionSignatures.signaturesOf(Punctuator.ASSIGN);
 			semanticError("types don’t match in assignment statement");
 			return;
 		}
@@ -156,20 +158,20 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		List <List<PromotedSignature>> byNumPromotions = new ArrayList <>();
 		
 		
-		for(int i = 0; i < 2; i++){
+		for(int i = 0; i <= 2; i++){
 			byNumPromotions.add(new ArrayList<PromotedSignature>());
 		}
 		//System.out.println(promotedSignatures.size());
 		
 		for(PromotedSignature promotedSignature: promotedSignatures){
-			System.out.println("Num promotions: " + promotedSignature.numPromotions());
+			//System.out.println("Num promotions: " + promotedSignature.numPromotions());
 			byNumPromotions.get(promotedSignature.numPromotions()).add(promotedSignature);
 		}
 
 		PromotedSignature signature = PromotedSignature.nullInstance(); //need to create nullInstance
 
-		for(int i=0; i < 2; i++){
-			System.out.println(byNumPromotions.get(i).size());
+		for(int i=0; i <= 2; i++){
+			//System.out.println(byNumPromotions.get(i).size());
 			boolean keepGoing = false; //our flag
 			switch(byNumPromotions.get(i).size()) { //how many of our promoted characters have promotions{
 				case 0:	keepGoing = true; 
@@ -190,7 +192,9 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		node.setSignature(signature);
 		node.setType(signature.resultType());//changed to concreteType
 		
-		if(true) {
+		
+		if(signature.accepts(childTypes)) {
+			
 			node.setSignature(signature);
 			node.setType(signature.resultType());//changed to concreteType
 		}

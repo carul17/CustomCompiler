@@ -1,4 +1,5 @@
 main {
-	var a := 'a' == 97;
-	print a \n;
+	var a := 'a' + 5.5;
+	
+    print a \n;
 }
