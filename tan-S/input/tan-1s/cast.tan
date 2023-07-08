@@ -18,4 +18,5 @@ main {
 	var e := 100;
 	print <char>(e) \n;
 	
+	
 }

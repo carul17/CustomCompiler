@@ -151,42 +151,30 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        PushI        97                        
-        ConvertF                               
-        Label        -compare-1-arg2           
-        PushF        5.500000                  
-        Nop                                    
-        FAdd                                   
-        StoreF                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% b
-        PushI        98                        
-        Nop                                    
-        Label        -compare-2-arg2           
-        PushI        5                         
-        Nop                                    
-        Add                                    
+        DLabel       -array-1-array            
+        DataI        5                         
+        DataC        0                         
+        DataC        0                         
+        DataC        0                         
+        DataC        0                         
+        DataI        3                         
+        DataI        3                         
+        DataI        1                         
+        DataI        2                         
+        DataI        3                         
+        PushD        -array-1-array            
+        PStack                                 
         StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% b
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        LoadF                                  
-        PushD        $print-format-floating    
-        Printf                                 
+        PushI        16                        
+        Add                                    
         PushD        $print-format-newline     
         Printf                                 
         Halt                                   

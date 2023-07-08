@@ -38,6 +38,9 @@ public interface ParseNodeVisitor {
 	
 	void visitEnter(TypeNode node);
 	void visitLeave(TypeNode node);
+	
+	void visitEnter(ArrayNode node);
+	void visitLeave(ArrayNode node);
 
 
 	// leaf nodes: visitLeaf only
@@ -130,6 +133,12 @@ public interface ParseNodeVisitor {
 			defaultVisitEnter(node);
 		}
 		public void visitLeave(TypeNode node) {
+			defaultVisitLeave(node);
+		}
+		public void visitEnter(ArrayNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(ArrayNode node) {
 			defaultVisitLeave(node);
 		}
 		

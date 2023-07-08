@@ -5,20 +5,23 @@ import parseTree.ParseNodeVisitor;
 import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
 import semanticAnalyzer.signatures.PromotedSignature;
+
+import java.util.List;
+
 import lexicalAnalyzer.Lextant;
 import tokens.LextantToken;
 import tokens.Token;
 
-public class OperatorNode extends ParseNode {
+public class ArrayNode extends ParseNode {
 	PromotedSignature signature;
 	
 
-	public OperatorNode(Token token) {
+	public ArrayNode(Token token) {
 		super(token);
 		assert(token instanceof LextantToken);
 	}
 
-	public OperatorNode(ParseNode node) {
+	public ArrayNode(ParseNode node) {
 		super(node);
 	}
 	
@@ -26,7 +29,7 @@ public class OperatorNode extends ParseNode {
 	////////////////////////////////////////////////////////////
 	// attributes
 	
-	public Lextant getOperator() {
+	public Lextant getArray() {
 		return lextantToken().getLextant();
 	}
 	public LextantToken lextantToken() {
@@ -44,10 +47,10 @@ public class OperatorNode extends ParseNode {
 	////////////////////////////////////////////////////////////
 	// convenience factory
 
-	public static ParseNode withChildren(Token token, ParseNode ...children) {
-		OperatorNode node = new OperatorNode(token);
-		for(ParseNode child: children) {
-			node.appendChild(child);
+	public static ParseNode withChildren(Token token, List<ParseNode> elements) {
+		ArrayNode node = new ArrayNode(token);
+		for(ParseNode element: elements) {
+			node.appendChild(element);
 		}
 		return node;
 	}

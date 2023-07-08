@@ -151,41 +151,69 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        9                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        PushI        97                        
-        ConvertF                               
-        Label        -compare-1-arg2           
-        PushF        5.500000                  
-        Nop                                    
-        FAdd                                   
-        StoreF                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% b
-        PushI        98                        
-        Nop                                    
-        Label        -compare-2-arg2           
         PushI        5                         
-        Nop                                    
-        Add                                    
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% b
+        PushI        6                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        8                         
-        Add                                    %% b
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
+        Add                                    %% c
+        PushI        1                         
+        StoreC                                 
+        Label        -compare-2-arg1           
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        LoadF                                  
-        PushD        $print-format-floating    
+        Nop                                    
+        PStack                                 
+        Label        -compare-1-arg2           
+        LoadI                                  
+        Label        -compare-2-arg2           
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% b
+        Nop                                    
+        PStack                                 
+        LoadI                                  
+        Label        -compare-2-sub            
+        Subtract                               
+        JumpPos      -compare-2-true           
+        Jump         -compare-2-false          
+        Label        -compare-2-true           
+        PushI        1                         
+        Jump         -compare-2-join           
+        Label        -compare-2-false          
+        PushI        0                         
+        Jump         -compare-2-join           
+        Label        -compare-2-join           
+        JumpFalse    -if-3-else                
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        PushI        7                         
+        StoreI                                 
+        Jump         -if-3-end                 
+        Label        -if-3-else                
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        PushI        10                        
+        StoreI                                 
+        Label        -if-3-end                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        LoadI                                  
+        PStack                                 
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
