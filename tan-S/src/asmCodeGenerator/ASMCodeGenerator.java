@@ -6,6 +6,7 @@ import java.util.Map;
 
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
+import asmCodeGenerator.operators.IntegerDivideCodeGenerator;
 import asmCodeGenerator.operators.SimpleCodeGenerator;
 import asmCodeGenerator.runtime.RunTime;
 import lexicalAnalyzer.Lextant;
@@ -366,20 +367,60 @@ public class ASMCodeGenerator {
 			newValueCode(node);
 			code.add(Label, startLabel);
 			code.append(arg1);//from first child
-			code.add(Label, arg2Label);
 			
 			if(!node.getOperator().getLexeme().equals("!")){
+				code.add(Label, arg2Label);
 				code.append(arg2);
 			}
 			
 			
 
 		} else if(variant instanceof SimpleCodeGenerator) {
-			SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
-			ASMCodeFragment fragment = generator.generate(node, childCode(node));
-			codeMap.put(node, fragment);
-			// NEED TO DOS OMETHING WITH SIMPLE CODE GENERATOR.JAVA
+			newValueCode(node);
+			int i =0;
+			for(ParseNode child: node.getChildren()) {	
+				if(getCodeValue(child) != null) {
+				code.append(getCodeValue(child));
+				
+				code.add(signature.promotion(i).codeFor());
+				
+				//print for debugging
+				code.add(PStack);
+				
+				
+				}
+				i++; //might need to put in if
+			}
+		newValueCode(node);
+		code.add(Label, startLabel);
+		code.append(arg1);//from first child
+		
+		if(!node.getOperator().getLexeme().equals("!")){
+			code.add(Label, arg2Label);
+			code.append(arg2);
 		}
+			
+//		SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
+//		ASMCodeFragment fragment = generator.generate(node, childCode(node));
+//		codeMap.put(node, fragment);
+		code.add(ASMOpcode.Duplicate);
+		if (signature.resultType().toString().equals("FLOATING")) {
+			code.add(ASMOpcode.JumpFZero, RunTime.FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR);
+			code.add(ASMOpcode.FDivide);
+		} else {
+			code.add(ASMOpcode.Duplicate);
+			code.add(ASMOpcode.JumpFalse, RunTime.INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR);
+			code.add(ASMOpcode.Divide);
+		}
+		
+		}
+			
+//		} else if(variant instanceof SimpleCodeGenerator) {
+//			SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
+//			ASMCodeFragment fragment = generator.generate(node, childCode(node));
+//			codeMap.put(node, fragment);
+//			// NEED TO DOS OMETHING WITH SIMPLE CODE GENERATOR.JAVA
+//		}
 			Lextant lextant = node.getOperator();
 			assert(lextant instanceof Punctuator);
 			//Punctuator punctuator = (Punctuator)lextant;

@@ -133,9 +133,13 @@
         Nop                                    
         PStack                                 
         Label        -compare-1-arg2           
+        Nop                                    
         PushF        0.500000                  
         Nop                                    
         PStack                                 
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
         FDivide                                
         StoreF                                 
         PushD        $global-memory-block      
@@ -145,9 +149,13 @@
         Nop                                    
         PStack                                 
         Label        -compare-2-arg2           
+        Nop                                    
         PushF        1.000000                  
         Nop                                    
         PStack                                 
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
         FDivide                                
         StoreF                                 
         PushD        $global-memory-block      
@@ -157,9 +165,13 @@
         Nop                                    
         PStack                                 
         Label        -compare-3-arg2           
+        Nop                                    
         PushF        2.000000                  
         Nop                                    
         PStack                                 
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
         FDivide                                
         StoreF                                 
         PushD        $global-memory-block      
@@ -193,9 +205,13 @@
         Nop                                    
         PStack                                 
         Label        -compare-6-arg2           
+        Nop                                    
         PushI        5                         
         Nop                                    
         PStack                                 
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
@@ -205,9 +221,13 @@
         Nop                                    
         PStack                                 
         Label        -compare-7-arg2           
+        Nop                                    
         PushI        1                         
         Nop                                    
         PStack                                 
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      
@@ -217,9 +237,13 @@
         Nop                                    
         PStack                                 
         Label        -compare-8-arg2           
+        Nop                                    
         PushI        3                         
         Nop                                    
         PStack                                 
+        Nop                                    
+        Duplicate                              
+        JumpFalse    $$i-divide-by-zero        
         Divide                                 
         StoreI                                 
         PushD        $global-memory-block      

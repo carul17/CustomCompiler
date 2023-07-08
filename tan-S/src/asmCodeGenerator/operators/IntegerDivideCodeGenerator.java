@@ -20,7 +20,7 @@ public class IntegerDivideCodeGenerator implements SimpleCodeGenerator{
 		
 		result.add(ASMOpcode.Duplicate);
 		result.add(ASMOpcode.JumpFalse, RunTime.INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR);
-		result.add(ASMOpcode.Divide); //didn't need to add this since I'm already adding divide to the stack
+		//result.add(ASMOpcode.Divide); //didn't need to add this since I'm already adding divide to the stack
 		
 		return result;
 	}
