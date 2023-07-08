@@ -325,11 +325,15 @@ public class ASMCodeGenerator {
 			PromotedSignature signature = node.getSignature();
 			Lextant operator = node.getOperator();
 			Object variant = signature.getVariant();
+			ASMCodeFragment arg2 = null;
 			
 			
 			
 			ASMCodeFragment arg1 = getCodeValue(node.child(0)); //this was remove and get value
-			ASMCodeFragment arg2 = getCodeValue(node.child(1)); //this was remove and get value
+			
+			if(!node.getOperator().getLexeme().equals("!")){
+				arg2 = getCodeValue(node.child(1)); //this was remove and get value
+			}
 			
 			Labeller labeller = new Labeller("compare");
 			
@@ -363,7 +367,10 @@ public class ASMCodeGenerator {
 			code.add(Label, startLabel);
 			code.append(arg1);//from first child
 			code.add(Label, arg2Label);
-			code.append(arg2);
+			
+			if(!node.getOperator().getLexeme().equals("!")){
+				code.append(arg2);
+			}
 			
 			
 
@@ -562,12 +569,17 @@ public class ASMCodeGenerator {
 		private void visitNormalBinaryOperatorNode(OperatorNode node) {
 			newValueCode(node);
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
-			ASMCodeFragment arg2 = removeValueCode(node.child(1));
+			ASMCodeFragment arg2 = null;
+			if(!node.getOperator().getLexeme().equals("!")){
+				 arg2 = removeValueCode(node.child(1));
+			}
 			PromotedSignature signature = node.getSignature();
 			Object variant = signature.getVariant();
 			
 			code.append(arg1);
-			code.append(arg2);
+			if(!node.getOperator().getLexeme().equals("!")){
+				code.append(arg2);
+			}
 			
 			if(variant instanceof ASMOpcode) {
 				ASMOpcode opcode = (ASMOpcode) variant;

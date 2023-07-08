@@ -124,22 +124,38 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        8                         
+        DataZ        1                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        PushI        5                         
+        Label        -compare-3-arg1           
+        PushI        0                         
+        Nop                                    
         PStack                                 
-        PushF        5.500000                  
+        Label        -compare-1-arg2           
+        BNegate                                
+        Nop                                    
         PStack                                 
-        FAdd                                   
-        StoreF                                 
+        Label        -compare-2-arg2           
+        Label        -compare-3-arg2           
+        PushI        1                         
+        Nop                                    
+        PStack                                 
+        Label        -compare-3-sub            
+        And                                    
+        StoreC                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        LoadF                                  
-        PushD        $print-format-floating    
+        LoadC                                  
+        JumpTrue     -print-boolean-4-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-4-join     
+        Label        -print-boolean-4-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-4-join     
+        PushD        $print-format-boolean     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

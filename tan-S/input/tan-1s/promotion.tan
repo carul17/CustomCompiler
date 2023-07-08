@@ -1,5 +1,4 @@
 main {
-	var a := 'a' + 5.5;
-	
+	var a := !false && true;
     print a \n;
 }

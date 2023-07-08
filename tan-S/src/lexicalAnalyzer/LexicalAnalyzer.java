@@ -210,7 +210,7 @@ public class LexicalAnalyzer extends ScannerImp implements Scanner {
 //			}
 //		}
 		
-		if(firstChar.getCharacter() == '-' || firstChar.getCharacter() == '+') {
+		if(firstChar.getCharacter() == '-' || firstChar.getCharacter() == '+' || firstChar.getCharacter() == '!') {
 			buffer.append(firstChar.getCharacter());
 			
 			LocatedChar decimal = input.next();
