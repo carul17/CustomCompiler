@@ -14,6 +14,7 @@ import parseTree.nodeTypes.*;
 import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
 import semanticAnalyzer.signatures.PromotedSignature;
+import semanticAnalyzer.types.ArrayType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -136,7 +137,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	// expressions
 	@Override
 	public void visitLeave(OperatorNode node) {
-		List<Type> childTypes;  
+		List<Type> childTypes;
 		if(node.nChildren() == 1) {
 			ParseNode child = node.child(0);
 			childTypes = Arrays.asList(child.getType());
@@ -209,6 +210,24 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	private Lextant operatorFor(OperatorNode node) {
 		LextantToken token = (LextantToken) node.getToken();
 		return token.getLextant();
+	}
+	
+	@Override
+	public void visitLeave(ArrayNode node) {
+		Type type = node.child(0).getType().concreteType();
+		node.setType(new ArrayType(type));
+		for(int i = 1; i < node.nChildren(); i++) {
+			
+			ParseNode child = node.child(i);
+			Type childType = child.getType();
+			
+			if(childType == PrimitiveType.ERROR || !(childType.equivalent(type))) {
+				List<Type> childTypes = Arrays.asList(childType);
+				typeCheckError(node, childTypes);
+				node.setType(PrimitiveType.ERROR);
+			}
+		
+		}
 	}
 
 

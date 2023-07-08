@@ -2,11 +2,11 @@ package semanticAnalyzer.types;
 
 import java.util.Set;
 
-public class Array implements Type {
+public class ArrayType implements Type {
 
 	Type subtype;
 	
-	public Array(Type subtype) {
+	public ArrayType(Type subtype) {
 		this.subtype = subtype;
 		// TODO Auto-generated constructor stub
 	}
@@ -14,20 +14,16 @@ public class Array implements Type {
 	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
-		return 0;
+		return subtype.getSize();
 	}
 
 	@Override
 	public String infoString() {
 		// TODO Auto-generated method stub
-		return null;
+		return "ArrayType";
 	}
 
-	@Override
-	public Boolean equivalent(Type otherType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public void addTypeVariables(Set<TypeVariable> typeVariables) {
@@ -38,7 +34,20 @@ public class Array implements Type {
 	@Override
 	public Type concreteType() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayType(subtype.concreteType());
+	}
+	
+	public Type getSubtype() {
+		// TODO Auto-generated method stub
+		return subtype;
+	}
+	
+	@Override
+	public Boolean equivalent(Type otherType) {
+		if(otherType instanceof ArrayType) {
+			return this.subtype.equivalent(((ArrayType)otherType).getSubtype());
+		}
+		return false;
 	}
 
 }

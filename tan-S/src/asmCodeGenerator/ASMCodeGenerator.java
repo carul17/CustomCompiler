@@ -8,6 +8,7 @@ import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.IntegerDivideCodeGenerator;
 import asmCodeGenerator.operators.SimpleCodeGenerator;
+import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
 import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
@@ -18,6 +19,7 @@ import semanticAnalyzer.signatures.PromotedSignature;
 
 import static semanticAnalyzer.types.PrimitiveType.*;
 
+import semanticAnalyzer.types.ArrayType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -42,10 +44,12 @@ public class ASMCodeGenerator {
 	public ASMCodeFragment makeASM() {
 		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
 		
+		code.append( MemoryManager.codeForInitialization());
 		code.append( RunTime.getEnvironment() );
 		code.append( globalVariableBlockASM() );
 		code.append( programASM() );
-//		code.append( MemoryManager.codeForAfterApplication() );
+		
+		code.append( MemoryManager.codeForAfterApplication() );
 		
 		return code;
 	}
@@ -156,6 +160,11 @@ public class ASMCodeGenerator {
 			}
 			else if(node.getType() == STRING) {
 				code.add(LoadI);
+			}
+			else if(node.getType() instanceof ArrayType) {
+				
+				code.add(LoadI);
+				
 			}
 			else {
 				assert false : "node " + node;
@@ -310,6 +319,9 @@ public class ASMCodeGenerator {
 			if(type == STRING) {
 				return StoreI;
 			}
+			if(type instanceof ArrayType) {
+				return StoreI;
+			}
 			assert false: "Type " + type + " unimplemented in opcodeForStore()";
 			return null;
 		}
@@ -356,10 +368,6 @@ public class ASMCodeGenerator {
 					code.append(getCodeValue(child));
 					
 					code.add(signature.promotion(i).codeFor());
-					
-					//print for debugging
-					//code.add(PStack);
-					
 					
 					}
 					i++; //might need to put in if
@@ -687,8 +695,6 @@ public class ASMCodeGenerator {
 		public void visit(CharacterNode node) {
 			newValueCode(node);
 			code.add(PushI, node.getValue());
-			
-			
 		}
 		public void visit(StringNode node) {
 			newValueCode(node);
@@ -701,6 +707,47 @@ public class ASMCodeGenerator {
 			code.add(DataI, node.getValue().length());
 			code.add(DataS, node.getValue());
 			code.add(PushD, dlabel);
+		}
+		
+		public void visitLeave(ArrayNode node) {
+			newValueCode(node);
+			
+			Labeller labeller = new Labeller("array");
+			String dlabel = labeller.newLabel(node.getType().toString());
+			code.add(DLabel, dlabel);
+			code.add(DataI, 5);
+			code.add(DataC, 0);// change this
+			code.add(DataC, 0);
+			code.add(DataC, 0);
+			code.add(DataC, 0);
+			code.add(DataI, node.getType().getSize());
+			code.add(DataI, node.nChildren());
+			int i = 0;
+			System.out.println("asm : " + node.nChildren());
+			for(ParseNode child: node.getChildren()) {
+				Type type = child.getType().concreteType();
+				if(type == INTEGER) {
+					code.add(DataI, ((IntegerConstantNode)child).getValue());
+				}
+				if(type == FLOATING) {
+					code.add(DataF, ((IntegerConstantNode)child).getValue());
+				}
+				if(type == CHARACTER) {
+					code.add(DataC, ((IntegerConstantNode)child).getValue());
+				}
+
+				//code.append(getCodeValue(child));
+				
+				//code.add(node.getSignature().promotion(i).codeFor());
+				
+				i++;
+			}
+			/*for(int i = 0; i < node.nChildren(); i++) {
+				code.add(DataI, ((IntegerConstantNode)node.child(i)).getValue());
+				System.out.println(((IntegerConstantNode)node.child(i)).getValue());
+			}*/
+			code.add(PushD, dlabel);
+			
 		}
 	}
 

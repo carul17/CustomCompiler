@@ -1,6 +1,8 @@
 package parser;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 import logging.TanLogger;
 import parseTree.*;
@@ -323,6 +325,8 @@ public class Parser {
 	private boolean startsExpression(Token token) {
 		return startsComparisonExpression(token);
 	}
+	
+	
 
 	// comparisonExpression -> additiveExpression [> additiveExpression]?
 	private ParseNode parseComparisonExpression() {
@@ -428,10 +432,38 @@ public class Parser {
 		if(startsCast(nowReading)) {
 			return parseCast();
 		}
+		if(startsArray(nowReading)) {
+			return parseArray();
+		}
 		return parseLiteral();
 	}
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsUnaryExpression(token) || startsBracketExpression(token) || startsCast(token);
+		return startsLiteral(token) || startsUnaryExpression(token) || startsBracketExpression(token) || startsCast(token) || startsArray(token);
+	}
+	
+	private ParseNode parseArray() {
+		
+		if(!startsArray(nowReading)) {
+			return syntaxErrorNode("array expression");
+		}
+		Token arrayToken = nowReading;
+		expect(Punctuator.OPEN_SQUARE_BRACE);
+		List<ParseNode> elements = new ArrayList<>();
+		while(!(nowReading instanceof NullToken) || !(nowReading.isLextant(Punctuator.CLOSE_SQUARE_BRACE))){
+			ParseNode expr = parseExpression();
+			elements.add(expr);
+			
+			if(nowReading.isLextant(Punctuator.CLOSE_SQUARE_BRACE)) {
+				break;
+			}
+			expect(Punctuator.COMMA);
+		}
+		expect(Punctuator.CLOSE_SQUARE_BRACE);
+		return ArrayNode.withChildren(arrayToken, elements);
+	}
+	
+	private boolean startsArray(Token token) {
+		return token.isLextant(Punctuator.OPEN_SQUARE_BRACE);
 	}
 	
 	private ParseNode parseCast() {
@@ -492,6 +524,8 @@ public class Parser {
 	private boolean startsBracketExpression(Token token) {
 		return token.isLextant(Punctuator.OPEN_ROUND_BRACE);
 	}
+	
+	
 	
 	// literal -> number | identifier | booleanConstant
 	private ParseNode parseLiteral() {

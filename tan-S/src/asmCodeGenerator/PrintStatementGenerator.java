@@ -6,6 +6,7 @@ import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.SpaceNode;
 import parseTree.nodeTypes.TabNode;
+import semanticAnalyzer.types.ArrayType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
@@ -24,12 +25,14 @@ public class PrintStatementGenerator {
 	}
 
 	public void generate(PrintStatementNode node) {
+		
 		for(ParseNode child : node.getChildren()) {
 			if(child instanceof NewlineNode || child instanceof SpaceNode || child instanceof TabNode) {
 				ASMCodeFragment childCode = visitor.removeVoidCode(child);
 				code.append(childCode);
 			}
 			else {
+				
 				appendPrintCode(child);
 			}
 		}
@@ -39,16 +42,39 @@ public class PrintStatementGenerator {
 		String format = printFormat(node.getType());
 
 		code.append(visitor.removeValueCode(node));
+		
 		convertToStringIfBoolean(node);
 		convertToValueIfString(node);
-		code.add(PushD, format);
-		code.add(Printf);
+		convertToValueIfArray(node);
+		if(node.getType() instanceof ArrayType) {
+			
+			
+			
+			for(ParseNode child : node.getChildren()) {
+				appendPrintCode(child);
+			}
+		}
+		else {
+			code.add(PushD, format);
+			code.add(Printf);
+		}
+		
+		
 	}
 	private void convertToValueIfString(ParseNode node) {
 		if(node.getType() != PrimitiveType.STRING){
 			return;
 		}
 		code.add(PushI, 12);
+		code.add(Add);
+	}
+	private void convertToValueIfArray(ParseNode node) {
+		
+		if(!(node.getType() instanceof ArrayType)){
+			return;
+		}
+		
+		code.add(PushI, 16);
 		code.add(Add);
 	}
 	private void convertToStringIfBoolean(ParseNode node) {
@@ -70,6 +96,10 @@ public class PrintStatementGenerator {
 
 
 	private static String printFormat(Type type) {
+		if(type instanceof ArrayType) {
+			
+			return RunTime.ARRAY_PRINT_FORMAT;
+		}
 		assert type instanceof PrimitiveType;
 		
 		switch((PrimitiveType)type) {
