@@ -9,9 +9,15 @@ public class TypeVariable implements Type {
 	
 	String name;
 	Type constraint;
+	boolean isReference;
 	
 	public TypeVariable(String name) {
 		this.name = name;
+		reset();
+	}
+	public TypeVariable(String name, boolean isReference) {
+		this.name = name;
+		this.isReference = isReference;
 		reset();
 	}
 
@@ -27,6 +33,11 @@ public class TypeVariable implements Type {
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	@Override
+	public boolean getIsReference() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override

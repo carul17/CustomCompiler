@@ -107,7 +107,13 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		node.setType(declarationType);
 		
 		identifier.setType(declarationType);
-		addBinding(identifier, declarationType, constancy);
+		int numElements = -1;
+		if(declarationType instanceof ArrayType) {
+			
+			numElements = initializer.nChildren();
+			System.out.println("nchild " + numElements);
+		}
+		addBinding(identifier, declarationType, constancy, numElements);
 	}
 	
 	public void visitLeave(AssignmentStatementNode node) {
@@ -126,6 +132,9 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			FunctionSignatures signatures = FunctionSignatures.signaturesOf(Punctuator.ASSIGN);
 			semanticError("types don’t match in assignment statement");
 			return;
+		}
+		if(expressionType instanceof ArrayType) {
+			identifier.getBinding().setNumElements(expression.nChildren());
 		}
 		
 		if(identifier.getBinding().isConstant()) {
@@ -282,9 +291,9 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		ParseNode parent = node.getParent();
 		return (parent instanceof DeclarationNode) && (node == parent.child(0));
 	}
-	private void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy) {
+	private void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy, int numElements) {
 		Scope scope = identifierNode.getLocalScope();
-		Binding binding = scope.createBinding(identifierNode, type, constancy);
+		Binding binding = scope.createBinding(identifierNode, type, constancy, numElements);
 		identifierNode.setBinding(binding);
 	}
 	

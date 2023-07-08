@@ -40,10 +40,6 @@
         DataC        37                        %% "%s"
         DataC        115                       
         DataC        0                         
-        DLabel       $print-format-array       
-        DataC        37                        %% "%d"
-        DataC        100                       
-        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -361,7 +357,6 @@
         PushI        0                         
         Add                                    %% r
         LoadF                                  
-        PStack                                 
         PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
@@ -370,7 +365,6 @@
         PushI        8                         
         Add                                    %% a
         LoadF                                  
-        PStack                                 
         PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
@@ -379,7 +373,6 @@
         PushI        16                        
         Add                                    %% b
         LoadF                                  
-        PStack                                 
         PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
@@ -388,7 +381,6 @@
         PushI        24                        
         Add                                    %% bb
         LoadF                                  
-        PStack                                 
         PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
@@ -397,7 +389,6 @@
         PushI        32                        
         Add                                    %% bbb
         LoadF                                  
-        PStack                                 
         PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
@@ -406,7 +397,6 @@
         PushI        40                        
         Add                                    %% s
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -415,7 +405,6 @@
         PushI        44                        
         Add                                    %% z
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -424,7 +413,6 @@
         PushI        48                        
         Add                                    %% y
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -433,7 +421,6 @@
         PushI        52                        
         Add                                    %% yy
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -442,7 +429,6 @@
         PushI        84                        
         Add                                    %% x
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -458,7 +444,6 @@
         DataC        111                       
         DataC        0                         
         PushD        -string-19-hello          
-        PStack                                 
         PushI        12                        
         Add                                    
         PushD        $print-format-string      
@@ -467,7 +452,6 @@
         PushI        56                        
         Add                                    %% neg
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -476,7 +460,6 @@
         PushI        60                        
         Add                                    %% subneg
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -485,7 +468,6 @@
         PushI        64                        
         Add                                    %% plusneg
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -494,7 +476,6 @@
         PushI        68                        
         Add                                    %% plusnegfloat
         LoadF                                  
-        PStack                                 
         PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
@@ -503,7 +484,6 @@
         PushI        76                        
         Add                                    %% plusplusfloat
         LoadF                                  
-        PStack                                 
         PushD        $print-format-floating    
         Printf                                 
         PushD        $print-format-newline     
@@ -512,7 +492,6 @@
         PushI        88                        
         Add                                    %% compare
         LoadC                                  
-        PStack                                 
         JumpTrue     -print-boolean-20-true    
         PushD        $boolean-false-string     
         Jump         -print-boolean-20-join    
@@ -527,7 +506,6 @@
         PushI        89                        
         Add                                    %% word
         LoadI                                  
-        PStack                                 
         PushI        12                        
         Add                                    
         PushD        $print-format-string      

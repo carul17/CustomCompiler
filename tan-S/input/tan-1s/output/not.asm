@@ -151,61 +151,13 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        9                         
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        PushI        5                         
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% b
-        PushI        6                         
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% c
         PushI        1                         
-        StoreC                                 
-        Label        -compare-2-arg1           
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Nop                                    
-        Label        -compare-1-arg2           
-        LoadI                                  
-        Label        -compare-2-arg2           
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% b
-        Nop                                    
-        LoadI                                  
-        Label        -compare-2-sub            
-        Subtract                               
-        JumpPos      -compare-2-true           
-        Jump         -compare-2-false          
-        Label        -compare-2-true           
-        PushI        1                         
-        Jump         -compare-2-join           
-        Label        -compare-2-false          
-        PushI        0                         
-        Jump         -compare-2-join           
-        Label        -compare-2-join           
-        JumpFalse    -if-3-else                
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        PushI        7                         
         StoreI                                 
-        Jump         -if-3-end                 
-        Label        -if-3-else                
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        PushI        10                        
-        StoreI                                 
-        Label        -if-3-end                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a

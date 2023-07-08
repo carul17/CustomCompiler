@@ -50,8 +50,6 @@ public class RunTime {
 		frag.add(DataS, "%c");
 		frag.add(DLabel, STRING_PRINT_FORMAT);
 		frag.add(DataS, "%s");
-		frag.add(DLabel, ARRAY_PRINT_FORMAT);
-		frag.add(DataS, "%d");
 		frag.add(DLabel, BOOLEAN_PRINT_FORMAT);
 		frag.add(DataS, "%s");
 		frag.add(DLabel, NEWLINE_PRINT_FORMAT);

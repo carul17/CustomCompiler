@@ -2,6 +2,7 @@ package asmCodeGenerator;
 
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 import parseTree.ParseNode;
+import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.PrintStatementNode;
 import parseTree.nodeTypes.SpaceNode;
@@ -9,6 +10,7 @@ import parseTree.nodeTypes.TabNode;
 import semanticAnalyzer.types.ArrayType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
+import symbolTable.Binding;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.runtime.RunTime;
@@ -39,27 +41,59 @@ public class PrintStatementGenerator {
 	}
 
 	private void appendPrintCode(ParseNode node) {
-		String format = printFormat(node.getType());
-
 		code.append(visitor.removeValueCode(node));
 		
 		convertToStringIfBoolean(node);
 		convertToValueIfString(node);
 		convertToValueIfArray(node);
+		
 		if(node.getType() instanceof ArrayType) {
-			
-			
-			
-			for(ParseNode child : node.getChildren()) {
-				appendPrintCode(child);
+			Type subtype = ((ArrayType)node.getType()).getSubtype();
+			String format = printFormat(subtype);
+			int numElements;
+			if(node instanceof IdentifierNode) {
+				IdentifierNode identifier = (IdentifierNode)node;
+				numElements = identifier.getBinding().getNumElements();
 			}
+			else {
+				numElements = node.nChildren();
+			}
+			int offset = 0;
+			code.add(PushI, '[');
+			code.add(PushD, RunTime.CHARACTER_PRINT_FORMAT);
+			code.add(Printf);
+			for(int i = 0; i < numElements; i++) {
+				code.add(Duplicate);
+				Macros.readTypeOffset(code, offset, subtype);
+				code.add(PushD, format);
+				code.add(Printf);
+				if(i < numElements - 1) {
+					code.add(PushI, ',');
+					code.add(PushD, RunTime.CHARACTER_PRINT_FORMAT);
+					code.add(Printf);
+					code.add(PushI, ' ');
+					code.add(PushD, RunTime.CHARACTER_PRINT_FORMAT);
+					code.add(Printf);
+				}
+				
+				if(subtype == PrimitiveType.FLOATING) {
+					offset += 8;
+				}
+				else {
+					offset += 4;
+				}
+			}
+			code.add(Pop);
+			code.add(PushI, ']');
+			code.add(PushD, RunTime.CHARACTER_PRINT_FORMAT);
+			code.add(Printf);
+			
 		}
 		else {
+			String format = printFormat(node.getType());
 			code.add(PushD, format);
 			code.add(Printf);
 		}
-		
-		
 	}
 	private void convertToValueIfString(ParseNode node) {
 		if(node.getType() != PrimitiveType.STRING){

@@ -5,27 +5,37 @@ import java.util.List;
 import java.util.Set;
 
 public enum PrimitiveType implements Type {
-	BOOLEAN(1),
-	INTEGER(4),
-	FLOATING(8),
-	CHARACTER(1),
-	STRING(4),
-	ERROR(0),			// use as a value when a syntax error has occurred
-	NO_TYPE(0, "");		// use as a value when no type has been assigned.
+	BOOLEAN(1, false),
+	INTEGER(4, false),
+	FLOATING(8, false),
+	CHARACTER(1, false),
+	STRING(4, true),
+	ERROR(0, false),			// use as a value when a syntax error has occurred
+	NO_TYPE(0, false, "");		// use as a value when no type has been assigned.
 	
 	private int sizeInBytes;
+	private boolean isReference;
 	private String infoString;
 	
-	private PrimitiveType(int size) {
+	private PrimitiveType(int size, boolean isReference) {
 		this.sizeInBytes = size;
+		this.isReference = isReference;
 		this.infoString = toString();
 	}
 	private PrimitiveType(int size, String infoString) {
 		this.sizeInBytes = size;
 		this.infoString = infoString;
 	}
+	private PrimitiveType(int size, boolean isReference, String infoString) {
+		this.sizeInBytes = size;
+		this.isReference = isReference;
+		this.infoString = infoString;
+	}
 	public int getSize() {
 		return sizeInBytes;
+	}
+	public boolean getIsReference() {
+		return isReference;
 	}
 	public String infoString() {
 		return infoString;

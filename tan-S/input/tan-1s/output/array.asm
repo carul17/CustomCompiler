@@ -40,10 +40,6 @@
         DataC        37                        %% "%s"
         DataC        115                       
         DataC        0                         
-        DLabel       $print-format-array       
-        DataC        37                        %% "%d"
-        DataC        100                       
-        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -151,46 +147,201 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        4                         
+        DataZ        13                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        DLabel       -array-1-semanticAnalyzer.types.ArrayType@5ca881b5 
+        DLabel       -array-1-semanticAnalyzer.types.ArrayType@1f32e575 
         DataI        5                         
         DataC        0                         
         DataC        0                         
         DataC        0                         
         DataC        0                         
-        DataI        4                         
-        DataI        3                         
         DataI        1                         
-        DataI        2                         
         DataI        3                         
-        PushD        -array-1-semanticAnalyzer.types.ArrayType@5ca881b5 
+        DataI        97                        
+        DataI        98                        
+        DataI        99                        
+        PushD        -array-1-semanticAnalyzer.types.ArrayType@1f32e575 
         StoreI                                 
-        DLabel       -array-2-semanticAnalyzer.types.ArrayType@5305068a 
-        DataI        5                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataI        4                         
-        DataI        3                         
-        DataI        1                         
-        DataI        2                         
-        DataI        3                         
-        PushD        -array-2-semanticAnalyzer.types.ArrayType@5305068a 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        LoadI                                  
         PushI        16                        
         Add                                    
+        PushI        91                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        0                         
+        Add                                    
+        LoadC                                  
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        44                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadC                                  
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        44                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        LoadC                                  
+        PushD        $print-format-character   
+        Printf                                 
+        Pop                                    
+        PushI        93                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
         PushI        1                         
+        Add                                    %% b
+        DLabel       -array-2-semanticAnalyzer.types.ArrayType@4a574795 
+        DataI        5                         
+        DataC        0                         
+        DataC        0                         
+        DataC        0                         
+        DataC        0                         
+        DataI        8                         
+        DataI        3                         
+        DataF        1.100000                  
+        DataF        2.200000                  
+        DataF        3.300000                  
+        PushD        -array-2-semanticAnalyzer.types.ArrayType@4a574795 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        1                         
+        Add                                    %% b
+        LoadI                                  
+        PushI        16                        
+        Add                                    
+        PushI        91                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        0                         
+        Add                                    
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        44                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushI        44                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        Pop                                    
+        PushI        93                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        9                         
+        Add                                    %% c
+        DLabel       -array-3-semanticAnalyzer.types.ArrayType@1be6f5c3 
+        DataI        5                         
+        DataC        0                         
+        DataC        0                         
+        DataC        0                         
+        DataC        0                         
+        DataI        4                         
+        DataI        4                         
+        DataI        1                         
+        DataI        2                         
+        DataI        4                         
+        DataI        5                         
+        PushD        -array-3-semanticAnalyzer.types.ArrayType@1be6f5c3 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        9                         
+        Add                                    %% c
+        LoadI                                  
+        PushI        16                        
+        Add                                    
+        PushI        91                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        0                         
+        Add                                    
+        LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
-        PushI        2                         
+        PushI        44                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
-        PushI        3                         
+        PushI        44                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        LoadI                                  
         PushD        $print-format-integer     
+        Printf                                 
+        PushI        44                        
+        PushD        $print-format-character   
+        Printf                                 
+        PushI        32                        
+        PushD        $print-format-character   
+        Printf                                 
+        Duplicate                              
+        PushI        12                        
+        Add                                    
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        Pop                                    
+        PushI        93                        
+        PushD        $print-format-character   
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

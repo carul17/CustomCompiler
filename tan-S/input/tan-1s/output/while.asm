@@ -164,13 +164,11 @@
         PushI        0                         
         Add                                    %% a
         Nop                                    
-        PStack                                 
         Label        -compare-1-arg2           
         LoadI                                  
         Label        -compare-2-arg2           
         PushI        1                         
         Nop                                    
-        PStack                                 
         Label        -compare-2-sub            
         Subtract                               
         Duplicate                              
@@ -192,7 +190,6 @@
         PushI        0                         
         Add                                    %% a
         LoadI                                  
-        PStack                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
@@ -204,12 +201,10 @@
         PushI        0                         
         Add                                    %% a
         Nop                                    
-        PStack                                 
         Label        -compare-3-arg2           
         LoadI                                  
         PushI        1                         
         Nop                                    
-        PStack                                 
         Subtract                               
         StoreI                                 
         Jump         -while-4-condition        

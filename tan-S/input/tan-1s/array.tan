@@ -1,4 +1,10 @@
 main {
-	var a := [1,2,3];
-	print [1,2,3] \n;
+	var a := ['a', 'b', 'c'];
+	print a \n;
+	
+	var b := [1.1, 2.2, 3.3];
+	print b \n;
+	
+	var c := [1,2,4,5];
+	print c \n;
 }

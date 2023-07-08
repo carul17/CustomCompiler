@@ -1,4 +1,4 @@
 main{
 	var a := 1;
-	print +a \n;
+	print a \n;
 }

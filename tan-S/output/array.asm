@@ -40,10 +40,6 @@
         DataC        37                        %% "%s"
         DataC        115                       
         DataC        0                         
-        DLabel       $print-format-array       
-        DataC        37                        %% "%d"
-        DataC        100                       
-        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -156,25 +152,50 @@
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        DLabel       -array-1-array            
+        DLabel       -array-1-semanticAnalyzer.types.ArrayType@4fcd19b3 
         DataI        5                         
         DataC        0                         
         DataC        0                         
         DataC        0                         
         DataC        0                         
-        DataI        3                         
+        DataI        4                         
         DataI        3                         
         DataI        1                         
         DataI        2                         
         DataI        3                         
-        PushD        -array-1-array            
-        PStack                                 
+        PushD        -array-1-semanticAnalyzer.types.ArrayType@4fcd19b3 
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
+        LoadI                                  
         PushI        16                        
         Add                                    
+        Duplicate                              
+        PushI        0                         
+        Add                                    
+        LoadI                                  
+        Exchange                               
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Exchange                               
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        LoadI                                  
+        Exchange                               
+        Pop                                    
+        PushD        $print-format-integer     
+        PushD        $print-format-integer     
+        PushD        $print-format-integer     
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-integer     
+        Printf                                 
         PushD        $print-format-newline     
         Printf                                 
         Halt                                   

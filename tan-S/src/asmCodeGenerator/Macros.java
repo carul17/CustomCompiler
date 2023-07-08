@@ -2,6 +2,9 @@ package asmCodeGenerator;
 
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
+import semanticAnalyzer.types.ArrayType;
+import semanticAnalyzer.types.PrimitiveType;
+import semanticAnalyzer.types.Type;
 
 public class Macros {
 	
@@ -42,6 +45,17 @@ public class Macros {
 		frag.add(Add);				// [base+off]
 		frag.add(LoadI);			// [*(base+off)]
 	}
+	public static void readTypeOffset(ASMCodeFragment frag, int offset, Type type) {
+		if(type == PrimitiveType.INTEGER) {
+			readIOffset(frag, offset);
+		}
+		else if(type == PrimitiveType.FLOATING) {
+			readFOffset(frag, offset);
+		}
+		else {
+			readCOffset(frag, offset);
+		}
+	}
 	/** [... baseLocation] -> [... charValue]
 	 * @param frag ASMCodeFragment to add code to
 	 * @param offset amount to add to the base location before reading
@@ -50,6 +64,11 @@ public class Macros {
 		frag.add(PushI, offset);	// [base offset]
 		frag.add(Add);				// [base+off]
 		frag.add(LoadC);			// [*(base+off)]
+	}
+	public static void readFOffset(ASMCodeFragment frag, int offset) {
+		frag.add(PushI, offset);	// [base offset]
+		frag.add(Add);				// [base+off]
+		frag.add(LoadF);			// [*(base+off)]
 	}
 	/** [... intToWrite baseLocation] -> [...]
 	 * @param frag ASMCodeFragment to add code to

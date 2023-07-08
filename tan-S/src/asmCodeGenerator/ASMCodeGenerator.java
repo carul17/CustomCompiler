@@ -711,41 +711,36 @@ public class ASMCodeGenerator {
 		
 		public void visitLeave(ArrayNode node) {
 			newValueCode(node);
-			
+			Type subtype = ((ArrayType)node.getType()).getSubtype();
 			Labeller labeller = new Labeller("array");
 			String dlabel = labeller.newLabel(node.getType().toString());
 			code.add(DLabel, dlabel);
 			code.add(DataI, 5);
-			code.add(DataC, 0);// change this
+			code.add(DataC, subtype.getIsReference() ? 1 : 0);
 			code.add(DataC, 0);
 			code.add(DataC, 0);
 			code.add(DataC, 0);
 			code.add(DataI, node.getType().getSize());
 			code.add(DataI, node.nChildren());
 			int i = 0;
-			System.out.println("asm : " + node.nChildren());
+			
 			for(ParseNode child: node.getChildren()) {
 				Type type = child.getType().concreteType();
 				if(type == INTEGER) {
 					code.add(DataI, ((IntegerConstantNode)child).getValue());
 				}
 				if(type == FLOATING) {
-					code.add(DataF, ((IntegerConstantNode)child).getValue());
+					code.add(DataF, ((FloatingConstantNode)child).getValue());
 				}
 				if(type == CHARACTER) {
-					code.add(DataC, ((IntegerConstantNode)child).getValue());
+					code.add(DataI, ((CharacterNode)child).getValue());
 				}
-
-				//code.append(getCodeValue(child));
-				
-				//code.add(node.getSignature().promotion(i).codeFor());
+				if(type instanceof ArrayType) {
+					visitLeave(child);
+				}
 				
 				i++;
 			}
-			/*for(int i = 0; i < node.nChildren(); i++) {
-				code.add(DataI, ((IntegerConstantNode)node.child(i)).getValue());
-				System.out.println(((IntegerConstantNode)node.child(i)).getValue());
-			}*/
 			code.add(PushD, dlabel);
 			
 		}

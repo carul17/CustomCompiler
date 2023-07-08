@@ -5,6 +5,7 @@ import java.util.Set;
 public class ArrayType implements Type {
 
 	Type subtype;
+	boolean isReference = true;
 	
 	public ArrayType(Type subtype) {
 		this.subtype = subtype;
@@ -15,6 +16,11 @@ public class ArrayType implements Type {
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return subtype.getSize();
+	}
+	@Override
+	public boolean getIsReference() {
+		// TODO Auto-generated method stub
+		return isReference;
 	}
 
 	@Override
@@ -39,7 +45,7 @@ public class ArrayType implements Type {
 	
 	public Type getSubtype() {
 		// TODO Auto-generated method stub
-		return subtype;
+		return subtype.concreteType();
 	}
 	
 	@Override

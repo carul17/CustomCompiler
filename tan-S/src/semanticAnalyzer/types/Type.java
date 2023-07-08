@@ -10,6 +10,7 @@ public interface Type {
 	 * @return number of bytes per instance
 	 */
 	public int getSize(); 
+	public boolean getIsReference();
 	
 	/** Yields a printable string for information about this type.
 	 * use this rather than toString() if you want an abbreviated string.
