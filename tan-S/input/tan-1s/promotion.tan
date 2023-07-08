@@ -1,6 +1,8 @@
 main {
-	#var a := !false && true;
+	var a := !false && true;
     #print a \n;
-    var b := 4.5 / 0;
-    print b \n;
+    #var b := 4.5 / 0;
+    print a \n;
+    
+    
 }

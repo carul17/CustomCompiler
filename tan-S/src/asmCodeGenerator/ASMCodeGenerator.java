@@ -358,7 +358,7 @@ public class ASMCodeGenerator {
 					code.add(signature.promotion(i).codeFor());
 					
 					//print for debugging
-					code.add(PStack);
+					//code.add(PStack);
 					
 					
 					}
@@ -385,7 +385,7 @@ public class ASMCodeGenerator {
 				code.add(signature.promotion(i).codeFor());
 				
 				//print for debugging
-				code.add(PStack);
+				//code.add(PStack);
 				
 				
 				}
@@ -573,7 +573,6 @@ public class ASMCodeGenerator {
 		
 		
 		private List<ASMCodeFragment> childCode(OperatorNode node) {
-			System.out.println("hloo");
 			List<ASMCodeFragment> result = new ArrayList<>();
 			int i = 0;
 			for(ParseNode child: node.getChildren()) {

@@ -127,7 +127,6 @@ public class PromotedSignature{
 	
 	private static PromotedSignature neverMatchedSignature = new PromotedSignature(FunctionSignature.nullInstance(), nullPromotions, nullTypes) {
 		public boolean accepts(List<Type> types) {
-			System.out.println("hi");
 			return false;
 		}
 		public boolean isNull() {
