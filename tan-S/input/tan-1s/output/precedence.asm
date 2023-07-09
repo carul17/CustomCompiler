@@ -215,7 +215,6 @@
         PushD        $global-memory-block      
         PushI        8                         
         Add                                    %% b
-        Label        -compare-11-arg1          
         Label        -compare-7-arg1           
         PushI        5                         
         Nop                                    
@@ -234,7 +233,6 @@
         Jump         -compare-7-join           
         Label        -compare-7-join           
         Nop                                    
-        Label        -compare-11-arg2          
         Label        -compare-9-arg1           
         PushI        6                         
         Nop                                    
@@ -243,7 +241,7 @@
         Nop                                    
         Label        -compare-9-sub            
         Subtract                               
-        JumpNeg      -compare-9-true           
+        JumpPos      -compare-9-true           
         Jump         -compare-9-false          
         Label        -compare-9-true           
         PushI        1                         
@@ -253,8 +251,7 @@
         Jump         -compare-9-join           
         Label        -compare-9-join           
         Nop                                    
-        Label        -compare-11-sub           
-        And                                    
+        Or                                     
         StoreC                                 
         PushD        $global-memory-block      
         PushI        0                         
@@ -268,12 +265,12 @@
         PushI        8                         
         Add                                    %% b
         LoadC                                  
-        JumpTrue     -print-boolean-12-true    
+        JumpTrue     -print-boolean-11-true    
         PushD        $boolean-false-string     
-        Jump         -print-boolean-12-join    
-        Label        -print-boolean-12-true    
+        Jump         -print-boolean-11-join    
+        Label        -print-boolean-11-true    
         PushD        $boolean-true-string      
-        Label        -print-boolean-12-join    
+        Label        -print-boolean-11-join    
         PushD        $print-format-boolean     
         Printf                                 
         PushD        $print-format-newline     

@@ -320,12 +320,29 @@ public class Parser {
 		if(!startsExpression(nowReading)) {
 			return syntaxErrorNode("expression");
 		}
-		return parseComparisonExpression();
+		return parseAndOrExpression();
 	}
 	private boolean startsExpression(Token token) {
-		return startsComparisonExpression(token);
+		return startsAndOrExpression(token);
 	}
 	
+	private ParseNode parseAndOrExpression() {
+		if(!startsAndOrExpression(nowReading)) {
+			return syntaxErrorNode("and, or expression");
+		}
+		ParseNode left = parseComparisonExpression();
+		if(nowReading.isLextant(Punctuator.AND) || nowReading.isLextant(Punctuator.OR)) {
+			Token compareToken = nowReading;
+			readToken();
+			ParseNode right = parseComparisonExpression();
+			return OperatorNode.withChildren(compareToken, left, right);
+		}
+		return left;
+	}
+	
+	private boolean startsAndOrExpression(Token token) {
+		return startsComparisonExpression(token);
+	}
 	
 
 	// comparisonExpression -> additiveExpression [> additiveExpression]?
@@ -341,8 +358,7 @@ public class Parser {
 				|| nowReading.isLextant(Punctuator.GREATEREQUAL)
 				|| nowReading.isLextant(Punctuator.EQUAL)
 				|| nowReading.isLextant(Punctuator.NOTEQUAL)
-				|| nowReading.isLextant(Punctuator.AND)
-				|| nowReading.isLextant(Punctuator.OR)) {
+				) {
 			Token compareToken = nowReading;
 			readToken();
 			ParseNode right = parseAdditiveExpression();
