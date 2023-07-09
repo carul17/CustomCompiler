@@ -15,7 +15,7 @@ public class ArrayType implements Type {
 	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
-		return subtype.getSize();
+		return 4;
 	}
 	@Override
 	public boolean getIsReference() {
@@ -26,7 +26,7 @@ public class ArrayType implements Type {
 	@Override
 	public String infoString() {
 		// TODO Auto-generated method stub
-		return "ArrayType";
+		return "ArrayType" + " " + subtype.infoString();
 	}
 
 	
@@ -51,7 +51,7 @@ public class ArrayType implements Type {
 	@Override
 	public Boolean equivalent(Type otherType) {
 		if(otherType instanceof ArrayType) {
-			return this.subtype.equivalent(((ArrayType)otherType).getSubtype());
+			return this.subtype.concreteType().equivalent(((ArrayType)otherType).getSubtype());
 		}
 		return false;
 	}

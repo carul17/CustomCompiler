@@ -11,7 +11,9 @@ import java.util.Set;
 import asmCodeGenerator.codeStorage.ASMOpcode;
 import asmCodeGenerator.operators.FloatDivideCodeGenerator;
 import asmCodeGenerator.operators.IntegerDivideCodeGenerator;
+import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Punctuator;
+import semanticAnalyzer.types.ArrayType;
 import semanticAnalyzer.types.Type;
 import semanticAnalyzer.types.TypeVariable;
 
@@ -163,6 +165,16 @@ public class FunctionSignatures extends ArrayList<FunctionSignature> {
 			);
 		new FunctionSignatures(Punctuator.NOT,
 				new FunctionSignature(ASMOpcode.BNegate, BOOLEAN, BOOLEAN)
+			);
+		TypeVariable T = new TypeVariable("T");
+		new FunctionSignatures(Keyword.NEW,
+				new FunctionSignature(ASMOpcode.Nop, T,INTEGER, new ArrayType(T))
+			);
+		new FunctionSignatures(Keyword.LENGTH,
+				new FunctionSignature(ASMOpcode.Nop, T, INTEGER)
+				);
+		new FunctionSignatures(Punctuator.INDEXING,
+				new FunctionSignature(ASMOpcode.Nop, new ArrayType(INTEGER), INTEGER, INTEGER)
 				);
 		// First, we use the operator itself (in this case the Punctuator ADD) as the key.
 		// Then, we give that key two signatures: one an (INT x INT -> INT) and the other

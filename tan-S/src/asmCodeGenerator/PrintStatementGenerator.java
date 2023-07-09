@@ -48,6 +48,7 @@ public class PrintStatementGenerator {
 		convertToValueIfArray(node);
 		
 		if(node.getType() instanceof ArrayType) {
+			
 			Type subtype = ((ArrayType)node.getType()).getSubtype();
 			String format = printFormat(subtype);
 			int numElements;

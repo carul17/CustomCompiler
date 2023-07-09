@@ -435,11 +435,18 @@ public class Parser {
 		if(startsArray(nowReading)) {
 			return parseArray();
 		}
+		
 		return parseLiteral();
 	}
 	private boolean startsAtomicExpression(Token token) {
-		return startsLiteral(token) || startsUnaryExpression(token) || startsBracketExpression(token) || startsCast(token) || startsArray(token);
+		return startsLiteral(token) 
+				|| startsUnaryExpression(token)
+				|| startsBracketExpression(token)
+				|| startsCast(token)
+				|| startsArray(token);
 	}
+	
+	
 	
 	private ParseNode parseArray() {
 		
@@ -447,23 +454,42 @@ public class Parser {
 			return syntaxErrorNode("array expression");
 		}
 		Token arrayToken = nowReading;
-		expect(Punctuator.OPEN_SQUARE_BRACE);
-		List<ParseNode> elements = new ArrayList<>();
-		while(!(nowReading instanceof NullToken) || !(nowReading.isLextant(Punctuator.CLOSE_SQUARE_BRACE))){
-			ParseNode expr = parseExpression();
-			elements.add(expr);
-			
-			if(nowReading.isLextant(Punctuator.CLOSE_SQUARE_BRACE)) {
-				break;
-			}
-			expect(Punctuator.COMMA);
+		if(arrayToken.isLextant(Keyword.NEW)) {
+			readToken();
+			expect(Punctuator.OPEN_SQUARE_BRACE);
+			ParseNode type = parseType();
+			expect(Punctuator.CLOSE_SQUARE_BRACE);
+			expect(Punctuator.OPEN_ROUND_BRACE);
+			ParseNode size = parseExpression();
+			expect(Punctuator.CLOSE_ROUND_BRACE);
+			return OperatorNode.withChildren(arrayToken, type, size);
 		}
-		expect(Punctuator.CLOSE_SQUARE_BRACE);
-		return ArrayNode.withChildren(arrayToken, elements);
+		else {
+			expect(Punctuator.OPEN_SQUARE_BRACE);
+			List<ParseNode> elements = new ArrayList<>();
+			while(!(nowReading instanceof NullToken) || !(nowReading.isLextant(Punctuator.CLOSE_SQUARE_BRACE))){
+				ParseNode expr = parseExpression();
+				elements.add(expr);
+				
+				if(nowReading.isLextant(Punctuator.CLOSE_SQUARE_BRACE)) {
+					break;
+				}
+				if(nowReading.isLextant(Punctuator.INDEXING)) {
+					Token indexingToken = LextantToken.make(arrayToken, ":", Punctuator.INDEXING);
+					readToken();
+					ParseNode index = parseExpression();
+					expect(Punctuator.CLOSE_SQUARE_BRACE);
+					return OperatorNode.withChildren(indexingToken, expr, index);
+				}
+				expect(Punctuator.COMMA);
+			}
+			expect(Punctuator.CLOSE_SQUARE_BRACE);
+			return ArrayNode.withChildren(arrayToken, elements);
+		}
 	}
 	
 	private boolean startsArray(Token token) {
-		return token.isLextant(Punctuator.OPEN_SQUARE_BRACE);
+		return token.isLextant(Punctuator.OPEN_SQUARE_BRACE) || token.isLextant(Keyword.NEW);
 	}
 	
 	private ParseNode parseCast() {
@@ -507,7 +533,7 @@ public class Parser {
 		return OperatorNode.withChildren(operatorToken, child);
 	}
 	private boolean startsUnaryExpression(Token token) {
-		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT);
+		return token.isLextant(Punctuator.SUBTRACT, Punctuator.ADD, Punctuator.NOT, Keyword.LENGTH);
 	}
 	
 	// bracket expresssion 

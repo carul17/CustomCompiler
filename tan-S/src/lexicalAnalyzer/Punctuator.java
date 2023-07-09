@@ -32,6 +32,7 @@ public enum Punctuator implements Lextant {
 	COMMA(","),
 	AND("&&"),
 	OR("||"),
+	INDEXING(":"),
 	OPEN_ROUND_BRACE("("),
 	CLOSE_ROUND_BRACE(")"),
 	NULL_PUNCTUATOR("");

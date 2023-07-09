@@ -145,6 +145,30 @@
         Label        $$f-divide-by-zero        
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $errors-index-out-of-bounds 
+        DataC        105                       %% "index out of bounds"
+        DataC        110                       
+        DataC        100                       
+        DataC        101                       
+        DataC        120                       
+        DataC        32                        
+        DataC        111                       
+        DataC        117                       
+        DataC        116                       
+        DataC        32                        
+        DataC        111                       
+        DataC        102                       
+        DataC        32                        
+        DataC        98                        
+        DataC        111                       
+        DataC        117                       
+        DataC        110                       
+        DataC        100                       
+        DataC        115                       
+        DataC        0                         
+        Label        $$f-index-out-of-bounds   
+        PushD        $errors-index-out-of-bounds 
+        Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
         DataZ        93                        
@@ -190,7 +214,6 @@
         Add                                    %% bb
         PushF        6.000000                  
         Nop                                    
-        Label        -compare-4-arg2           
         PushF        2.000000                  
         Nop                                    
         FSubtract                              
@@ -200,7 +223,6 @@
         Add                                    %% bbb
         PushF        6.000000                  
         Nop                                    
-        Label        -compare-5-arg2           
         PushF        2.000000                  
         Nop                                    
         FAdd                                   
@@ -252,7 +274,6 @@
         Add                                    %% yy
         PushI        6                         
         Nop                                    
-        Label        -compare-9-arg2           
         PushI        3                         
         Nop                                    
         Add                                    
@@ -267,7 +288,6 @@
         Add                                    %% subneg
         PushI        6                         
         Nop                                    
-        Label        -compare-10-arg2          
         PushI        -5                        
         Nop                                    
         Subtract                               
@@ -277,7 +297,6 @@
         Add                                    %% plusneg
         PushI        6                         
         Nop                                    
-        Label        -compare-11-arg2          
         PushI        -5                        
         Nop                                    
         Add                                    
@@ -287,7 +306,6 @@
         Add                                    %% plusnegfloat
         PushF        6.200000                  
         Nop                                    
-        Label        -compare-12-arg2          
         PushF        -5.100000                 
         Nop                                    
         FAdd                                   
@@ -297,7 +315,6 @@
         Add                                    %% plusplusfloat
         PushF        6.200000                  
         Nop                                    
-        Label        -compare-13-arg2          
         PushF        5.100000                  
         Nop                                    
         FAdd                                   
@@ -307,10 +324,8 @@
         Add                                    %% x
         PushI        6                         
         Nop                                    
-        Label        -compare-15-arg2          
         PushI        3                         
         Nop                                    
-        Label        -compare-14-arg2          
         PushI        5                         
         Nop                                    
         Multiply                               
@@ -323,7 +338,6 @@
         Label        -compare-17-arg1          
         PushI        1                         
         Nop                                    
-        Label        -compare-16-arg2          
         Label        -compare-17-arg2          
         PushI        0                         
         Nop                                    

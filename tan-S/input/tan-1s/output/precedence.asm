@@ -171,25 +171,109 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        1                         
+        DataZ        9                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
+        PushF        -5.500000                 
+        StoreF                                 
+        PushD        $global-memory-block      
         PushI        0                         
-        StoreC                                 
+        Add                                    %% a
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
         Nop                                    
+        LoadF                                  
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        Nop                                    
+        LoadF                                  
+        PushF        7.500000                  
+        Nop                                    
+        FAdd                                   
+        Nop                                    
+        FAdd                                   
+        Nop                                    
+        PushF        6.000000                  
+        Nop                                    
+        FSubtract                              
+        Nop                                    
+        PushF        7.000000                  
+        Nop                                    
+        Label        -compare-4-arg2           
+        PushF        7.000000                  
+        Nop                                    
+        Duplicate                              
+        JumpFZero    $$f-divide-by-zero        
+        FDivide                                
+        Nop                                    
+        FSubtract                              
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% b
+        Label        -compare-11-arg1          
+        Label        -compare-7-arg1           
+        PushI        5                         
+        Nop                                    
+        Label        -compare-7-arg2           
+        PushI        3                         
+        Nop                                    
+        Label        -compare-7-sub            
+        Subtract                               
+        JumpPos      -compare-7-true           
+        Jump         -compare-7-false          
+        Label        -compare-7-true           
+        PushI        1                         
+        Jump         -compare-7-join           
+        Label        -compare-7-false          
+        PushI        0                         
+        Jump         -compare-7-join           
+        Label        -compare-7-join           
+        Nop                                    
+        Label        -compare-11-arg2          
+        Label        -compare-9-arg1           
+        PushI        6                         
+        Nop                                    
+        Label        -compare-9-arg2           
+        PushI        5                         
+        Nop                                    
+        Label        -compare-9-sub            
+        Subtract                               
+        JumpNeg      -compare-9-true           
+        Jump         -compare-9-false          
+        Label        -compare-9-true           
+        PushI        1                         
+        Jump         -compare-9-join           
+        Label        -compare-9-false          
+        PushI        0                         
+        Jump         -compare-9-join           
+        Label        -compare-9-join           
+        Nop                                    
+        Label        -compare-11-sub           
+        And                                    
+        StoreC                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% b
         LoadC                                  
-        BNegate                                
-        JumpTrue     -print-boolean-2-true     
+        JumpTrue     -print-boolean-12-true    
         PushD        $boolean-false-string     
-        Jump         -print-boolean-2-join     
-        Label        -print-boolean-2-true     
+        Jump         -print-boolean-12-join    
+        Label        -print-boolean-12-true    
         PushD        $boolean-true-string      
-        Label        -print-boolean-2-join     
+        Label        -print-boolean-12-join    
         PushD        $print-format-boolean     
         Printf                                 
         PushD        $print-format-newline     

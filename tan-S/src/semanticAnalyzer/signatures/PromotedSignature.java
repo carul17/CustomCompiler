@@ -38,6 +38,7 @@ public class PromotedSignature{
 		for(FunctionSignature signature : signatures) {
 			
 			result.addAll(findAll(signature, types));
+			
 			if(matchFound) {
 				//break;
 			}
@@ -57,6 +58,7 @@ public class PromotedSignature{
 		}
 		
 		findAllRecursive(signature, types, promotions, promotedTypes, promotedSignatures, 0);
+		
 		return promotedSignatures; //I think we need this?
 
 	}
@@ -70,6 +72,8 @@ public class PromotedSignature{
 				for(Type promotedType : promotedTypes) {
 					System.out.println("promoted types: " + promotedType.infoString());
 				}*/
+				
+				
 				
 				PromotedSignature found = new PromotedSignature(signature, promotions, promotedTypes);
 				promotedSignatures.add(found);

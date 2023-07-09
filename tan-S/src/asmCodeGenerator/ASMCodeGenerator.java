@@ -10,6 +10,7 @@ import asmCodeGenerator.operators.IntegerDivideCodeGenerator;
 import asmCodeGenerator.operators.SimpleCodeGenerator;
 import asmCodeGenerator.runtime.MemoryManager;
 import asmCodeGenerator.runtime.RunTime;
+import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
 import lexicalAnalyzer.Punctuator;
 import parseTree.*;
@@ -46,7 +47,9 @@ public class ASMCodeGenerator {
 		
 		code.append( MemoryManager.codeForInitialization());
 		code.append( RunTime.getEnvironment() );
+		
 		code.append( globalVariableBlockASM() );
+		
 		code.append( programASM() );
 		
 		code.append( MemoryManager.codeForAfterApplication() );
@@ -344,7 +347,11 @@ public class ASMCodeGenerator {
 			
 			ASMCodeFragment arg1 = getCodeValue(node.child(0)); //this was remove and get value
 			
-			if(!node.getOperator().getLexeme().equals("!")){
+			
+			
+			
+			
+			if(!node.getOperator().getLexeme().equals("!") && !(node.nChildren() == 1)){
 				arg2 = getCodeValue(node.child(1)); //this was remove and get value
 			}
 			
@@ -372,67 +379,57 @@ public class ASMCodeGenerator {
 					}
 					i++; //might need to put in if
 				}
+			
+			
 			newValueCode(node);
+			
 			code.add(Label, startLabel);
 			code.append(arg1);//from first child
 			
-			if(!node.getOperator().getLexeme().equals("!")){
-				code.add(Label, arg2Label);
+			} else if(variant instanceof SimpleCodeGenerator) {
+				newValueCode(node);
+				int i =0;
+				for(ParseNode child: node.getChildren()) {	
+					if(getCodeValue(child) != null) {
+					code.append(getCodeValue(child));
+					
+					code.add(signature.promotion(i).codeFor());
+					
+					//print for debugging
+					//code.add(PStack);
+					
+					
+					}
+					i++; 
+				}
+				if(node.getOperator() == Punctuator.INDEXING) {
+					newAddressCode(node);
+				}
+				else {
+				newValueCode(node);
+				}
+			code.add(Label, startLabel);
+			code.append(arg1);
+			code.add(Label, arg2Label);
+			
+			if(!node.getOperator().getLexeme().equals("!") && !(node.nChildren() == 1)){
 				code.append(arg2);
 			}
 			
-			
-
-		} else if(variant instanceof SimpleCodeGenerator) {
-			newValueCode(node);
-			int i =0;
-			for(ParseNode child: node.getChildren()) {	
-				if(getCodeValue(child) != null) {
-				code.append(getCodeValue(child));
-				
-				code.add(signature.promotion(i).codeFor());
-				
-				//print for debugging
-				//code.add(PStack);
-				
-				
-				}
-				i++; //might need to put in if
-			}
-		newValueCode(node);
-		code.add(Label, startLabel);
-		code.append(arg1);//from first child
-		
-		if(!node.getOperator().getLexeme().equals("!")){
-			code.add(Label, arg2Label);
-			code.append(arg2);
-		}
-			
-//		SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
-//		ASMCodeFragment fragment = generator.generate(node, childCode(node));
-//		codeMap.put(node, fragment);
-		code.add(ASMOpcode.Duplicate);
-		if (signature.resultType().toString().equals("FLOATING")) {
-			code.add(ASMOpcode.JumpFZero, RunTime.FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR);
-			code.add(ASMOpcode.FDivide);
-		} else {
 			code.add(ASMOpcode.Duplicate);
-			code.add(ASMOpcode.JumpFalse, RunTime.INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR);
-			code.add(ASMOpcode.Divide);
-		}
-		
-		}
+			if (signature.resultType().toString().equals("FLOATING")) {
+				code.add(ASMOpcode.JumpFZero, RunTime.FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR);
+				code.add(ASMOpcode.FDivide);
+			} else {
+				code.add(ASMOpcode.Duplicate);
+				code.add(ASMOpcode.JumpFalse, RunTime.INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR);
+				code.add(ASMOpcode.Divide);
+			}
 			
-//		} else if(variant instanceof SimpleCodeGenerator) {
-//			SimpleCodeGenerator generator = (SimpleCodeGenerator)variant;
-//			ASMCodeFragment fragment = generator.generate(node, childCode(node));
-//			codeMap.put(node, fragment);
-//			// NEED TO DOS OMETHING WITH SIMPLE CODE GENERATOR.JAVA
-//		}
+			}
+			
 			Lextant lextant = node.getOperator();
-			assert(lextant instanceof Punctuator);
-			//Punctuator punctuator = (Punctuator)lextant;
-			//System.out.print(node.child(0).getType().toString());
+			;
 			
 			if(operator == Punctuator.GREATER
 					|| operator == Punctuator.LESS
@@ -441,13 +438,60 @@ public class ASMCodeGenerator {
 					|| operator == Punctuator.EQUAL
 					|| operator == Punctuator.NOTEQUAL
 					|| operator == Punctuator.AND)
-				{ //handing greater than symbol
+				{
 				visitComparisonOperatorNode(node, operator);
 			}
+			else if(operator == Keyword.NEW) {
+				Type type = node.getType();
+				
+				
+				int length;
+				code.add(PushI, 16);
+				code.add(PushI, type.getSize());
+				if(node.child(1) instanceof CharacterNode) {
+					length = ((CharacterNode)node.child(1)).getValue();
+				}
+				else {
+					length =  ((IntegerConstantNode)node.child(1)).getValue();
+				}
+				code.add(PushI, length);
+				code.add(Multiply);
+				
+				code.add(Call, MemoryManager.MEM_MANAGER_ALLOCATE);
+				
+				code.add(Duplicate);
+				code.add(PushI, 5);
+				code.add(StoreI);
+				
+				
+				code.add(Duplicate);
+				code.add(PushI, 4);
+				code.add(Add);
+				code.add(PushI, 0);
+				code.add(StoreI);
+				
+				code.add(Duplicate);
+				code.add(PushI, 8);
+				code.add(Add);
+				code.add(PushI, ((ArrayType)type).getSubtype().getSize());
+				code.add(StoreI);
+				
+				code.add(Duplicate);
+				code.add(PushI, 12);
+				code.add(Add);
+				
+				code.add(PushI, length);
+				code.add(StoreI);
+			}
 			
+			
+			else if(node.nChildren() == 1){
+				visitUnaryOperatorNode(node);
+				
+			}
 			else {
 				visitNormalBinaryOperatorNode(node);
-			};
+			}
 		}
 		
 		
@@ -603,6 +647,7 @@ public class ASMCodeGenerator {
 			
 			code.append(arg1);
 			
+			
 			if(variant instanceof ASMOpcode) {
 				ASMOpcode opcode = (ASMOpcode) variant;
 				code.add(opcode);
@@ -611,21 +656,33 @@ public class ASMCodeGenerator {
 				ASMOpcode opcode = opcodeForOperator(node.getOperator());
 				code.add(opcode);
 				}
+			
+			if(node.getOperator() == Keyword.LENGTH) {
+				code.add(PushI, 12);
+				code.add(Add);
+				code.add(LoadI);
 				
+			}
 		}
 		
 		private void visitNormalBinaryOperatorNode(OperatorNode node) {
+			if(node.getOperator() == Punctuator.INDEXING) {
+				newAddressCode(node);
+			}
+			else {
 			newValueCode(node);
+			}
+		
 			ASMCodeFragment arg1 = removeValueCode(node.child(0));
 			ASMCodeFragment arg2 = null;
-			if(!node.getOperator().getLexeme().equals("!")){
+			if(!node.getOperator().getLexeme().equals("!") && !(node.nChildren() == 1)){
 				 arg2 = removeValueCode(node.child(1));
 			}
 			PromotedSignature signature = node.getSignature();
 			Object variant = signature.getVariant();
 			
 			code.append(arg1);
-			if(!node.getOperator().getLexeme().equals("!")){
+			if(!node.getOperator().getLexeme().equals("!") && !(node.nChildren() == 1) && !(node.getOperator() == Punctuator.INDEXING)){
 				code.append(arg2);
 			}
 			
@@ -647,7 +704,47 @@ public class ASMCodeGenerator {
 				code.add(opcode);
 				
 			}
-										// type-dependent! (opcode is different for floats and for ints)
+				
+			if(node.getOperator() == Punctuator.INDEXING) {
+				int index;
+				if(node.child(1) instanceof CharacterNode) {
+					index = ((CharacterNode)node.child(1)).getValue();
+				}
+				else {
+					index =  ((IntegerConstantNode)node.child(1)).getValue();
+				}
+				
+				//runtime error
+				
+				code.add(Duplicate);
+				
+				code.add(PushI, 12);
+				code.add(Add);
+				code.add(LoadI);
+				code.add(PushI, index);
+				code.add(Subtract);
+				code.add(ASMOpcode.JumpNeg, RunTime.INDEX_OUT_OF_BOUNDS_RUNTIME_ERROR);
+				if(index < 0 ) {
+					code.add(Jump, RunTime.INDEX_OUT_OF_BOUNDS_RUNTIME_ERROR);
+				}
+				
+				/////
+				
+				code.add(Duplicate);
+				code.add(PushI, 8);
+				code.add(Add);
+				code.add(LoadI);
+				
+				code.add(PushI, index);
+				code.add(Multiply);
+				
+				code.add(PushI, 16);
+				code.add(Add);
+				
+				code.add(Add);
+				
+				turnAddressIntoValue(code, node);
+			}
 		}
 		
 		private ASMOpcode opcodeForOperator(Lextant lextant) {
@@ -711,38 +808,83 @@ public class ASMCodeGenerator {
 		
 		public void visitLeave(ArrayNode node) {
 			newValueCode(node);
+			
+			
+			
 			Type subtype = ((ArrayType)node.getType()).getSubtype();
+			
+			int sizeInBytes = 16 + subtype.getSize() * node.nChildren();
+			
+			
+			
 			Labeller labeller = new Labeller("array");
 			String dlabel = labeller.newLabel(node.getType().toString());
-			code.add(DLabel, dlabel);
-			code.add(DataI, 5);
-			code.add(DataC, subtype.getIsReference() ? 1 : 0);
-			code.add(DataC, 0);
-			code.add(DataC, 0);
-			code.add(DataC, 0);
-			code.add(DataI, node.getType().getSize());
-			code.add(DataI, node.nChildren());
-			int i = 0;
 			
+			//code.add(DLabel, dlabel);
+			
+			code.add(PushI, sizeInBytes);
+			code.add(Call, MemoryManager.MEM_MANAGER_ALLOCATE);
+		
+			code.add(Duplicate);
+			code.add(PushI, 5);
+			code.add(StoreI);
+			
+			
+			code.add(Duplicate);
+			code.add(PushI, 4);
+			code.add(Add);
+			code.add(PushI, 0);
+			code.add(StoreI);
+			
+			code.add(Duplicate);
+			code.add(PushI, 8);
+			code.add(Add);
+			code.add(PushI, subtype.getSize());
+			code.add(StoreI);
+			
+			code.add(Duplicate);
+			code.add(PushI, 12);
+			code.add(Add);
+			code.add(PushI, node.nChildren());
+			code.add(StoreI);
+			
+			
+			int i = 0;
+			int offset = 0;
 			for(ParseNode child: node.getChildren()) {
 				Type type = child.getType().concreteType();
 				if(type == INTEGER) {
-					code.add(DataI, ((IntegerConstantNode)child).getValue());
+					code.add(Duplicate);
+					code.add(PushI, 16 + offset);
+					code.add(Add);
+					code.add(PushI, ((IntegerConstantNode)child).getValue());
+					
+					code.add(StoreI);
+					offset += 4;
 				}
 				if(type == FLOATING) {
-					code.add(DataF, ((FloatingConstantNode)child).getValue());
+					code.add(Duplicate);
+					code.add(PushI, 16 + offset);
+					code.add(Add);
+					code.add(PushF, ((FloatingConstantNode)child).getValue());
+					code.add(StoreF);
+					offset += 8;
 				}
 				if(type == CHARACTER) {
-					code.add(DataI, ((CharacterNode)child).getValue());
+					code.add(Duplicate);
+					code.add(PushI, 16 + offset);
+					code.add(Add);
+					code.add(PushI, ((CharacterNode)child).getValue());
+					code.add(StoreI);
+					offset += 4;
 				}
-				if(type instanceof ArrayType) {
-					visitLeave(child);
-				}
+				
 				
 				i++;
 			}
-			code.add(PushD, dlabel);
 			
+			//code.add(PushD, dlabel);
+			//code.add(PStack);
 		}
 	}
 

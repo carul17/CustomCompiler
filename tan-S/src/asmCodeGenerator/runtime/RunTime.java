@@ -22,6 +22,7 @@ public class RunTime {
 	public static final String GENERAL_RUNTIME_ERROR = "$$general-runtime-error";
 	public static final String INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR = "$$i-divide-by-zero";
 	public static final String FLOAT_DIVIDE_BY_ZERO_RUNTIME_ERROR = "$$f-divide-by-zero";
+	public static final String INDEX_OUT_OF_BOUNDS_RUNTIME_ERROR = "$$f-index-out-of-bounds";
 
 	private ASMCodeFragment environmentASM() {
 		ASMCodeFragment result = new ASMCodeFragment(GENERATES_VOID);
@@ -73,6 +74,7 @@ public class RunTime {
 		generalRuntimeError(frag);
 		integerDivideByZeroError(frag);
 		floatDivideByZeroError(frag);
+		indexOutOfBoundsError(frag);
 		
 		return frag;
 	}
@@ -108,6 +110,17 @@ public class RunTime {
 		
 		frag.add(Label, INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR);
 		frag.add(PushD, intDivideByZeroMessage);
+		frag.add(Jump, GENERAL_RUNTIME_ERROR);
+	}
+	
+	private void indexOutOfBoundsError(ASMCodeFragment frag) {
+		String indexOutOfBoundsMessage = "$errors-index-out-of-bounds";
+		
+		frag.add(DLabel, indexOutOfBoundsMessage);
+		frag.add(DataS, "index out of bounds");
+		
+		frag.add(Label, INDEX_OUT_OF_BOUNDS_RUNTIME_ERROR);
+		frag.add(PushD, indexOutOfBoundsMessage);
 		frag.add(Jump, GENERAL_RUNTIME_ERROR);
 	}
 	

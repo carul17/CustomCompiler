@@ -5,6 +5,11 @@ main {
 	var b := [1.1, 2.2, 3.3];
 	print b \n;
 	
-	var c := [1,2,4,5];
+	var c := [1,2,3,4];
 	print c \n;
+	
+
+	print length a \ length b \ length c \n;
+	
+	print !false \n;
 }

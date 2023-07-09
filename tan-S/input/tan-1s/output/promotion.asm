@@ -40,10 +40,6 @@
         DataC        37                        %% "%s"
         DataC        115                       
         DataC        0                         
-        DLabel       $print-format-array       
-        DataC        37                        %% "%d"
-        DataC        100                       
-        DataC        0                         
         DLabel       $print-format-boolean     
         DataC        37                        %% "%s"
         DataC        115                       
@@ -149,6 +145,30 @@
         Label        $$f-divide-by-zero        
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $errors-index-out-of-bounds 
+        DataC        105                       %% "index out of bounds"
+        DataC        110                       
+        DataC        100                       
+        DataC        101                       
+        DataC        120                       
+        DataC        32                        
+        DataC        111                       
+        DataC        117                       
+        DataC        116                       
+        DataC        32                        
+        DataC        111                       
+        DataC        102                       
+        DataC        32                        
+        DataC        98                        
+        DataC        111                       
+        DataC        117                       
+        DataC        110                       
+        DataC        100                       
+        DataC        115                       
+        DataC        0                         
+        Label        $$f-index-out-of-bounds   
+        PushD        $errors-index-out-of-bounds 
+        Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
         DataZ        1                         
@@ -161,7 +181,6 @@
         Nop                                    
         BNegate                                
         Nop                                    
-        Label        -compare-2-arg2           
         Label        -compare-3-arg2           
         PushI        1                         
         Nop                                    

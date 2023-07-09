@@ -1,8 +1,9 @@
 main {
-	var a := 5;
-	while(a >= 1){
-		print a \n;
-		a := a-1;
+	var a := [1,2,3];
+	var b := 0;
+	while(b < 3){
+		print [a:b] \n;
+		b := b-1;
 	}
 	
 }

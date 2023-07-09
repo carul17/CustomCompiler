@@ -145,25 +145,72 @@
         Label        $$f-divide-by-zero        
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $errors-index-out-of-bounds 
+        DataC        105                       %% "index out of bounds"
+        DataC        110                       
+        DataC        100                       
+        DataC        101                       
+        DataC        120                       
+        DataC        32                        
+        DataC        111                       
+        DataC        117                       
+        DataC        116                       
+        DataC        32                        
+        DataC        111                       
+        DataC        102                       
+        DataC        32                        
+        DataC        98                        
+        DataC        111                       
+        DataC        117                       
+        DataC        110                       
+        DataC        100                       
+        DataC        115                       
+        DataC        0                         
+        Label        $$f-index-out-of-bounds   
+        PushD        $errors-index-out-of-bounds 
+        Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        13                        
+        DataZ        12                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
-        DLabel       -array-1-semanticAnalyzer.types.ArrayType@1f32e575 
-        DataI        5                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataI        1                         
-        DataI        3                         
-        DataI        97                        
-        DataI        98                        
-        DataI        99                        
-        PushD        -array-1-semanticAnalyzer.types.ArrayType@1f32e575 
+        PushI        19                        
+        Call         -mem-manager-allocate     
+        Duplicate                              
+        PushI        5                         
+        StoreI                                 
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        PushI        0                         
+        StoreI                                 
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        PushI        1                         
+        StoreI                                 
+        Duplicate                              
+        PushI        12                        
+        Add                                    
+        PushI        3                         
+        StoreI                                 
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushI        97                        
+        StoreI                                 
+        Duplicate                              
+        PushI        20                        
+        Add                                    
+        PushI        98                        
+        StoreI                                 
+        Duplicate                              
+        PushI        24                        
+        Add                                    
+        PushI        99                        
+        StoreI                                 
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
@@ -211,23 +258,46 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        1                         
+        PushI        4                         
         Add                                    %% b
-        DLabel       -array-2-semanticAnalyzer.types.ArrayType@4a574795 
-        DataI        5                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataI        8                         
-        DataI        3                         
-        DataF        1.100000                  
-        DataF        2.200000                  
-        DataF        3.300000                  
-        PushD        -array-2-semanticAnalyzer.types.ArrayType@4a574795 
+        PushI        40                        
+        Call         -mem-manager-allocate     
+        Duplicate                              
+        PushI        5                         
+        StoreI                                 
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        PushI        0                         
+        StoreI                                 
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        PushI        8                         
+        StoreI                                 
+        Duplicate                              
+        PushI        12                        
+        Add                                    
+        PushI        3                         
+        StoreI                                 
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushF        1.100000                  
+        StoreF                                 
+        Duplicate                              
+        PushI        24                        
+        Add                                    
+        PushF        2.200000                  
+        StoreF                                 
+        Duplicate                              
+        PushI        32                        
+        Add                                    
+        PushF        3.300000                  
+        StoreF                                 
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        1                         
+        PushI        4                         
         Add                                    %% b
         LoadI                                  
         PushI        16                        
@@ -272,24 +342,51 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        9                         
+        PushI        8                         
         Add                                    %% c
-        DLabel       -array-3-semanticAnalyzer.types.ArrayType@1be6f5c3 
-        DataI        5                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataC        0                         
-        DataI        4                         
-        DataI        4                         
-        DataI        1                         
-        DataI        2                         
-        DataI        4                         
-        DataI        5                         
-        PushD        -array-3-semanticAnalyzer.types.ArrayType@1be6f5c3 
+        PushI        32                        
+        Call         -mem-manager-allocate     
+        Duplicate                              
+        PushI        5                         
+        StoreI                                 
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        PushI        0                         
+        StoreI                                 
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        PushI        4                         
+        StoreI                                 
+        Duplicate                              
+        PushI        12                        
+        Add                                    
+        PushI        4                         
+        StoreI                                 
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushI        1                         
+        StoreI                                 
+        Duplicate                              
+        PushI        20                        
+        Add                                    
+        PushI        2                         
+        StoreI                                 
+        Duplicate                              
+        PushI        24                        
+        Add                                    
+        PushI        3                         
+        StoreI                                 
+        Duplicate                              
+        PushI        28                        
+        Add                                    
+        PushI        4                         
+        StoreI                                 
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        9                         
+        PushI        8                         
         Add                                    %% c
         LoadI                                  
         PushI        16                        
@@ -342,6 +439,54 @@
         Pop                                    
         PushI        93                        
         PushD        $print-format-character   
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% a
+        Nop                                    
+        LoadI                                  
+        Nop                                    
+        PushI        12                        
+        Add                                    
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% b
+        Nop                                    
+        LoadI                                  
+        Nop                                    
+        PushI        12                        
+        Add                                    
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% c
+        Nop                                    
+        LoadI                                  
+        Nop                                    
+        PushI        12                        
+        Add                                    
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushI        0                         
+        Nop                                    
+        BNegate                                
+        JumpTrue     -print-boolean-8-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-8-join     
+        Label        -print-boolean-8-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-8-join     
+        PushD        $print-format-boolean     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 

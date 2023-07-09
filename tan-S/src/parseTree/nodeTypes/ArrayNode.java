@@ -47,11 +47,18 @@ public class ArrayNode extends ParseNode {
 	////////////////////////////////////////////////////////////
 	// convenience factory
 
-	public static ParseNode withChildren(Token token, List<ParseNode> elements) {
+	public static ArrayNode withChildren(Token token, List<ParseNode> elements) {
 		ArrayNode node = new ArrayNode(token);
 		for(ParseNode element: elements) {
 			node.appendChild(element);
 		}
+		return node;
+	}
+	
+	public static ArrayNode withChildren(Token token, ParseNode type, ParseNode size) {
+		ArrayNode node = new ArrayNode(token);
+		node.appendChild(type);
+		node.appendChild(size);
 		return node;
 	}
 	

@@ -111,7 +111,6 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		if(declarationType instanceof ArrayType) {
 			
 			numElements = initializer.nChildren();
-			System.out.println("nchild " + numElements);
 		}
 		addBinding(identifier, declarationType, constancy, numElements);
 	}
@@ -206,6 +205,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		if(signature.accepts(childTypes)) {
 			
 			node.setSignature(signature);
+			
 			node.setType(signature.resultType());//changed to concreteType
 		}
 		else {
@@ -223,20 +223,25 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	
 	@Override
 	public void visitLeave(ArrayNode node) {
-		Type type = node.child(0).getType().concreteType();
-		node.setType(new ArrayType(type));
-		for(int i = 1; i < node.nChildren(); i++) {
+		//Type type = node.child(0).getType().concreteType();
+		//System.out.println(type.infoString());
+		//System.out.println(node.getType().infoString());
+		Type prevChildType = node.child(0).getType();
+		for(ParseNode child : node.getChildren()) {
 			
-			ParseNode child = node.child(i);
-			Type childType = child.getType();
+			Type currChildType = child.getType();
 			
-			if(childType == PrimitiveType.ERROR || !(childType.equivalent(type))) {
-				List<Type> childTypes = Arrays.asList(childType);
+			if(!(prevChildType.equivalent(currChildType))){
+				List<Type> childTypes = Arrays.asList(prevChildType, currChildType);
 				typeCheckError(node, childTypes);
 				node.setType(PrimitiveType.ERROR);
+				
 			}
-		
+			prevChildType = currChildType;
 		}
+		
+		Type type = node.child(0).getType().concreteType();
+		node.setType(new ArrayType(type));
 	}
 
 

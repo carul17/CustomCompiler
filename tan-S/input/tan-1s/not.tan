@@ -1,4 +1,4 @@
 main{
-	var a := 1;
-	print a \n;
+	var a := false;
+	print !a \n;
 }

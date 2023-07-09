@@ -171,26 +171,85 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        1                         
+        DataZ        8                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
+        PushI        28                        
+        Call         -mem-manager-allocate     
+        Duplicate                              
+        PushI        5                         
+        StoreI                                 
+        Duplicate                              
+        PushI        4                         
+        Add                                    
         PushI        0                         
-        StoreC                                 
+        StoreI                                 
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        PushI        4                         
+        StoreI                                 
+        Duplicate                              
+        PushI        12                        
+        Add                                    
+        PushI        3                         
+        StoreI                                 
+        Duplicate                              
+        PushI        16                        
+        Add                                    
+        PushI        1                         
+        StoreI                                 
+        Duplicate                              
+        PushI        20                        
+        Add                                    
+        PushI        2                         
+        StoreI                                 
+        Duplicate                              
+        PushI        24                        
+        Add                                    
+        PushI        3                         
+        StoreI                                 
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% b
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% a
         Nop                                    
-        LoadC                                  
-        BNegate                                
-        JumpTrue     -print-boolean-2-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-2-join     
-        Label        -print-boolean-2-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-2-join     
-        PushD        $print-format-boolean     
+        LoadI                                  
+        PushI        2                         
+        Nop                                    
+        Nop                                    
+        PStack                                 
+        Duplicate                              
+        PushI        12                        
+        Add                                    
+        LoadI                                  
+        PStack                                 
+        PushI        2                         
+        Duplicate                              
+        JumpNeg      $$f-index-out-of-bounds   
+        Subtract                               
+        JumpNeg      $$f-index-out-of-bounds   
+        Duplicate                              
+        PushI        8                         
+        Add                                    
+        LoadI                                  
+        PushI        2                         
+        Multiply                               
+        PushI        16                        
+        Add                                    
+        Add                                    
+        LoadI                                  
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% b
+        LoadI                                  
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
