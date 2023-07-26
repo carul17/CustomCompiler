@@ -20,6 +20,7 @@ public enum Keyword implements Lextant {
 	IF("if"),
 	ELSE("else"),
 	WHILE("while"),
+	BREAK("break"),
 	NEW("new"),
 	LENGTH("length"),
 	NULL_KEYWORD("");

@@ -104,10 +104,15 @@ public class Parser {
 	// statement-> declaration | printStmt
 	private ParseNode parseStatement() {
 		
+		
 		if(!startsStatement(nowReading)) {
 			return syntaxErrorNode("statement");
 		}
 		
+		if(startsBreak(nowReading)) {
+			System.out.println("hello");
+			return parseBreak();
+		}
 			
 		if(startsDeclaration(nowReading)) {
 			return parseDeclaration();
@@ -141,7 +146,8 @@ public class Parser {
 			   startsAssignment(token) ||
 			   startsBlockStatement(token) ||
 			   startsIfStatement(token) ||
-			   startsWhile(token);
+			   startsWhile(token) ||
+			   startsBreak(token);
 	}
 	
 	// printStmt -> PRINT printExpressionList TERMINATOR
@@ -258,10 +264,25 @@ public class Parser {
 		return AssignmentStatementNode.withChildren(identifierToken, identifier, expression);
 	}
 	
+	private ParseNode parseBreak() {
+		if(!startsBreak(nowReading)) {
+			return syntaxErrorNode("break");
+		}
+		
+		
+		Token breakToken = nowReading;
+		readToken();
+		expect(Punctuator.TERMINATOR);
+		return BreakNode.withChildren(breakToken, new BreakNode(breakToken));
+	}
+	
 	private boolean startsAssignment(Token token) {
 		return startsIdentifier(token); //could be start of assignment
 	}
 	
+	private boolean startsBreak(Token token) {
+		return token.isLextant(Keyword.BREAK);
+	}
 	//if statement
 	private ParseNode parseIfStatement() {
 		if(!startsIfStatement(nowReading)) {
@@ -439,6 +460,8 @@ public class Parser {
 		if(!startsAtomicExpression(nowReading)) {
 			return syntaxErrorNode("atomic expression");
 		}
+		
+		
 		if(startsUnaryExpression(nowReading)) {
 			return parseUnaryExpression();
 		}

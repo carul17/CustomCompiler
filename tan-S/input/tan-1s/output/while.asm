@@ -171,325 +171,57 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
-        PushI        19                        
-        Call         -mem-manager-allocate     
-        Duplicate                              
-        PushI        5                         
-        StoreI                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
+        Add                                    %% b
         PushI        0                         
         StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
+        Label        -while-4-condition        
+        Label        -compare-2-arg1           
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% b
+        Nop                                    
+        LoadI                                  
+        Label        -compare-2-arg2           
+        PushI        3                         
+        Nop                                    
+        Label        -compare-2-sub            
+        Subtract                               
+        JumpNeg      -compare-2-true           
+        Jump         -compare-2-false          
+        Label        -compare-2-true           
         PushI        1                         
-        StoreI                                 
-        Duplicate                              
-        PushI        12                        
-        Add                                    
-        PushI        3                         
-        StoreI                                 
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        PushI        97                        
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        98                        
-        StoreI                                 
-        Duplicate                              
-        PushI        24                        
-        Add                                    
-        PushI        99                        
-        StoreI                                 
-        StoreI                                 
+        Jump         -compare-2-join           
+        Label        -compare-2-false          
+        PushI        0                         
+        Jump         -compare-2-join           
+        Label        -compare-2-join           
+        JumpFalse    -while-4-end              
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
+        Add                                    %% b
         LoadI                                  
-        PushI        16                        
-        Add                                    
-        PushI        91                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        0                         
-        Add                                    
-        LoadC                                  
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        44                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
-        LoadC                                  
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        44                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        LoadC                                  
-        PushD        $print-format-character   
-        Printf                                 
-        Pop                                    
-        PushI        93                        
-        PushD        $print-format-character   
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% b
-        PushI        40                        
-        Call         -mem-manager-allocate     
-        Duplicate                              
-        PushI        5                         
-        StoreI                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
         PushI        0                         
-        StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        PushI        8                         
-        StoreI                                 
-        Duplicate                              
-        PushI        12                        
-        Add                                    
-        PushI        3                         
-        StoreI                                 
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        PushF        1.100000                  
-        StoreF                                 
-        Duplicate                              
-        PushI        24                        
-        Add                                    
-        PushF        2.200000                  
-        StoreF                                 
-        Duplicate                              
-        PushI        32                        
-        Add                                    
-        PushF        3.300000                  
-        StoreF                                 
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        4                         
         Add                                    %% b
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% b
+        Nop                                    
         LoadI                                  
-        PushI        16                        
-        Add                                    
-        PushI        91                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        0                         
-        Add                                    
-        LoadF                                  
-        PushD        $print-format-floating    
-        Printf                                 
-        PushI        44                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        LoadF                                  
-        PushD        $print-format-floating    
-        Printf                                 
-        PushI        44                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        LoadF                                  
-        PushD        $print-format-floating    
-        Printf                                 
-        Pop                                    
-        PushI        93                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% c
-        PushI        32                        
-        Call         -mem-manager-allocate     
-        Duplicate                              
-        PushI        5                         
-        StoreI                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
-        PushI        0                         
-        StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        Duplicate                              
-        PushI        12                        
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        Duplicate                              
-        PushI        16                        
-        Add                                    
         PushI        1                         
+        Nop                                    
+        Add                                    
         StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        2                         
-        StoreI                                 
-        Duplicate                              
-        PushI        24                        
-        Add                                    
-        PushI        3                         
-        StoreI                                 
-        Duplicate                              
-        PushI        28                        
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% c
-        LoadI                                  
-        PushI        16                        
-        Add                                    
-        PushI        91                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        0                         
-        Add                                    
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushI        44                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushI        44                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushI        44                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushI        32                        
-        PushD        $print-format-character   
-        Printf                                 
-        Duplicate                              
-        PushI        12                        
-        Add                                    
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        Pop                                    
-        PushI        93                        
-        PushD        $print-format-character   
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Nop                                    
-        LoadI                                  
-        Nop                                    
-        PushI        12                        
-        Add                                    
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% b
-        Nop                                    
-        LoadI                                  
-        Nop                                    
-        PushI        12                        
-        Add                                    
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% c
-        Nop                                    
-        LoadI                                  
-        Nop                                    
-        PushI        12                        
-        Add                                    
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushI        0                         
-        Nop                                    
-        BNegate                                
-        JumpTrue     -print-boolean-8-true     
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-8-join     
-        Label        -print-boolean-8-true     
-        PushD        $boolean-true-string      
-        Label        -print-boolean-8-join     
-        PushD        $print-format-boolean     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
+        Jump         -while-4-condition        
+        Label        -while-4-end              
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
