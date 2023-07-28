@@ -1,7 +1,8 @@
 subr void f(){
-	print 5 \n;
+	print 5+5 \n;
 }
 
 main {
 	call f();
+	print 34 \n;
 }

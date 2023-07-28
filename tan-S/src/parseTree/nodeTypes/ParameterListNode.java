@@ -1,5 +1,8 @@
 package parseTree.nodeTypes;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import semanticAnalyzer.types.Type;
@@ -19,11 +22,11 @@ public class ParameterListNode extends ParseNode {
 	}
 
 
-	public Type[] getTypes() {
-		Type[] t = new Type[nChildren()];
+	public List<Type> getTypes() {
+		List<Type> t = new ArrayList<Type>();
 		
 		for(int i = 0; i < nChildren(); i++) {
-			t[i] = child(i).getType();
+			t.add(child(i).getType());
 		}
 		
 		return t;

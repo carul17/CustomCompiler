@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import logging.TanLogger;
 import parseTree.*;
 import parseTree.nodeTypes.*;
+import semanticAnalyzer.types.PrimitiveType;
 import symbolTable.Binding;
 import tokens.*;
 import lexicalAnalyzer.Keyword;
@@ -104,10 +105,10 @@ public class Parser {
 	
 	private ParseNode pasrseTypeFunctions() {
 		if(!startsType(nowReading)) {
-			return syntaxErrorNode("program");
+			return syntaxErrorNode("type");
 		}
-		System.out.println(nowReading.getLexeme());
 		ParseNode node = new FunctionTypeNode(nowReading);
+		node.setType(PrimitiveType.VOID); //need to fix this
 		readToken();
 		return node;
 	}

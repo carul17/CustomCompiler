@@ -1,16 +1,18 @@
 package semanticAnalyzer.types;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FunctionType implements Type{
 	
 	public static final int TYPE_SIZE = 4;
 	private Type returnType;
-	private Type[] paramterTypes;
+	private List<Type> parameterTypes;
 
-	private FunctionType(Type returnType, Type[] paramterTypes) {
+	private FunctionType(Type returnType, List<Type>parameterTypes) {
 		this.returnType = returnType;
-		this.paramterTypes = paramterTypes;
+		this.parameterTypes = parameterTypes;
 	}
 
 	@Override
@@ -27,8 +29,8 @@ public class FunctionType implements Type{
 
 	@Override
 	public String infoString() {
-		// TODO Auto-generated method stub
-		return "function";
+		String p = parameterTypes.stream().map(Type::infoString).collect(Collectors.joining(","));
+		return "function + Parameters: " + p;
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class FunctionType implements Type{
 		return null;
 	}
 	
-	public static FunctionType create(Type returnType, Type... paramterTypes) {
+	public static FunctionType create(Type returnType, List<Type> paramterTypes) {
 		return new FunctionType(returnType, paramterTypes);
 		
 	}

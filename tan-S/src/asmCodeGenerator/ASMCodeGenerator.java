@@ -71,25 +71,32 @@ public class ASMCodeGenerator {
 		
 		code.add(    Label, RunTime.MAIN_PROGRAM_LABEL);
 		code.append( programCode());
-		code.add(    Halt );
+		//code.add(    Halt );
 		
 		new FunctionSignature(ASMOpcode.Nop, INTEGER, INTEGER);
 		new FunctionSignature(ASMOpcode.Nop, FLOATING, FLOATING);
 		return code;
 	}
 	private ASMCodeFragment programCode() {
+		ASMCodeFragment code = new ASMCodeFragment(GENERATES_VOID);
 		CodeVisitor visitor = new CodeVisitor();
 		root.accept(visitor);
-		return visitor.removeRootCode(root);
+		code.append(visitor.removeRootCode(root));
+		code.add(Halt);
+		code.append(visitor.function);
+		return code;
+		
 	}
 
 
 	protected class CodeVisitor extends ParseNodeVisitor.Default {
 		private Map<ParseNode, ASMCodeFragment> codeMap;
 		ASMCodeFragment code;
+		ASMCodeFragment function;
 		
 		public CodeVisitor() {
 			codeMap = new HashMap<ParseNode, ASMCodeFragment>();
+			function = new ASMCodeFragment(GENERATES_VOID);
 		}
 
 
@@ -256,6 +263,27 @@ public class ASMCodeGenerator {
 			
 			Type type = node.child(0).getType();
 			code.add(opcodeForStore(type));
+		}
+		
+		public void visitLeave(CallStatementNode node) {
+			newVoidCode(node);
+			ASMCodeFragment value = removeAddressCode(node.child(0));
+			//ASMCodeFragment rvalue = removeAddressCode(node.child(1));
+			code.append(value);
+			code.add(LoadI);
+			code.add(CallV);
+		}
+		
+		public void visitLeave(FunctionDefinitionNode node) {
+			ASMCodeFragment fCode = new ASMCodeFragment(GENERATES_VOID);
+			fCode.add(Label, node.getToken().getLexeme());
+			fCode.append(removeVoidCode(node.child(3)));
+			fCode.add(Return);
+			function.append(fCode);
+			newVoidCode(node);
+			code.append(removeAddressCode(node.child(1)));
+			code.add(PushD, node.getToken().getLexeme());
+			code.add(StoreI);
 		}
 		
 		public void visitLeave(IfStatementNode node) {

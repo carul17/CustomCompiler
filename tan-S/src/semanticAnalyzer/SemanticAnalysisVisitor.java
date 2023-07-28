@@ -121,6 +121,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		//handle parameters
 	}
 	
+	///////////////FUNCTIONS////////////////////
 	@Override
 	public void visitLeave(FunctionDefinitionNode node) {
 		Token token = node.getToken();
@@ -168,6 +169,14 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			semanticError("reassignment to const identifier");
 		}
 	}
+	
+	@Override
+	public void visit(FunctionTypeNode node) {
+	}
+	
+	
+	///////////END OF FUNCTIONS//////////////////////////////
+	
 
 	///////////////////////////////////////////////////////////////////////////
 	// expressions
@@ -198,10 +207,8 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		for(int i = 0; i <= 2; i++){
 			byNumPromotions.add(new ArrayList<PromotedSignature>());
 		}
-		//System.out.println(promotedSignatures.size());
 		
 		for(PromotedSignature promotedSignature: promotedSignatures){
-			//System.out.println("Num promotions: " + promotedSignature.numPromotions());
 			byNumPromotions.get(promotedSignature.numPromotions()).add(promotedSignature);
 		}
 
@@ -252,8 +259,6 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visitLeave(ArrayNode node) {
 		//Type type = node.child(0).getType().concreteType();
-		//System.out.println(type.infoString());
-		//System.out.println(node.getType().infoString());
 		Type prevChildType = node.child(0).getType();
 		for(ParseNode child : node.getChildren()) {
 			
