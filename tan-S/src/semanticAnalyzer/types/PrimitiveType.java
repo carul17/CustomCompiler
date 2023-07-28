@@ -10,6 +10,7 @@ public enum PrimitiveType implements Type {
 	FLOATING(8, false),
 	CHARACTER(1, false),
 	STRING(4, true),
+	VOID(0, false),
 	ERROR(0, false),			// use as a value when a syntax error has occurred
 	NO_TYPE(0, false, "");		// use as a value when no type has been assigned.
 	

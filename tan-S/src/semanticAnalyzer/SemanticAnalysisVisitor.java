@@ -15,6 +15,7 @@ import semanticAnalyzer.signatures.FunctionSignature;
 import semanticAnalyzer.signatures.FunctionSignatures;
 import semanticAnalyzer.signatures.PromotedSignature;
 import semanticAnalyzer.types.ArrayType;
+import semanticAnalyzer.types.FunctionType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -113,6 +114,33 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			numElements = initializer.nChildren();
 		}
 		addBinding(identifier, declarationType, constancy, numElements);
+	}
+	
+	@Override
+	public void visitLeave(ParameterListNode node) {
+		//handle parameters
+	}
+	
+	@Override
+	public void visitLeave(FunctionDefinitionNode node) {
+		Token token = node.getToken();
+		FunctionTypeNode type = (FunctionTypeNode) node.child(0);
+		IdentifierNode iden = (IdentifierNode) node.child(1);
+		ParameterListNode pList = (ParameterListNode) node.child(2);
+		BlockStatementNode bStat = (BlockStatementNode) node.child(3);
+		Type fType = FunctionType.create(type.getType(), pList.getTypes());
+		addBinding(iden, fType, null, 0);
+		
+	}
+	
+	@Override
+	public void visitLeave(ExpressionListNode node) {
+		//hand;e expression list
+	}
+	
+	@Override
+	public void visitLeave(CallStatementNode node) {
+		//hand;e expression list
 	}
 	
 	public void visitLeave(AssignmentStatementNode node) {
@@ -294,7 +322,8 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	private boolean isBeingDeclared(IdentifierNode node) {
 		ParseNode parent = node.getParent();
-		return (parent instanceof DeclarationNode) && (node == parent.child(0));
+		return (parent instanceof DeclarationNode) && (node == parent.child(0))
+				||(parent instanceof FunctionDefinitionNode) && (node == parent.child(1));
 	}
 	private void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy, int numElements) {
 		Scope scope = identifierNode.getLocalScope();

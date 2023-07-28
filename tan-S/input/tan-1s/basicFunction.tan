@@ -1,0 +1,7 @@
+subr void f(){
+	print 5 \n;
+}
+
+main {
+	call f();
+}

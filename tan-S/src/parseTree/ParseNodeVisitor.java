@@ -41,6 +41,19 @@ public interface ParseNodeVisitor {
 	
 	void visitEnter(ArrayNode node);
 	void visitLeave(ArrayNode node);
+	
+	void visitEnter(ParameterListNode node);
+	void visitLeave(ParameterListNode node);
+	
+	void visitEnter(FunctionDefinitionNode node);
+	void visitLeave(FunctionDefinitionNode node);
+	
+	void visitEnter(ExpressionListNode node);
+	void visitLeave(ExpressionListNode node);
+	
+	void visitEnter(CallStatementNode node);
+	void visitLeave(CallStatementNode node);
+
 
 
 	// leaf nodes: visitLeaf only
@@ -55,6 +68,7 @@ public interface ParseNodeVisitor {
 	void visit(SpaceNode node);
 	void visit(TabNode node);
 	void visit(BreakNode node);
+	void visit(FunctionTypeNode node);
 
 	
 	public static class Default implements ParseNodeVisitor
@@ -143,6 +157,38 @@ public interface ParseNodeVisitor {
 			defaultVisitLeave(node);
 		}
 		
+		public void visitEnter(ParameterListNode node) {
+			defaultVisitEnter(node);	
+		}
+		public void visitLeave(ParameterListNode node) {
+			defaultVisitLeave(node);
+		}
+		@Override
+		public void visitEnter(FunctionDefinitionNode node) {
+			defaultVisitEnter(node);
+		}
+		@Override
+		public void visitLeave(FunctionDefinitionNode node) {
+			defaultVisitLeave(node);
+			
+		}
+		@Override
+		public void visitEnter(ExpressionListNode node) {
+			defaultVisitEnter(node);
+		}
+		@Override
+		public void visitLeave(ExpressionListNode node) {
+			defaultVisitLeave(node);
+		}
+		@Override
+		public void visitEnter(CallStatementNode node) {
+			defaultVisitEnter(node);
+		}
+		@Override
+		public void visitLeave(CallStatementNode node) {
+			defaultVisitLeave(node);
+		}
+		
 
 		public void visit(BooleanConstantNode node) {
 			defaultVisitForLeaf(node);
@@ -177,5 +223,10 @@ public interface ParseNodeVisitor {
 		public void visit(BreakNode node) {
 			defaultVisitForLeaf(node);
 		}
+		public void visit(FunctionTypeNode node) {
+			defaultVisitForLeaf(node);
+			
+		}
 	}
+
 }

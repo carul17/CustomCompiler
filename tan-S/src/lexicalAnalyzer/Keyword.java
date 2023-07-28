@@ -23,6 +23,9 @@ public enum Keyword implements Lextant {
 	BREAK("break"),
 	NEW("new"),
 	LENGTH("length"),
+	CALL("call"),
+	SUBR("subr"),
+	VOID("void"),
 	NULL_KEYWORD("");
 
 	private String lexeme;

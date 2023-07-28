@@ -44,6 +44,11 @@ public class Parser {
 		}
 		ParseNode program = new ProgramNode(nowReading);
 		
+		while(startsFunctionsDefinition(nowReading)) {
+			ParseNode globalDefinition = parseFucntionDefinition();
+			program.appendChild(globalDefinition);
+		}
+		
 		expect(Keyword.MAIN);
 		ParseNode mainBlock = parseMainBlock();
 		program.appendChild(mainBlock);
@@ -54,8 +59,57 @@ public class Parser {
 		
 		return program;
 	}
+	
+	//defining functions
+	private ParseNode parseFucntionDefinition() {
+		assert startsFunctionsDefinition(nowReading);
+		Token token = nowReading;
+		expect(Keyword.SUBR);
+		ParseNode type = pasrseTypeFunctions();
+		ParseNode identifier = parseIdentifier();
+		expect(Punctuator.OPEN_ROUND_BRACE);
+		ParseNode parameterList = parseParamterList();
+		expect(Punctuator.CLOSE_ROUND_BRACE);
+		ParseNode blockStatement = parseBlockStatement();
+		return FunctionDefinitionNode.make(token, type, identifier, parameterList, blockStatement);
+	}
+	
+	private ParseNode parseParamterList() {
+		ParseNode parameterList = new ParameterListNode(nowReading);
+		while(startsParameter(nowReading)) {
+			ParseNode parameter = parseParameter();
+			parameterList.appendChild(parameter);
+		}
+		return parameterList;
+	}
+	private ParseNode parseParameter() {
+		Token token = nowReading;
+		ParseNode type = pasrseTypeFunctions();
+		ParseNode identifier = parseIdentifier();
+		return ParameterNode.make(token, type, identifier);
+	}
+	private boolean startsParameter(Token token) {
+		return startNotVoidType(token);
+	}
+	private boolean startNotVoidType(Token token) {
+		return token.isLextant(Keyword.BOOL, Keyword.CHAR, Keyword.INT, Keyword.FLOAT);
+	}
+	private boolean startsFunctionsDefinition(Token token) {
+		return token.isLextant(Keyword.SUBR);
+	}
+	
 	private boolean startsProgram(Token token) {
-		return token.isLextant(Keyword.MAIN);
+		return startsFunctionsDefinition(token) || token.isLextant(Keyword.MAIN);
+	}
+	
+	private ParseNode pasrseTypeFunctions() {
+		if(!startsType(nowReading)) {
+			return syntaxErrorNode("program");
+		}
+		System.out.println(nowReading.getLexeme());
+		ParseNode node = new FunctionTypeNode(nowReading);
+		readToken();
+		return node;
 	}
 	
 	
@@ -127,6 +181,10 @@ public class Parser {
 			return parsePrintStatement();
 		}
 		
+		if(startsCallStatement(nowReading)) {
+			return parseCallStatement();
+		}
+		
 		if(startsBlockStatement(nowReading)) {
 			return parseBlockStatement();
 		}
@@ -140,6 +198,29 @@ public class Parser {
 		return syntaxErrorNode("statement");
 	}
 	
+	private ParseNode parseCallStatement() {
+		assert startsCallStatement(nowReading);
+		Token token = nowReading;
+		expect(Keyword.CALL);
+		ParseNode identifier = parseIdentifier();
+		expect(Punctuator.OPEN_ROUND_BRACE);
+		ParseNode expresstionList = parseExpressionList();
+		expect(Punctuator.CLOSE_ROUND_BRACE);
+		expect(Punctuator.TERMINATOR);
+		return CallStatementNode.make(token, identifier, expresstionList);
+	}
+	
+	private ParseNode parseExpressionList() {
+		ParseNode expressionList = new ExpressionListNode(nowReading);
+		while(startsExpression(nowReading)) {
+			ParseNode expression = parseExpression();
+			expressionList.appendChild(expression);
+			if(nowReading.isLextant(Punctuator.COMMA)) {
+				readToken();
+			}
+		}
+		return expressionList;
+	}
 	private boolean startsStatement(Token token) {
 		return startsPrintStatement(token) ||
 			   startsDeclaration(token) ||
@@ -147,9 +228,13 @@ public class Parser {
 			   startsBlockStatement(token) ||
 			   startsIfStatement(token) ||
 			   startsWhile(token) ||
-			   startsBreak(token);
+			   startsBreak(token)||
+			   startsCallStatement(token);
 	}
 	
+	private boolean startsCallStatement(Token token) {
+		return token.isLextant(Keyword.CALL);
+	}
 	// printStmt -> PRINT printExpressionList TERMINATOR
 	private ParseNode parsePrintStatement() {
 		if(!startsPrintStatement(nowReading)) {
@@ -557,7 +642,7 @@ public class Parser {
 	}
 	
 	private boolean startsType(Token token) {
-		return token.isLextant(Keyword.BOOL) || token.isLextant(Keyword.CHAR) || token.isLextant(Keyword.INT) || token.isLextant(Keyword.FLOAT);
+		return startNotVoidType(token) || token.isLextant(Keyword.VOID);
 	}
 
 	// unaryExpression			-> UNARYOP atomicExpression

@@ -171,36 +171,37 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        8                         
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
-        PushI        5                         
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        4                         
         Add                                    %% b
-        PushI        6                         
+        PushI        0                         
         StoreI                                 
+        Label        -while-4-condition        
+        Label        -compare-2-arg1           
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
+        Add                                    %% b
+        Nop                                    
         LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
+        Label        -compare-2-arg2           
+        PushI        3                         
+        Nop                                    
+        Label        -compare-2-sub            
+        Subtract                               
+        JumpNeg      -compare-2-true           
+        Jump         -compare-2-false          
+        Label        -compare-2-true           
+        PushI        1                         
+        Jump         -compare-2-join           
+        Label        -compare-2-false          
+        PushI        0                         
+        Jump         -compare-2-join           
+        Label        -compare-2-join           
+        JumpFalse    -while-4-end              
         PushD        $global-memory-block      
-        PushI        4                         
+        PushI        0                         
         Add                                    %% b
         LoadI                                  
         PushD        $print-format-integer     
@@ -209,12 +210,18 @@
         Printf                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
+        Add                                    %% b
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% b
+        Nop                                    
         LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
+        PushI        1                         
+        Nop                                    
+        Add                                    
+        StoreI                                 
+        Jump         -while-4-condition        
+        Label        -while-4-end              
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
