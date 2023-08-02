@@ -2,6 +2,7 @@ package parseTree.nodeTypes;
 
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
+import asmCodeGenerator.Labeller;
 import lexicalAnalyzer.Keyword;
 import lexicalAnalyzer.Lextant;
 import tokens.LextantToken;
@@ -9,7 +10,11 @@ import tokens.Token;
 
 
 public class WhileNode extends ParseNode{
-
+	
+	Labeller labeller = new Labeller("while");
+	String conditionLabel = labeller.newLabel("condition");
+	String endLabel = labeller.newLabel("end");
+	
 	public WhileNode(Token token) {
 		super(token);
 		assert(token.isLextant(Keyword.WHILE));
@@ -38,5 +43,13 @@ public class WhileNode extends ParseNode{
 	visitor.visitEnter(this);
 	visitChildren(visitor);
 	visitor.visitLeave(this);
+	}
+
+	public String getConditionLabel() {
+		return conditionLabel;
+	}
+
+	public String getEndLabel() {
+		return endLabel;
 	}
 }

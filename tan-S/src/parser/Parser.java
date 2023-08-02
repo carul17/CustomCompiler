@@ -165,8 +165,11 @@ public class Parser {
 		}
 		
 		if(startsBreak(nowReading)) {
-			System.out.println("hello");
 			return parseBreak();
+		}
+		
+		if(startsContinue(nowReading)) {
+			return parseContinue();
 		}
 			
 		if(startsDeclaration(nowReading)) {
@@ -194,6 +197,9 @@ public class Parser {
 		}
 		if(startsWhile(nowReading)) {
 			return parseWhile();
+		}
+		if(startsFor(nowReading)) {
+			return parseFor();
 		}
 		
 		return syntaxErrorNode("statement");
@@ -230,7 +236,9 @@ public class Parser {
 			   startsIfStatement(token) ||
 			   startsWhile(token) ||
 			   startsBreak(token)||
-			   startsCallStatement(token);
+			   startsContinue(token)||
+			   startsCallStatement(token) ||
+			   startsFor(token);
 	}
 	
 	private boolean startsCallStatement(Token token) {
@@ -350,6 +358,10 @@ public class Parser {
 		return AssignmentStatementNode.withChildren(identifierToken, identifier, expression);
 	}
 	
+	private boolean startsAssignment(Token token) {
+		return startsIdentifier(token); //could be start of assignment
+	}
+	
 	private ParseNode parseBreak() {
 		if(!startsBreak(nowReading)) {
 			return syntaxErrorNode("break");
@@ -359,15 +371,27 @@ public class Parser {
 		Token breakToken = nowReading;
 		readToken();
 		expect(Punctuator.TERMINATOR);
-		return BreakNode.withChildren(breakToken, new BreakNode(breakToken));
-	}
-	
-	private boolean startsAssignment(Token token) {
-		return startsIdentifier(token); //could be start of assignment
+		return new BreakNode(breakToken);
 	}
 	
 	private boolean startsBreak(Token token) {
 		return token.isLextant(Keyword.BREAK);
+	}
+	
+	private ParseNode parseContinue() {
+		if(!startsContinue(nowReading)) {
+			return syntaxErrorNode("continue");
+		}
+		
+		
+		Token continueToken = nowReading;
+		readToken();
+		expect(Punctuator.TERMINATOR);
+		return new ContinueNode(continueToken);
+	}
+	
+	private boolean startsContinue(Token token) {
+		return token.isLextant(Keyword.CONTINUE);
 	}
 	//if statement
 	private ParseNode parseIfStatement() {
@@ -407,6 +431,29 @@ public class Parser {
 	}
 	private boolean startsWhile(Token token) {
 		return token.isLextant(Keyword.WHILE);
+	}
+	
+	private ParseNode parseFor() {
+		if(!startsFor(nowReading)) {
+			return syntaxErrorNode("for statement");
+		}
+		Token forToken = nowReading;
+		readToken();
+		expect(Punctuator.OPEN_ROUND_BRACE);
+		ParseNode identifier = parseIdentifier();
+		expect(Keyword.FROM);
+		ParseNode expression1 = parseExpression();
+		expect(Keyword.TO);
+		ParseNode expression2 = parseExpression();
+		expect(Punctuator.CLOSE_ROUND_BRACE);
+		ParseNode block = parseBlockStatement();
+		
+		
+		return ForNode.withChildren(forToken, identifier, expression1, expression2, block);
+		
+	}
+	private boolean startsFor(Token token) {
+		return token.isLextant(Keyword.FOR);
 	}
 
 

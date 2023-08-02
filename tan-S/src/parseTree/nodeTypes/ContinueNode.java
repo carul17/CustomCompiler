@@ -8,14 +8,14 @@ import tokens.LextantToken;
 import tokens.Token;
 
 
-public class BreakNode extends ParseNode{
+public class ContinueNode extends ParseNode{
 
-	public BreakNode(Token token) {
+	public ContinueNode(Token token) {
 		super(token);
-		assert(token.isLextant(Keyword.BREAK));
+		assert(token.isLextant(Keyword.CONTINUE));
 	}
 
-	public BreakNode(ParseNode node) {
+	public ContinueNode(ParseNode node) {
 		super(node);
 	}
 	

@@ -171,93 +171,34 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
-        PushI        28                        
-        Call         -mem-manager-allocate     
+        Add                                    %% i
+        PushI        2                         
+        StoreI                                 
+        Label        -for-1-condition          
+        Duplicate                              
+        PushI        2                         
+        StoreI                                 
+        Label        -for-1-condition          
         Duplicate                              
         PushI        5                         
-        StoreI                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
-        PushI        0                         
-        StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        Duplicate                              
-        PushI        12                        
-        Add                                    
-        PushI        3                         
-        StoreI                                 
-        Duplicate                              
-        PushI        16                        
-        Add                                    
-        PushI        1                         
-        StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        2                         
-        StoreI                                 
-        Duplicate                              
-        PushI        24                        
-        Add                                    
-        PushI        3                         
-        StoreI                                 
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% c
-        PushI        2                         
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% b
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% a
-        Nop                                    
-        LoadI                                  
-        Nop                                    
-        Duplicate                              
-        PushI        12                        
-        Add                                    
-        LoadI                                  
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% c
-        LoadI                                  
         Subtract                               
-        JumpNeg      $$f-index-out-of-bounds   
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        LoadI                                  
+        JumpPos      -for-1-end                
         PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% c
-        LoadI                                  
-        Multiply                               
-        PushI        16                        
-        Add                                    
-        Add                                    
-        LoadI                                  
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% b
+        PushI        0                         
+        Add                                    %% i
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        PushI        1                         
+        Add                                    
+        Jump         -for-1-condition          
+        Label        -for-1-end                
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           

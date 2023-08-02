@@ -1,6 +1,7 @@
 main{
 	var a := [1,2,3];
-	var b := [a:2];
+	var c := 2;
+	var b := [a:c];
 	print b \n;
 	
 }

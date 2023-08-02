@@ -171,93 +171,136 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        8                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
-        PushI        28                        
-        Call         -mem-manager-allocate     
-        Duplicate                              
-        PushI        5                         
-        StoreI                                 
-        Duplicate                              
-        PushI        4                         
-        Add                                    
-        PushI        0                         
-        StoreI                                 
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        PushI        4                         
-        StoreI                                 
-        Duplicate                              
-        PushI        12                        
-        Add                                    
-        PushI        3                         
-        StoreI                                 
-        Duplicate                              
-        PushI        16                        
-        Add                                    
+        Add                                    %% j
         PushI        1                         
         StoreI                                 
-        Duplicate                              
-        PushI        20                        
-        Add                                    
-        PushI        2                         
-        StoreI                                 
-        Duplicate                              
-        PushI        24                        
-        Add                                    
-        PushI        3                         
-        StoreI                                 
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% c
-        PushI        2                         
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% b
+        Label        -for-2-start              
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% a
+        Add                                    %% j
+        LoadI                                  
+        PushI        3                         
+        Subtract                               
+        JumpPos      -for-2-end                
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% i
+        PushI        1                         
+        StoreI                                 
+        Label        -for-1-start              
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% i
+        LoadI                                  
+        PushI        3                         
+        Subtract                               
+        JumpPos      -for-1-end                
+        Label        -compare-4-arg1           
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% i
         Nop                                    
         LoadI                                  
+        Label        -compare-4-arg2           
+        PushI        2                         
         Nop                                    
-        Duplicate                              
+        Label        -compare-4-sub            
+        Subtract                               
+        JumpFalse    -compare-4-true           
+        Jump         -compare-4-false          
+        Label        -compare-4-true           
+        PushI        1                         
+        Jump         -compare-4-join           
+        Label        -compare-4-false          
+        PushI        0                         
+        Jump         -compare-4-join           
+        Label        -compare-4-join           
+        JumpFalse    -if-5-end                 
+        Jump         -for-1-increment          
+        Jump         -if-5-end                 
+        Label        -if-5-end                 
+        DLabel       -string-6-i is            
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        105                       %% "i is"
+        DataC        32                        
+        DataC        105                       
+        DataC        115                       
+        DataC        0                         
+        PushD        -string-6-i is            
         PushI        12                        
         Add                                    
-        LoadI                                  
+        PushD        $print-format-string      
+        Printf                                 
+        PushD        $print-format-space       
+        Printf                                 
         PushD        $global-memory-block      
         PushI        4                         
-        Add                                    %% c
+        Add                                    %% i
         LoadI                                  
-        Subtract                               
-        JumpNeg      $$f-index-out-of-bounds   
-        Duplicate                              
-        PushI        8                         
-        Add                                    
-        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-space       
+        Printf                                 
+        Label        -for-1-increment          
         PushD        $global-memory-block      
         PushI        4                         
-        Add                                    %% c
+        Add                                    %% i
         LoadI                                  
-        Multiply                               
-        PushI        16                        
+        PushI        1                         
         Add                                    
-        Add                                    
-        LoadI                                  
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% i
+        Exchange                               
         StoreI                                 
+        Jump         -for-1-start              
+        Label        -for-1-end                
+        PushD        $print-format-newline     
+        Printf                                 
+        DLabel       -string-7-j is            
+        DataI        3                         
+        DataI        9                         
+        DataI        4                         
+        DataC        106                       %% "j is"
+        DataC        32                        
+        DataC        105                       
+        DataC        115                       
+        DataC        0                         
+        PushD        -string-7-j is            
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
+        Printf                                 
+        PushD        $print-format-space       
+        Printf                                 
         PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% b
+        PushI        0                         
+        Add                                    %% j
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        Label        -for-2-increment          
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% j
+        LoadI                                  
+        PushI        1                         
+        Add                                    
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% j
+        Exchange                               
+        StoreI                                 
+        Jump         -for-2-start              
+        Label        -for-2-end                
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           

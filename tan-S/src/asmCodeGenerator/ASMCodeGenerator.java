@@ -237,6 +237,41 @@ public class ASMCodeGenerator {
 			code.add(PushD, RunTime.TAB_PRINT_FORMAT);
 			code.add(Printf);
 		}
+		public void visit(BreakNode node) {
+			newVoidCode(node);
+			
+			ParseNode parent = node.getParent();
+			while(!(parent instanceof ForNode || parent instanceof WhileNode)) {
+				parent = parent.getParent();
+			}
+			
+			if(parent instanceof ForNode) {
+				ForNode forNode = (ForNode)parent;
+				code.add(Jump, forNode.getEndLabel());
+			}
+			else if(parent instanceof WhileNode) {
+				WhileNode whileNode = (WhileNode)parent;
+				code.add(Jump, whileNode.getEndLabel());
+			}
+		}
+		
+		public void visit(ContinueNode node) {
+			newVoidCode(node);
+			
+			ParseNode parent = node.getParent();
+			while(!(parent instanceof ForNode || parent instanceof WhileNode)) {
+				parent = parent.getParent();
+			}
+			
+			if(parent instanceof ForNode) {
+				ForNode forNode = (ForNode)parent;
+				code.add(Jump, forNode.getIncrementLabel());
+			}
+			else if(parent instanceof WhileNode) {
+				WhileNode whileNode = (WhileNode)parent;
+				code.add(Jump, whileNode.getConditionLabel());
+			}
+		}
 		
 
 		public void visitLeave(DeclarationNode node) {
@@ -317,21 +352,65 @@ public class ASMCodeGenerator {
 		public void visitLeave(WhileNode node) {
 			newVoidCode(node);
 			
-			Labeller labeller = new Labeller("while");
-			String conditionLabel = labeller.newLabel("condition");
-			String endLabel = labeller.newLabel("end");
 
 			ASMCodeFragment conditionValue = removeValueCode(node.child(0));
 			ASMCodeFragment block = removeVoidCode(node.child(1));
 			ASMCodeFragment elseBlock = block;
 			
-			code.add(Label, conditionLabel);
+			code.add(Label, node.getConditionLabel());
 			code.append(conditionValue);
-			code.add(JumpFalse, endLabel);
+			code.add(JumpFalse, node.getEndLabel());
 			code.append(block);
-			code.add(Jump, conditionLabel);
+			code.add(Jump, node.getConditionLabel());
 			
-			code.add(Label, endLabel);
+			code.add(Label, node.getEndLabel());
+		}
+		
+		public void visitLeave(ForNode node) {
+			newVoidCode(node);
+			
+			
+
+			ASMCodeFragment id = removeAddressCode(node.child(0));	
+			ASMCodeFragment initial = removeValueCode(node.child(1));
+			ASMCodeFragment endValue = removeValueCode(node.child(2));
+			ASMCodeFragment block = removeVoidCode(node.child(3));
+			
+			code.append(id);
+			
+			code.append(initial);
+			
+			Type type = node.getType();
+			code.add(opcodeForStore(type));
+			Binding binding = ((IdentifierNode)node.child(0)).getBinding();
+			
+			
+			//code.append(initial);
+			//code.append(id);
+			
+			
+			code.add(Label, node.getStartLabel());
+			binding.generateAddress(code);
+			code.add(LoadI);
+			
+
+			code.append(endValue);
+			code.add(Subtract);
+			code.add(JumpPos, node.getEndLabel());
+			code.append(block);
+			code.add(Label, node.getIncrementLabel());
+			binding.generateAddress(code);
+			code.add(LoadI);
+			
+			code.add(PushI, 1);
+			code.add(Add);
+			
+			binding.generateAddress(code);
+			code.add(Exchange);
+			code.add(opcodeForStore(type));
+			code.add(Jump, node.getStartLabel());
+			
+			code.add(Label, node.getEndLabel());
 		}
 		
 		private ASMOpcode opcodeForStore(Type type) {
@@ -364,6 +443,7 @@ public class ASMCodeGenerator {
 		public void visitLeave(TypeNode node) {
 			newValueCode(node);
 		}
+		
 		
 		public void visitLeave(OperatorNode node) {
 			PromotedSignature signature = node.getSignature();
@@ -734,11 +814,11 @@ public class ASMCodeGenerator {
 			}
 				
 			if(node.getOperator() == Punctuator.INDEXING) {
-				int index;
+				int index = 0;
 				if(node.child(1) instanceof CharacterNode) {
 					index = ((CharacterNode)node.child(1)).getValue();
 				}
-				else {
+				else if(node.child(1) instanceof IntegerConstantNode){
 					index =  ((IntegerConstantNode)node.child(1)).getValue();
 				}
 				
@@ -749,7 +829,14 @@ public class ASMCodeGenerator {
 				code.add(PushI, 12);
 				code.add(Add);
 				code.add(LoadI);
-				code.add(PushI, index);
+				if(node.child(1) instanceof IdentifierNode) {
+					Binding binding = ((IdentifierNode)node.child(1)).getBinding();
+					binding.generateAddress(code);
+					code.add(LoadI);
+				}
+				else {
+					code.add(PushI, index);
+				}
 				code.add(Subtract);
 				code.add(ASMOpcode.JumpNeg, RunTime.INDEX_OUT_OF_BOUNDS_RUNTIME_ERROR);
 				if(index < 0 ) {
@@ -763,7 +850,14 @@ public class ASMCodeGenerator {
 				code.add(Add);
 				code.add(LoadI);
 				
-				code.add(PushI, index);
+				if(node.child(1) instanceof IdentifierNode) {
+					Binding binding = ((IdentifierNode)node.child(1)).getBinding();
+					binding.generateAddress(code);
+					code.add(LoadI);
+				}
+				else {
+					code.add(PushI, index);
+				}
 				code.add(Multiply);
 				
 				code.add(PushI, 16);

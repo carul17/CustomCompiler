@@ -83,6 +83,24 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	public void visitLeave(WhileNode node) {
 	}
 	@Override
+	public void visitEnter(ForNode node) {
+		
+		IdentifierNode identifier = (IdentifierNode) node.child(0);
+		ParseNode initializer = node.child(1);
+		
+		Type type = PrimitiveType.INTEGER;
+		Constancy constancy = Constancy.IS_CONSTANT;
+		identifier.setType(type);
+		node.setType(type);
+		addBinding(identifier, type, constancy, -1);
+		enterSubscope(node);
+	}
+	
+	public void visitLeave(ForNode node) {
+		leaveScope(node);
+	}
+	
+	@Override
 	public void visitLeave(TypeNode node) {
 		node.setType(PrimitiveType.getTypeFromString(node.getTypeString()));
 	}
@@ -313,11 +331,17 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	@Override
 	public void visit(TabNode node) {
 	}
+	@Override
+	public void visit(BreakNode node) {
+	}
+	@Override
+	public void visit(ContinueNode node) {
+	}
 	///////////////////////////////////////////////////////////////////////////
 	// IdentifierNodes, with helper methods
 	@Override
 	public void visit(IdentifierNode node) {
-		if(!isBeingDeclared(node)) {		
+		if(!isBeingDeclared(node)) {	
 			Binding binding = node.findVariableBinding();
 			
 			node.setType(binding.getType());
@@ -327,8 +351,9 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	private boolean isBeingDeclared(IdentifierNode node) {
 		ParseNode parent = node.getParent();
-		return (parent instanceof DeclarationNode) && (node == parent.child(0))
-				||(parent instanceof FunctionDefinitionNode) && (node == parent.child(1));
+		return (parent instanceof ForNode) || ((parent instanceof DeclarationNode) && (node == parent.child(0)))
+				||((parent instanceof FunctionDefinitionNode) && (node == parent.child(1))
+				);
 	}
 	private void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy, int numElements) {
 		Scope scope = identifierNode.getLocalScope();

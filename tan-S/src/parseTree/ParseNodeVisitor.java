@@ -27,6 +27,9 @@ public interface ParseNodeVisitor {
 	void visitEnter(WhileNode node);
 	void visitLeave(WhileNode node);
 	
+	void visitEnter(ForNode node);
+	void visitLeave(ForNode node);
+	
 	void visitEnter(ParseNode node);
 	void visitLeave(ParseNode node);
 	
@@ -68,6 +71,7 @@ public interface ParseNodeVisitor {
 	void visit(SpaceNode node);
 	void visit(TabNode node);
 	void visit(BreakNode node);
+	void visit(ContinueNode node);
 	void visit(FunctionTypeNode node);
 
 	
@@ -118,6 +122,12 @@ public interface ParseNodeVisitor {
 			defaultVisitEnter(node);
 		}
 		public void visitLeave(WhileNode node) {
+			defaultVisitLeave(node);
+		}
+		public void visitEnter(ForNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(ForNode node) {
 			defaultVisitLeave(node);
 		}
 		public void visitEnter(MainBlockNode node) {
@@ -221,6 +231,9 @@ public interface ParseNodeVisitor {
 			defaultVisitForLeaf(node);
 		}
 		public void visit(BreakNode node) {
+			defaultVisitForLeaf(node);
+		}
+		public void visit(ContinueNode node) {
 			defaultVisitForLeaf(node);
 		}
 		public void visit(FunctionTypeNode node) {

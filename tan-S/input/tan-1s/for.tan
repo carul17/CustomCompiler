@@ -1,0 +1,11 @@
+main {
+	for(j from 1 to 3){
+		for(i from 1 to 3) {
+			if(i == 2){
+				continue;
+			}
+			print "i is" \s i \s; 
+		}
+		print \n "j is" \s j \n;
+	}
+}
