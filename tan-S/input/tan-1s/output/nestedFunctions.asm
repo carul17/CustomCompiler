@@ -176,12 +176,12 @@
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% s
-        PushD        subr                      
+        PushD        -function-2-subr          
         StoreI                                 
         PushD        $global-memory-block      
         PushI        4                         
         Add                                    %% f
-        PushD        subr                      
+        PushD        -function-3-subr          
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
@@ -199,7 +199,7 @@
         PushD        $print-format-newline     
         Printf                                 
         Halt                                   
-        Label        subr                      
+        Label        -function-2-subr          
         PushI        5                         
         Nop                                    
         PushI        5                         
@@ -210,7 +210,7 @@
         PushD        $print-format-newline     
         Printf                                 
         Return                                 
-        Label        subr                      
+        Label        -function-3-subr          
         PushI        3                         
         PushD        $print-format-integer     
         Printf                                 

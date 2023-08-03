@@ -311,13 +311,15 @@ public class ASMCodeGenerator {
 		
 		public void visitLeave(FunctionDefinitionNode node) {
 			ASMCodeFragment fCode = new ASMCodeFragment(GENERATES_VOID);
-			fCode.add(Label, node.getToken().getLexeme());
+			Labeller labeller = new Labeller("function");
+			String label = labeller.newLabel(node.getToken().getLexeme());
+			fCode.add(Label, label);
 			fCode.append(removeVoidCode(node.child(3)));
 			fCode.add(Return);
 			function.append(fCode);
 			newVoidCode(node);
 			code.append(removeAddressCode(node.child(1)));
-			code.add(PushD, node.getToken().getLexeme());
+			code.add(PushD, label);
 			code.add(StoreI);
 		}
 		

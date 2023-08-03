@@ -1,1 +1,3 @@
-Error: symbol "subr" defined multiple times.
+10
+3
+34
