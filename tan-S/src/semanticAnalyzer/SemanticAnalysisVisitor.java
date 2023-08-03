@@ -37,9 +37,9 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	///////////////////////////////////////////////////////////////////////////
 	// constructs larger than statements
 	@Override
-	public void visitEnter(ProgramNode node) {
-		enterProgramScope(node);
-	}
+//	public void visitEnter(ProgramNode node) {
+//		enterProgramScope(node);
+//	}
 	public void visitLeave(ProgramNode node) {
 		leaveScope(node);
 	}
@@ -140,17 +140,17 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	
 	///////////////FUNCTIONS////////////////////
-	@Override
-	public void visitLeave(FunctionDefinitionNode node) {
-		Token token = node.getToken();
-		FunctionTypeNode type = (FunctionTypeNode) node.child(0);
-		IdentifierNode iden = (IdentifierNode) node.child(1);
-		ParameterListNode pList = (ParameterListNode) node.child(2);
-		BlockStatementNode bStat = (BlockStatementNode) node.child(3);
-		Type fType = FunctionType.create(type.getType(), pList.getTypes());
-		addBinding(iden, fType, null, 0);
-		
-	}
+//	@Override
+//	public void visitLeave(FunctionDefinitionNode node) {
+//		Token token = node.getToken();
+//		FunctionTypeNode type = (FunctionTypeNode) node.child(0);
+//		IdentifierNode iden = (IdentifierNode) node.child(1);
+//		ParameterListNode pList = (ParameterListNode) node.child(2);
+//		BlockStatementNode bStat = (BlockStatementNode) node.child(3);
+//		Type fType = FunctionType.create(type.getType(), pList.getTypes());
+//		addBinding(iden, fType, null, 0);
+//		
+//	}
 	
 	@Override
 	public void visitLeave(ExpressionListNode node) {
@@ -355,7 +355,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 				||((parent instanceof FunctionDefinitionNode) && (node == parent.child(1))
 				);
 	}
-	private void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy, int numElements) {
+	public static void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy, int numElements) {
 		Scope scope = identifierNode.getLocalScope();
 		Binding binding = scope.createBinding(identifierNode, type, constancy, numElements);
 		identifierNode.setBinding(binding);

@@ -178,28 +178,28 @@
         Add                                    %% b
         PushI        0                         
         StoreI                                 
-        Label        -while-4-condition        
-        Label        -compare-2-arg1           
+        Label        -while-1-condition        
+        Label        -compare-3-arg1           
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% b
         Nop                                    
         LoadI                                  
-        Label        -compare-2-arg2           
+        Label        -compare-3-arg2           
         PushI        3                         
         Nop                                    
-        Label        -compare-2-sub            
+        Label        -compare-3-sub            
         Subtract                               
-        JumpNeg      -compare-2-true           
-        Jump         -compare-2-false          
-        Label        -compare-2-true           
+        JumpNeg      -compare-3-true           
+        Jump         -compare-3-false          
+        Label        -compare-3-true           
         PushI        1                         
-        Jump         -compare-2-join           
-        Label        -compare-2-false          
+        Jump         -compare-3-join           
+        Label        -compare-3-false          
         PushI        0                         
-        Jump         -compare-2-join           
-        Label        -compare-2-join           
-        JumpFalse    -while-4-end              
+        Jump         -compare-3-join           
+        Label        -compare-3-join           
+        JumpFalse    -while-1-end              
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% b
@@ -220,8 +220,9 @@
         Nop                                    
         Add                                    
         StoreI                                 
-        Jump         -while-4-condition        
-        Label        -while-4-end              
+        Jump         -while-1-end              
+        Jump         -while-1-condition        
+        Label        -while-1-end              
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           

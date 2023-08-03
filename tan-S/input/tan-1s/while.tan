@@ -3,5 +3,6 @@ main {
 	while(b < 3){
 		print b \n;
 		b := b+1;
+		break;
 	}
 }

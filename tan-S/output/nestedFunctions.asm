@@ -171,59 +171,52 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        4                         
+        DataZ        8                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% b
-        PushI        0                         
+        Add                                    %% s
+        PushD        subr                      
         StoreI                                 
-        Label        -while-1-condition        
-        Label        -compare-3-arg1           
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% f
+        PushD        subr                      
+        StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% b
-        Nop                                    
+        Add                                    %% s
         LoadI                                  
-        Label        -compare-3-arg2           
-        PushI        3                         
-        Nop                                    
-        Label        -compare-3-sub            
-        Subtract                               
-        JumpNeg      -compare-3-true           
-        Jump         -compare-3-false          
-        Label        -compare-3-true           
-        PushI        1                         
-        Jump         -compare-3-join           
-        Label        -compare-3-false          
-        PushI        0                         
-        Jump         -compare-3-join           
-        Label        -compare-3-join           
-        JumpFalse    -while-1-end              
+        CallV                                  
         PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% b
+        PushI        4                         
+        Add                                    %% f
         LoadI                                  
+        CallV                                  
+        PushI        34                        
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% b
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% b
+        Halt                                   
+        Label        subr                      
+        PushI        5                         
         Nop                                    
-        LoadI                                  
-        PushI        1                         
+        PushI        5                         
         Nop                                    
         Add                                    
-        StoreI                                 
-        Jump         -while-1-end              
-        Jump         -while-1-condition        
-        Label        -while-1-end              
-        Halt                                   
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        Return                                 
+        Label        subr                      
+        PushI        3                         
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        Return                                 
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
         DataZ        4                         

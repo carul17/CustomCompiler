@@ -1,0 +1,13 @@
+subr void s(){
+	print 5+5 \n;
+}
+
+subr void f(){
+	print 3 \n;
+}
+
+main {
+	call s();
+	call f();
+	print 34 \n;
+}
