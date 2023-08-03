@@ -4,13 +4,13 @@ use Cwd;
 use File::Find;
 use File::Basename;
 
-my $project_location = "C:/Users/jaive/git/cmpt379";
+my $project_location = "/Users/callum/documents/sfucourses/cmpt379/cmpt379";
 my $language_name = "tan";
 my $project_name = "tan-S";
 my $asm_test_extension = "asmt";
 
 my $cap_language_name = ucfirst($language_name);
-my $emulator = "$project_location/$project_name/ASM_Emulator/ASMEmu.exe";
+my $emulator = "/opt/homebrew/bin/wine64 $project_location/$project_name/ASM_Emulator/ASMNew.exe";
 my $javaArgs = "-ea -cp $project_location/$project_name/bin";
 my $compiler_class = "applications.$cap_language_name"."Compiler";
 my $suffixLength = length($language_name);

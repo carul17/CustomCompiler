@@ -53,6 +53,7 @@ public enum PrimitiveType implements Type {
 			case "string": return PrimitiveType.STRING;
 			case "float": return PrimitiveType.FLOATING;
 			case "bool": return PrimitiveType.BOOLEAN;
+			case "void": return PrimitiveType.VOID;
 			default: return PrimitiveType.ERROR;
 		}
 	}

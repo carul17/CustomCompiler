@@ -20,7 +20,7 @@ public class FunctionDefinitionNode extends ParseNode {
 
 
 
-	public static ParseNode make(Token token, ParseNode type, ParseNode identifier, ParseNode parameterList, ParseNode blockStatement) {
+	public static ParseNode withChildren(Token token, ParseNode type, ParseNode identifier, ParseNode parameterList, ParseNode blockStatement) {
 		FunctionDefinitionNode fucntionDefinition = new FunctionDefinitionNode(token);
 		fucntionDefinition.appendChild(type);
 		fucntionDefinition.appendChild(identifier);

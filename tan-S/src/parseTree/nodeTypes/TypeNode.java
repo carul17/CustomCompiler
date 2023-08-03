@@ -29,15 +29,8 @@ public class TypeNode extends ParseNode {
 	}	
 	
 	
-	////////////////////////////////////////////////////////////
-	// convenience factory
 	
-	public static TypeNode withChildren(Token token, ParseNode type, ParseNode expr) {
-		TypeNode node = new TypeNode(token);
-		node.appendChild(type);
-		node.appendChild(expr);
-		return node;
-	}
+
 	
 	
 	///////////////////////////////////////////////////////////

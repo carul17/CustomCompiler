@@ -16,7 +16,7 @@ public class CallStatementNode extends ParseNode {
 		visitor.visitLeave(this);
 	}
 
-	public static ParseNode make(Token nowReading, ParseNode identifier, ParseNode expresstionList) {
+	public static ParseNode withChildren(Token nowReading, ParseNode identifier, ParseNode expresstionList) {
 		CallStatementNode node = new CallStatementNode(nowReading);
 		node.appendChild(identifier);
 		node.appendChild(expresstionList);
