@@ -1,3 +1,26 @@
+        Label        -mem-manager-initialize   
+        DLabel       $heap-start-ptr           
+        DataZ        4                         
+        DLabel       $heap-after-ptr           
+        DataZ        4                         
+        DLabel       $heap-first-free          
+        DataZ        4                         
+        DLabel       $mmgr-newblock-block      
+        DataZ        4                         
+        DLabel       $mmgr-newblock-size       
+        DataZ        4                         
+        PushD        $heap-memory              
+        Duplicate                              
+        PushD        $heap-start-ptr           
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-after-ptr           
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushD        $heap-first-free          
+        Exchange                               
+        StoreI                                 
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
@@ -122,6 +145,30 @@
         Label        $$f-divide-by-zero        
         PushD        $errors-float-divide-by-zero 
         Jump         $$general-runtime-error   
+        DLabel       $errors-index-out-of-bounds 
+        DataC        105                       %% "index out of bounds"
+        DataC        110                       
+        DataC        100                       
+        DataC        101                       
+        DataC        120                       
+        DataC        32                        
+        DataC        111                       
+        DataC        117                       
+        DataC        116                       
+        DataC        32                        
+        DataC        111                       
+        DataC        102                       
+        DataC        32                        
+        DataC        98                        
+        DataC        111                       
+        DataC        117                       
+        DataC        110                       
+        DataC        100                       
+        DataC        115                       
+        DataC        0                         
+        Label        $$f-index-out-of-bounds   
+        PushD        $errors-index-out-of-bounds 
+        Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
         DataZ        36                        
@@ -230,7 +277,7 @@
         DataC        99                        
         DataC        0                         
         PushD        -string-4-abc             
-        Label        -compare-6-arg2           
+        Nop                                    
         Label        -compare-7-arg2           
         DLabel       -string-5-abc             
         DataI        3                         
@@ -241,6 +288,7 @@
         DataC        99                        
         DataC        0                         
         PushD        -string-5-abc             
+        Nop                                    
         Label        -compare-7-sub            
         Subtract                               
         JumpFalse    -compare-7-true           
@@ -258,9 +306,10 @@
         Add                                    %% pos2
         Label        -compare-9-arg1           
         PushI        2                         
-        Label        -compare-8-arg2           
+        Nop                                    
         Label        -compare-9-arg2           
         PushI        1                         
+        Nop                                    
         Label        -compare-9-sub            
         Subtract                               
         JumpPos      -compare-9-true           
@@ -278,9 +327,10 @@
         Add                                    %% pos3
         Label        -compare-11-arg1          
         PushI        2                         
-        Label        -compare-10-arg2          
+        Nop                                    
         Label        -compare-11-arg2          
         PushI        1                         
+        Nop                                    
         Label        -compare-11-sub           
         Subtract                               
         JumpNeg      -compare-11-true          
@@ -298,9 +348,10 @@
         Add                                    %% pos4
         Label        -compare-13-arg1          
         PushI        2                         
-        Label        -compare-12-arg2          
+        Nop                                    
         Label        -compare-13-arg2          
         PushI        1                         
+        Nop                                    
         Label        -compare-13-sub           
         Subtract                               
         Duplicate                              
@@ -323,9 +374,10 @@
         Add                                    %% pos5
         Label        -compare-15-arg1          
         PushI        2                         
-        Label        -compare-14-arg2          
+        Nop                                    
         Label        -compare-15-arg2          
         PushI        1                         
+        Nop                                    
         Label        -compare-15-sub           
         Subtract                               
         Duplicate                              
@@ -348,9 +400,10 @@
         Add                                    %% pos6
         Label        -compare-17-arg1          
         PushI        2                         
-        Label        -compare-16-arg2          
+        Nop                                    
         Label        -compare-17-arg2          
         PushI        2                         
+        Nop                                    
         Label        -compare-17-sub           
         Subtract                               
         Duplicate                              
@@ -373,9 +426,10 @@
         Add                                    %% pos7
         Label        -compare-19-arg1          
         PushI        2                         
-        Label        -compare-18-arg2          
+        Nop                                    
         Label        -compare-19-arg2          
         PushI        2                         
+        Nop                                    
         Label        -compare-19-sub           
         Subtract                               
         Duplicate                              
@@ -398,9 +452,10 @@
         Add                                    %% pos8
         Label        -compare-21-arg1          
         PushI        2                         
-        Label        -compare-20-arg2          
+        Nop                                    
         Label        -compare-21-arg2          
         PushI        2                         
+        Nop                                    
         Label        -compare-21-sub           
         Subtract                               
         JumpFalse    -compare-21-true          
@@ -418,9 +473,10 @@
         Add                                    %% pos9
         Label        -compare-23-arg1          
         PushI        2                         
-        Label        -compare-22-arg2          
+        Nop                                    
         Label        -compare-23-arg2          
         PushI        3                         
+        Nop                                    
         Label        -compare-23-sub           
         Subtract                               
         JumpFalse    -compare-23-true          
@@ -438,9 +494,10 @@
         Add                                    %% pos10
         Label        -compare-25-arg1          
         PushI        2                         
-        Label        -compare-24-arg2          
+        Nop                                    
         Label        -compare-25-arg2          
         PushI        2                         
+        Nop                                    
         Label        -compare-25-sub           
         Subtract                               
         JumpTrue     -compare-25-true          
@@ -458,9 +515,10 @@
         Add                                    %% pos11
         Label        -compare-27-arg1          
         PushI        2                         
-        Label        -compare-26-arg2          
+        Nop                                    
         Label        -compare-27-arg2          
         PushI        3                         
+        Nop                                    
         Label        -compare-27-sub           
         Subtract                               
         JumpTrue     -compare-27-true          
@@ -478,9 +536,10 @@
         Add                                    %% pos12
         Label        -compare-29-arg1          
         PushI        1                         
-        Label        -compare-28-arg2          
+        Nop                                    
         Label        -compare-29-arg2          
         PushI        1                         
+        Nop                                    
         Label        -compare-29-sub           
         Subtract                               
         JumpTrue     -compare-29-true          
@@ -498,9 +557,10 @@
         Add                                    %% pos13
         Label        -compare-31-arg1          
         PushI        1                         
-        Label        -compare-30-arg2          
+        Nop                                    
         Label        -compare-31-arg2          
         PushI        0                         
+        Nop                                    
         Label        -compare-31-sub           
         Subtract                               
         JumpTrue     -compare-31-true          
@@ -518,9 +578,10 @@
         Add                                    %% pos14
         Label        -compare-33-arg1          
         PushI        1                         
-        Label        -compare-32-arg2          
+        Nop                                    
         Label        -compare-33-arg2          
         PushI        1                         
+        Nop                                    
         Label        -compare-33-sub           
         Subtract                               
         JumpFalse    -compare-33-true          
@@ -538,9 +599,10 @@
         Add                                    %% pos15
         Label        -compare-35-arg1          
         PushI        1                         
-        Label        -compare-34-arg2          
+        Nop                                    
         Label        -compare-35-arg2          
         PushI        0                         
+        Nop                                    
         Label        -compare-35-sub           
         Subtract                               
         JumpFalse    -compare-35-true          
@@ -557,12 +619,13 @@
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% pos
-        Label        -compare-36-arg2          
+        Nop                                    
         LoadC                                  
         Label        -compare-37-arg2          
         PushD        $global-memory-block      
         PushI        1                         
         Add                                    %% b
+        Nop                                    
         LoadC                                  
         Label        -compare-37-sub           
         Subtract                               
@@ -589,12 +652,13 @@
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% pos
-        Label        -compare-39-arg2          
+        Nop                                    
         LoadC                                  
         Label        -compare-40-arg2          
         PushD        $global-memory-block      
         PushI        2                         
         Add                                    %% c
+        Nop                                    
         LoadC                                  
         Label        -compare-40-sub           
         Subtract                               
@@ -621,12 +685,13 @@
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% pos
-        Label        -compare-42-arg2          
+        Nop                                    
         LoadC                                  
         Label        -compare-43-arg2          
         PushD        $global-memory-block      
         PushI        3                         
         Add                                    %% d
+        Nop                                    
         LoadC                                  
         Label        -compare-43-sub           
         Subtract                               
@@ -653,12 +718,13 @@
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% pos
-        Label        -compare-45-arg2          
+        Nop                                    
         LoadC                                  
         Label        -compare-46-arg2          
         PushD        $global-memory-block      
         PushI        4                         
         Add                                    %% e
+        Nop                                    
         LoadC                                  
         Label        -compare-46-sub           
         Subtract                               
@@ -711,12 +777,13 @@
         PushD        $global-memory-block      
         PushI        5                         
         Add                                    %% s
-        Label        -compare-49-arg2          
+        Nop                                    
         LoadI                                  
         Label        -compare-50-arg2          
         PushD        $global-memory-block      
         PushI        9                         
         Add                                    %% s2
+        Nop                                    
         LoadI                                  
         Label        -compare-50-sub           
         Subtract                               
@@ -753,12 +820,13 @@
         PushD        $global-memory-block      
         PushI        5                         
         Add                                    %% s
-        Label        -compare-52-arg2          
+        Nop                                    
         LoadI                                  
         Label        -compare-53-arg2          
         PushD        $global-memory-block      
         PushI        13                        
         Add                                    %% s3
+        Nop                                    
         LoadI                                  
         Label        -compare-53-sub           
         Subtract                               
@@ -785,12 +853,13 @@
         PushD        $global-memory-block      
         PushI        5                         
         Add                                    %% s
-        Label        -compare-55-arg2          
+        Nop                                    
         LoadI                                  
         Label        -compare-56-arg2          
         PushD        $global-memory-block      
         PushI        17                        
         Add                                    %% s4
+        Nop                                    
         LoadI                                  
         Label        -compare-56-sub           
         Subtract                               
@@ -883,23 +952,39 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushD        $global-memory-block      
-        PushI        22                        
-        Add                                    %% pos2
-        LoadC                                  
-        JumpTrue     -print-boolean-60-true    
-        PushD        $boolean-false-string     
-        Jump         -print-boolean-60-join    
-        Label        -print-boolean-60-true    
-        PushD        $boolean-true-string      
-        Label        -print-boolean-60-join    
-        PushD        $print-format-boolean     
+        DLabel       -string-60-greater, less than 
+        DataI        3                         
+        DataI        9                         
+        DataI        18                        
+        DataC        103                       %% "greater, less than"
+        DataC        114                       
+        DataC        101                       
+        DataC        97                        
+        DataC        116                       
+        DataC        101                       
+        DataC        114                       
+        DataC        44                        
+        DataC        32                        
+        DataC        108                       
+        DataC        101                       
+        DataC        115                       
+        DataC        115                       
+        DataC        32                        
+        DataC        116                       
+        DataC        104                       
+        DataC        97                        
+        DataC        110                       
+        DataC        0                         
+        PushD        -string-60-greater, less than 
+        PushI        12                        
+        Add                                    
+        PushD        $print-format-string      
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        23                        
-        Add                                    %% pos3
+        PushI        22                        
+        Add                                    %% pos2
         LoadC                                  
         JumpTrue     -print-boolean-61-true    
         PushD        $boolean-false-string     
@@ -911,11 +996,9 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
         PushD        $global-memory-block      
-        PushI        24                        
-        Add                                    %% pos4
+        PushI        23                        
+        Add                                    %% pos3
         LoadC                                  
         JumpTrue     -print-boolean-62-true    
         PushD        $boolean-false-string     
@@ -927,9 +1010,11 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         PushD        $global-memory-block      
-        PushI        25                        
-        Add                                    %% pos5
+        PushI        24                        
+        Add                                    %% pos4
         LoadC                                  
         JumpTrue     -print-boolean-63-true    
         PushD        $boolean-false-string     
@@ -942,8 +1027,8 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        26                        
-        Add                                    %% pos6
+        PushI        25                        
+        Add                                    %% pos5
         LoadC                                  
         JumpTrue     -print-boolean-64-true    
         PushD        $boolean-false-string     
@@ -956,8 +1041,8 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        27                        
-        Add                                    %% pos7
+        PushI        26                        
+        Add                                    %% pos6
         LoadC                                  
         JumpTrue     -print-boolean-65-true    
         PushD        $boolean-false-string     
@@ -969,11 +1054,9 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
         PushD        $global-memory-block      
-        PushI        28                        
-        Add                                    %% pos8
+        PushI        27                        
+        Add                                    %% pos7
         LoadC                                  
         JumpTrue     -print-boolean-66-true    
         PushD        $boolean-false-string     
@@ -985,9 +1068,11 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         PushD        $global-memory-block      
-        PushI        29                        
-        Add                                    %% pos9
+        PushI        28                        
+        Add                                    %% pos8
         LoadC                                  
         JumpTrue     -print-boolean-67-true    
         PushD        $boolean-false-string     
@@ -999,11 +1084,9 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
         PushD        $global-memory-block      
-        PushI        30                        
-        Add                                    %% pos10
+        PushI        29                        
+        Add                                    %% pos9
         LoadC                                  
         JumpTrue     -print-boolean-68-true    
         PushD        $boolean-false-string     
@@ -1015,9 +1098,11 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         PushD        $global-memory-block      
-        PushI        31                        
-        Add                                    %% pos11
+        PushI        30                        
+        Add                                    %% pos10
         LoadC                                  
         JumpTrue     -print-boolean-69-true    
         PushD        $boolean-false-string     
@@ -1029,11 +1114,9 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
         PushD        $global-memory-block      
-        PushI        32                        
-        Add                                    %% pos12
+        PushI        31                        
+        Add                                    %% pos11
         LoadC                                  
         JumpTrue     -print-boolean-70-true    
         PushD        $boolean-false-string     
@@ -1045,9 +1128,11 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         PushD        $global-memory-block      
-        PushI        33                        
-        Add                                    %% pos13
+        PushI        32                        
+        Add                                    %% pos12
         LoadC                                  
         JumpTrue     -print-boolean-71-true    
         PushD        $boolean-false-string     
@@ -1060,8 +1145,8 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        34                        
-        Add                                    %% pos14
+        PushI        33                        
+        Add                                    %% pos13
         LoadC                                  
         JumpTrue     -print-boolean-72-true    
         PushD        $boolean-false-string     
@@ -1074,8 +1159,8 @@
         PushD        $print-format-newline     
         Printf                                 
         PushD        $global-memory-block      
-        PushI        35                        
-        Add                                    %% pos15
+        PushI        34                        
+        Add                                    %% pos14
         LoadC                                  
         JumpTrue     -print-boolean-73-true    
         PushD        $boolean-false-string     
@@ -1087,4 +1172,435 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        PushD        $global-memory-block      
+        PushI        35                        
+        Add                                    %% pos15
+        LoadC                                  
+        JumpTrue     -print-boolean-74-true    
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-74-join    
+        Label        -print-boolean-74-true    
+        PushD        $boolean-true-string      
+        Label        -print-boolean-74-join    
+        PushD        $print-format-boolean     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         Halt                                   
+        Label        -mem-manager-make-tags    
+        DLabel       $mmgr-tags-size           
+        DataZ        4                         
+        DLabel       $mmgr-tags-start          
+        DataZ        4                         
+        DLabel       $mmgr-tags-available      
+        DataZ        4                         
+        DLabel       $mmgr-tags-nextptr        
+        DataZ        4                         
+        DLabel       $mmgr-tags-prevptr        
+        DataZ        4                         
+        DLabel       $mmgr-tags-return         
+        DataZ        4                         
+        PushD        $mmgr-tags-return         
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-tags-size           
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-tags-start          
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-tags-available      
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-tags-nextptr        
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-tags-prevptr        
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-tags-prevptr        
+        LoadI                                  
+        PushD        $mmgr-tags-size           
+        LoadI                                  
+        PushD        $mmgr-tags-available      
+        LoadI                                  
+        PushD        $mmgr-tags-start          
+        LoadI                                  
+        Call         -mem-manager-one-tag      
+        PushD        $mmgr-tags-nextptr        
+        LoadI                                  
+        PushD        $mmgr-tags-size           
+        LoadI                                  
+        PushD        $mmgr-tags-available      
+        LoadI                                  
+        PushD        $mmgr-tags-start          
+        LoadI                                  
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Add                                    
+        PushI        9                         
+        Subtract                               
+        Call         -mem-manager-one-tag      
+        PushD        $mmgr-tags-return         
+        LoadI                                  
+        Return                                 
+        Label        -mem-manager-one-tag      
+        DLabel       $mmgr-onetag-return       
+        DataZ        4                         
+        DLabel       $mmgr-onetag-location     
+        DataZ        4                         
+        DLabel       $mmgr-onetag-available    
+        DataZ        4                         
+        DLabel       $mmgr-onetag-size         
+        DataZ        4                         
+        DLabel       $mmgr-onetag-pointer      
+        DataZ        4                         
+        PushD        $mmgr-onetag-return       
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-onetag-location     
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-onetag-available    
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-onetag-size         
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-onetag-location     
+        LoadI                                  
+        PushI        0                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-onetag-size         
+        LoadI                                  
+        PushD        $mmgr-onetag-location     
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-onetag-available    
+        LoadI                                  
+        PushD        $mmgr-onetag-location     
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreC                                 
+        PushD        $mmgr-onetag-return       
+        LoadI                                  
+        Return                                 
+        Label        -mem-manager-allocate     
+        DLabel       $mmgr-alloc-return        
+        DataZ        4                         
+        DLabel       $mmgr-alloc-size          
+        DataZ        4                         
+        DLabel       $mmgr-alloc-current-block 
+        DataZ        4                         
+        DLabel       $mmgr-alloc-remainder-block 
+        DataZ        4                         
+        DLabel       $mmgr-alloc-remainder-size 
+        DataZ        4                         
+        PushD        $mmgr-alloc-return        
+        Exchange                               
+        StoreI                                 
+        PushI        18                        
+        Add                                    
+        PushD        $mmgr-alloc-size          
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-first-free          
+        LoadI                                  
+        PushD        $mmgr-alloc-current-block 
+        Exchange                               
+        StoreI                                 
+        Label        -mmgr-alloc-process-current 
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        JumpFalse    -mmgr-alloc-no-block-works 
+        Label        -mmgr-alloc-test-block    
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        PushD        $mmgr-alloc-size          
+        LoadI                                  
+        Subtract                               
+        PushI        1                         
+        Add                                    
+        JumpPos      -mmgr-alloc-found-block   
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Add                                    
+        PushI        9                         
+        Subtract                               
+        PushI        0                         
+        Add                                    
+        LoadI                                  
+        PushD        $mmgr-alloc-current-block 
+        Exchange                               
+        StoreI                                 
+        Jump         -mmgr-alloc-process-current 
+        Label        -mmgr-alloc-found-block   
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        Call         -mem-manager-remove-block 
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        PushD        $mmgr-alloc-size          
+        LoadI                                  
+        Subtract                               
+        PushI        26                        
+        Subtract                               
+        JumpNeg      -mmgr-alloc-return-userblock 
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        PushD        $mmgr-alloc-size          
+        LoadI                                  
+        Add                                    
+        PushD        $mmgr-alloc-remainder-block 
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-alloc-size          
+        LoadI                                  
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Exchange                               
+        Subtract                               
+        PushD        $mmgr-alloc-remainder-size 
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushI        0                         
+        PushI        0                         
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        PushD        $mmgr-alloc-size          
+        LoadI                                  
+        Call         -mem-manager-make-tags    
+        PushI        0                         
+        PushI        0                         
+        PushI        1                         
+        PushD        $mmgr-alloc-remainder-block 
+        LoadI                                  
+        PushD        $mmgr-alloc-remainder-size 
+        LoadI                                  
+        Call         -mem-manager-make-tags    
+        PushD        $mmgr-alloc-remainder-block 
+        LoadI                                  
+        PushI        9                         
+        Add                                    
+        Call         -mem-manager-deallocate   
+        Jump         -mmgr-alloc-return-userblock 
+        Label        -mmgr-alloc-no-block-works 
+        PushD        $mmgr-alloc-size          
+        LoadI                                  
+        PushD        $mmgr-newblock-size       
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-after-ptr           
+        LoadI                                  
+        PushD        $mmgr-newblock-block      
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-newblock-size       
+        LoadI                                  
+        PushD        $heap-after-ptr           
+        LoadI                                  
+        Add                                    
+        PushD        $heap-after-ptr           
+        Exchange                               
+        StoreI                                 
+        PushI        0                         
+        PushI        0                         
+        PushI        0                         
+        PushD        $mmgr-newblock-block      
+        LoadI                                  
+        PushD        $mmgr-newblock-size       
+        LoadI                                  
+        Call         -mem-manager-make-tags    
+        PushD        $mmgr-newblock-block      
+        LoadI                                  
+        PushD        $mmgr-alloc-current-block 
+        Exchange                               
+        StoreI                                 
+        Label        -mmgr-alloc-return-userblock 
+        PushD        $mmgr-alloc-current-block 
+        LoadI                                  
+        PushI        9                         
+        Add                                    
+        PushD        $mmgr-alloc-return        
+        LoadI                                  
+        Return                                 
+        Label        -mem-manager-deallocate   
+        DLabel       $mmgr-dealloc-return      
+        DataZ        4                         
+        DLabel       $mmgr-dealloc-block       
+        DataZ        4                         
+        PushD        $mmgr-dealloc-return      
+        Exchange                               
+        StoreI                                 
+        PushI        9                         
+        Subtract                               
+        PushD        $mmgr-dealloc-block       
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-first-free          
+        LoadI                                  
+        JumpFalse    -mmgr-bypass-firstFree    
+        PushD        $mmgr-dealloc-block       
+        LoadI                                  
+        PushD        $heap-first-free          
+        LoadI                                  
+        PushI        0                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        Label        -mmgr-bypass-firstFree    
+        PushI        0                         
+        PushD        $mmgr-dealloc-block       
+        LoadI                                  
+        PushI        0                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushD        $heap-first-free          
+        LoadI                                  
+        PushD        $mmgr-dealloc-block       
+        LoadI                                  
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Add                                    
+        PushI        9                         
+        Subtract                               
+        PushI        0                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        PushI        1                         
+        PushD        $mmgr-dealloc-block       
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreC                                 
+        PushI        1                         
+        PushD        $mmgr-dealloc-block       
+        LoadI                                  
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Add                                    
+        PushI        9                         
+        Subtract                               
+        PushI        8                         
+        Add                                    
+        Exchange                               
+        StoreC                                 
+        PushD        $mmgr-dealloc-block       
+        LoadI                                  
+        PushD        $heap-first-free          
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-dealloc-return      
+        LoadI                                  
+        Return                                 
+        Label        -mem-manager-remove-block 
+        DLabel       $mmgr-remove-return       
+        DataZ        4                         
+        DLabel       $mmgr-remove-block        
+        DataZ        4                         
+        DLabel       $mmgr-remove-prev         
+        DataZ        4                         
+        DLabel       $mmgr-remove-next         
+        DataZ        4                         
+        PushD        $mmgr-remove-return       
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-remove-block        
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-remove-block        
+        LoadI                                  
+        PushI        0                         
+        Add                                    
+        LoadI                                  
+        PushD        $mmgr-remove-prev         
+        Exchange                               
+        StoreI                                 
+        PushD        $mmgr-remove-block        
+        LoadI                                  
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Add                                    
+        PushI        9                         
+        Subtract                               
+        PushI        0                         
+        Add                                    
+        LoadI                                  
+        PushD        $mmgr-remove-next         
+        Exchange                               
+        StoreI                                 
+        Label        -mmgr-remove-process-prev 
+        PushD        $mmgr-remove-prev         
+        LoadI                                  
+        JumpFalse    -mmgr-remove-no-prev      
+        PushD        $mmgr-remove-next         
+        LoadI                                  
+        PushD        $mmgr-remove-prev         
+        LoadI                                  
+        Duplicate                              
+        PushI        4                         
+        Add                                    
+        LoadI                                  
+        Add                                    
+        PushI        9                         
+        Subtract                               
+        PushI        0                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        Jump         -mmgr-remove-process-next 
+        Label        -mmgr-remove-no-prev      
+        PushD        $mmgr-remove-next         
+        LoadI                                  
+        PushD        $heap-first-free          
+        Exchange                               
+        StoreI                                 
+        Label        -mmgr-remove-process-next 
+        PushD        $mmgr-remove-next         
+        LoadI                                  
+        JumpFalse    -mmgr-remove-done         
+        PushD        $mmgr-remove-prev         
+        LoadI                                  
+        PushD        $mmgr-remove-next         
+        LoadI                                  
+        PushI        0                         
+        Add                                    
+        Exchange                               
+        StoreI                                 
+        Label        -mmgr-remove-done         
+        PushD        $mmgr-remove-return       
+        LoadI                                  
+        Return                                 
+        DLabel       $heap-memory              

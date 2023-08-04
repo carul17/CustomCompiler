@@ -92,8 +92,11 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		Constancy constancy = Constancy.IS_CONSTANT;
 		identifier.setType(type);
 		node.setType(type);
-		addBinding(identifier, type, constancy, -1);
+		
+		//the binding is a member of the for loop subscope
 		enterSubscope(node);
+		addBinding(identifier, type, constancy, -1);
+		
 	}
 	
 	public void visitLeave(ForNode node) {

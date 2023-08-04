@@ -1,5 +1,6 @@
 subr void s(){
 	print 5+5 \n;
+	call f();
 }
 
 subr void f(){

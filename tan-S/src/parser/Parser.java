@@ -72,7 +72,7 @@ public class Parser {
 		}
 		Token token = nowReading;
 		expect(Keyword.SUBR);
-		ParseNode type = parseTypeFunctions();
+		ParseNode type = parseType();
 		ParseNode identifier = parseIdentifier();
 		expect(Punctuator.OPEN_ROUND_BRACE);
 		ParseNode parameterList = parseParamterList();
@@ -98,7 +98,7 @@ public class Parser {
 			return syntaxErrorNode("parameter");
 		}
 		Token token = nowReading;
-		ParseNode type = parseTypeFunctions();
+		ParseNode type = parseType();
 		ParseNode identifier = parseIdentifier();
 		return ParameterNode.make(token, type, identifier);
 	}

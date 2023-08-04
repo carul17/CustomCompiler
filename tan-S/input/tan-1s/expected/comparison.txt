@@ -13,6 +13,7 @@ bde
 false
 5	end strings ///
 
+greater, less than
 true
 false
 

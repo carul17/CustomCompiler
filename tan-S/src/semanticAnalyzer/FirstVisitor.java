@@ -48,7 +48,7 @@ public class FirstVisitor extends ParseNodeVisitor.Default {
 	 
 	@Override
 	public void visitLeave(FunctionDefinitionNode node) {
-		FunctionTypeNode type = (FunctionTypeNode) node.child(0);
+		TypeNode type = (TypeNode) node.child(0);
 		IdentifierNode iden = (IdentifierNode) node.child(1);
 		ParameterListNode pList = (ParameterListNode) node.child(2);
 		Type fType = FunctionType.create(type.getType(), pList.getTypes());

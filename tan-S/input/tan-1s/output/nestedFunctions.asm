@@ -209,6 +209,11 @@
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% f
+        LoadI                                  
+        CallV                                  
         Return                                 
         Label        -function-3-subr          
         PushI        3                         
