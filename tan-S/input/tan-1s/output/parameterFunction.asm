@@ -175,63 +175,35 @@
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% j
+        Add                                    %% s
+        PushD        -function-1-subr          
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        8                         
+        Add                                    %% a
         PushI        5                         
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% j
+        Add                                    %% s
         LoadI                                  
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% ;
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% j
-        Nop                                    
-        LoadI                                  
-        PushI        4                         
-        Nop                                    
-        Add                                    
-        StoreI                                 
-        Label        -for-1-start              
+        CallV                                  
+        PushI        34                        
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        Halt                                   
+        Label        -function-1-subr          
         PushD        $global-memory-block      
         PushI        4                         
-        Add                                    %% j
-        LoadI                                  
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% ;
-        LoadI                                  
-        Subtract                               
-        JumpPos      -for-1-end                
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% j
+        Add                                    %% a
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        Label        -for-1-increment          
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        LoadI                                  
-        PushI        1                         
-        Add                                    
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        Exchange                               
-        StoreI                                 
-        Jump         -for-1-start              
-        Label        -for-1-end                
-        Halt                                   
+        Return                                 
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
         DataZ        4                         

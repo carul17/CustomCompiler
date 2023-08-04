@@ -1,14 +1,7 @@
 main {
 	const j := 5;
-	for(j from 1 to 3){
-		for(i from 1 to 3) {
-			if(i == 2){
-				continue;
-			}
-			print "i is" \s i \s; 
+	for(j from j to j+4){
+		
+		print j \n;
 		}
-		print \n "j is" \s j \n;
-	}
-	
-	print j \n;
 }

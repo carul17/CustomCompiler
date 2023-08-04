@@ -171,66 +171,126 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        19                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% j
+        Add                                    %% a
         PushI        5                         
         StoreI                                 
         PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% j
-        LoadI                                  
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% ;
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% j
+        Add                                    %% a
         Nop                                    
         LoadI                                  
-        PushI        4                         
         Nop                                    
-        Add                                    
-        StoreI                                 
-        Label        -for-1-start              
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        LoadI                                  
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% ;
-        LoadI                                  
-        Subtract                               
-        JumpPos      -for-1-end                
+        JumpTrue     -print-boolean-2-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-2-join     
+        Label        -print-boolean-2-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-2-join     
+        PushD        $print-format-boolean     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% j
+        Add                                    %% a
+        Nop                                    
         LoadI                                  
+        ConvertF                               
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% c
+        PushF        -5.500000                 
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% c
+        Nop                                    
+        LoadF                                  
+        ConvertI                               
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        Label        -for-1-increment          
         PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        LoadI                                  
-        PushI        1                         
-        Add                                    
+        PushI        12                        
+        Add                                    %% b
+        PushI        0                         
+        StoreC                                 
         PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        Exchange                               
+        PushI        12                        
+        Add                                    %% b
+        Nop                                    
+        LoadC                                  
+        Nop                                    
+        JumpTrue     -print-boolean-6-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-6-join     
+        Label        -print-boolean-6-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-6-join     
+        PushD        $print-format-boolean     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        13                        
+        Add                                    %% g
+        PushI        97                        
+        StoreC                                 
+        PushD        $global-memory-block      
+        PushI        13                        
+        Add                                    %% g
+        Nop                                    
+        LoadC                                  
+        Nop                                    
+        JumpTrue     -print-boolean-8-true     
+        PushD        $boolean-false-string     
+        Jump         -print-boolean-8-join     
+        Label        -print-boolean-8-true     
+        PushD        $boolean-true-string      
+        Label        -print-boolean-8-join     
+        PushD        $print-format-boolean     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        14                        
+        Add                                    %% d
+        PushI        97                        
+        StoreC                                 
+        PushD        $global-memory-block      
+        PushI        14                        
+        Add                                    %% d
+        Nop                                    
+        LoadC                                  
+        Nop                                    
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
+        PushD        $global-memory-block      
+        PushI        15                        
+        Add                                    %% e
+        PushI        100                       
         StoreI                                 
-        Jump         -for-1-start              
-        Label        -for-1-end                
+        PushD        $global-memory-block      
+        PushI        15                        
+        Add                                    %% e
+        Nop                                    
+        LoadI                                  
+        Nop                                    
+        PushD        $print-format-character   
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         Halt                                   
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
