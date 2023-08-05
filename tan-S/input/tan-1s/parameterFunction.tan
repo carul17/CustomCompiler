@@ -1,12 +1,11 @@
-subr void f(int a) {
-	var b := a + 5;
-	print a \n;
-	print b \n;
-
+subr float f(int a, float b){
+	return a + b;
+	
 }
 
 main {
+	const x :=  f(1, 2.0);
+	print x\n;
 	
 	
-	call f(1);
 }

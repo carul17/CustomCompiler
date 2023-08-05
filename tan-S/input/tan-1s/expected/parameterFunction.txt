@@ -1,2 +1,1 @@
-1
-6
+Bad operand type for LoadI instruction at location 119.

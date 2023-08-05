@@ -183,13 +183,16 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        4                         
+        DataZ        12                        
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% f
         PushD        -function-1-subr          
         StoreI                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% x
         PushD        $$stack-pointer           
         LoadI                                  
         PushI        4                         
@@ -201,11 +204,41 @@
         LoadI                                  
         PushI        1                         
         StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        8                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushF        2.000000                  
+        StoreF                                 
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% f
         LoadI                                  
         CallV                                  
+        PushD        $$stack-pointer           
+        LoadI                                  
+        LoadF                                  
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        20                        
+        Add                                    
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        StoreF                                 
+        PushD        $global-memory-block      
+        PushI        4                         
+        Add                                    %% x
+        LoadF                                  
+        PushD        $print-format-floating    
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         Halt                                   
         Label        -function-1-subr          
         PushD        $$stack-pointer           
@@ -230,54 +263,29 @@
         LoadI                                  
         PushI        8                         
         Subtract                               
-        PushD        $$stack-pointer           
-        Exchange                               
-        StoreI                                 
-        PushD        $$stack-pointer           
-        LoadI                                  
-        PushI        4                         
+        PushI        0                         
         Subtract                               
         PushD        $$stack-pointer           
         Exchange                               
         StoreI                                 
-        PushD        $$frame-pointer           
-        LoadI                                  
-        PushI        -12                       
-        Add                                    %% b
         PushD        $$frame-pointer           
         LoadI                                  
         PushI        -4                        
         Add                                    %% a
-        LoadI                                  
-        PushI        4                         
-        Subtract                               
-        Nop                                    
-        LoadI                                  
-        PushI        5                         
-        Nop                                    
+        PushI        12                        
         Add                                    
-        StoreI                                 
-        PushD        $$frame-pointer           
+        ConvertF                               
         LoadI                                  
-        PushI        -4                        
-        Add                                    %% a
-        LoadI                                  
-        PushI        4                         
-        Subtract                               
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
         PushD        $$frame-pointer           
         LoadI                                  
         PushI        -12                       
         Add                                    %% b
-        LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
+        PushI        12                        
+        Add                                    
+        Nop                                    
+        LoadF                                  
+        FAdd                                   
+        Jump         -function-1-subrend       
         Label        -function-1-subrend       
         PushD        $$frame-pointer           
         LoadI                                  
@@ -286,12 +294,29 @@
         LoadI                                  
         PushD        $$frame-pointer           
         LoadI                                  
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$frame-pointer           
+        LoadI                                  
         PushI        4                         
         Subtract                               
         LoadI                                  
         PushD        $$frame-pointer           
         Exchange                               
         StoreI                                 
+        Exchange                               
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        Exchange                               
+        StoreF                                 
         Return                                 
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           

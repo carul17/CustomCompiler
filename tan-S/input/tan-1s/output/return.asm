@@ -183,48 +183,236 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% abcABC965@_
-        PushI        5                         
+        Add                                    %% fib
+        PushD        -function-1-subr          
         StoreI                                 
-        PushD        $global-memory-block      
+        PushD        $$stack-pointer           
+        LoadI                                  
         PushI        4                         
-        Add                                    %% _A
-        PushI        6                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
         StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% @_
-        PushI        7                         
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        25                        
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% abcABC965@_
+        Add                                    %% fib
         LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% _A
+        CallV                                  
+        PushD        $$stack-pointer           
         LoadI                                  
-        PushD        $print-format-integer     
-        Printf                                 
-        PushD        $print-format-newline     
-        Printf                                 
-        PushD        $global-memory-block      
+        LoadI                                  
+        PushD        $$stack-pointer           
+        LoadI                                  
         PushI        8                         
-        Add                                    %% @_
-        LoadI                                  
+        Add                                    
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
         Halt                                   
+        Label        -function-1-subr          
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        PushD        $$frame-pointer           
+        LoadI                                  
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        8                         
+        Subtract                               
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushD        $$frame-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        8                         
+        Subtract                               
+        PushI        0                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        Label        -compare-3-arg1           
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        -4                        
+        Add                                    %% n
+        PushI        4                         
+        Add                                    
+        Nop                                    
+        LoadI                                  
+        Label        -compare-3-arg2           
+        PushI        0                         
+        Nop                                    
+        Label        -compare-3-sub            
+        Subtract                               
+        JumpFalse    -compare-3-true           
+        Jump         -compare-3-false          
+        Label        -compare-3-true           
+        PushI        1                         
+        Jump         -compare-3-join           
+        Label        -compare-3-false          
+        PushI        0                         
+        Jump         -compare-3-join           
+        Label        -compare-3-join           
+        JumpFalse    -if-4-end                 
+        PushI        0                         
+        Jump         -function-1-subrend       
+        Jump         -if-4-end                 
+        Label        -if-4-end                 
+        Label        -compare-6-arg1           
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        -4                        
+        Add                                    %% n
+        PushI        4                         
+        Add                                    
+        Nop                                    
+        LoadI                                  
+        Label        -compare-6-arg2           
+        PushI        1                         
+        Nop                                    
+        Label        -compare-6-sub            
+        Subtract                               
+        JumpFalse    -compare-6-true           
+        Jump         -compare-6-false          
+        Label        -compare-6-true           
+        PushI        1                         
+        Jump         -compare-6-join           
+        Label        -compare-6-false          
+        PushI        0                         
+        Jump         -compare-6-join           
+        Label        -compare-6-join           
+        JumpFalse    -if-7-end                 
+        PushI        1                         
+        Jump         -function-1-subrend       
+        Jump         -if-7-end                 
+        Label        -if-7-end                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        -4                        
+        Add                                    %% n
+        PushI        4                         
+        Add                                    
+        Nop                                    
+        LoadI                                  
+        PushI        2                         
+        Nop                                    
+        Subtract                               
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% fib
+        LoadI                                  
+        CallV                                  
+        PushD        $$stack-pointer           
+        LoadI                                  
+        LoadI                                  
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        Nop                                    
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        -4                        
+        Add                                    %% n
+        PushI        4                         
+        Add                                    
+        Nop                                    
+        LoadI                                  
+        PushI        1                         
+        Nop                                    
+        Subtract                               
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% fib
+        LoadI                                  
+        CallV                                  
+        PushD        $$stack-pointer           
+        LoadI                                  
+        LoadI                                  
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        8                         
+        Add                                    
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        Nop                                    
+        Add                                    
+        Jump         -function-1-subrend       
+        Label        -function-1-subrend       
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        8                         
+        Subtract                               
+        LoadI                                  
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        LoadI                                  
+        PushD        $$frame-pointer           
+        Exchange                               
+        StoreI                                 
+        Exchange                               
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        Exchange                               
+        StoreI                                 
+        Return                                 
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
         DataZ        4                         

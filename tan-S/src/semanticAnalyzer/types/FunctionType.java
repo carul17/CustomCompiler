@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import asmCodeGenerator.codeStorage.ASMOpcode;
+import semanticAnalyzer.signatures.FunctionSignature;
+
 public class FunctionType implements Type{
 	
 	public static final int TYPE_SIZE = 4;
@@ -53,7 +56,53 @@ public class FunctionType implements Type{
 	
 	public static FunctionType create(Type returnType, List<Type> paramterTypes) {
 		return new FunctionType(returnType, paramterTypes);
+	}
+	
+	public FunctionSignature getSignature() {
+		return new FunctionSignature(ASMOpcode.Nop, parameterTypes, returnType);
+	}
+	
+	public void setReturnType(Type type) {
+		this.returnType = type;
+	}
+	public Type getReturnType() {
+		return returnType;
+	}
+	
+	public List<Type> getParamTypes() {
+		return parameterTypes;
+	}
+	public void addType(Type type) {
+		parameterTypes.add(type);
+	
+	}
+	
+	
+	@Override
+	public boolean equals(Object type2) {
+		if (!(type2 instanceof FunctionType)) {
+			return false;
+		}
 		
+		FunctionType compareType = (FunctionType) type2;
+		
+		// Check that number of arguments is the same
+		if (this.parameterTypes.size() != compareType.parameterTypes.size()) {
+			return false;
+		}
+
+		// Check that each argument is the same
+		for (int i = 0; i < this.parameterTypes.size(); i++) {
+			Type t1 = this.parameterTypes.get(i);
+			Type t2 = compareType.parameterTypes.get(i);
+			
+			if (!t1.equals(t2)) {
+				return false;
+			}
+		}
+
+		// Check that return type is the same
+		return this.returnType.equals(compareType.returnType);
 	}
 
 }

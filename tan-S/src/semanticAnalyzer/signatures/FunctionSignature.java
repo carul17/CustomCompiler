@@ -29,6 +29,13 @@ public class FunctionSignature {
 		this.whichVariant = whichVariant;
 		findTypeVariables();
 	}
+	public FunctionSignature(Object whichVariant, List<Type> paramTypes, Type returnType) {
+		this.paramTypes = paramTypes.toArray(new Type[0]);
+		
+		resultType = returnType;
+		this.whichVariant = whichVariant;
+		findTypeVariables();
+	}
 	private void storeParamTypes(Type[] types) {
 		paramTypes = new Type[types.length-1];
 		for(int i=0; i<types.length-1; i++) {
@@ -45,6 +52,11 @@ public class FunctionSignature {
 	}
 	public Type resultType() {
 		return resultType;
+	}
+	public void printParamTypes() {
+		for(int i = 0; i < paramTypes.length; i++) {
+			System.out.println(paramTypes[i].infoString());
+		}
 	}
 	public boolean isNull() {
 		return false;

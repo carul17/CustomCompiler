@@ -195,6 +195,15 @@
         Add                                    %% f
         LoadI                                  
         CallV                                  
+        PushI        0                         
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        0                         
+        Add                                    
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        Pop                                    
         PushI        34                        
         PushD        $print-format-integer     
         Printf                                 
@@ -224,11 +233,6 @@
         LoadI                                  
         PushI        8                         
         Subtract                               
-        PushD        $$stack-pointer           
-        Exchange                               
-        StoreI                                 
-        PushD        $$stack-pointer           
-        LoadI                                  
         PushI        0                         
         Subtract                               
         PushD        $$stack-pointer           
@@ -249,6 +253,11 @@
         PushI        8                         
         Subtract                               
         LoadI                                  
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
         PushD        $$frame-pointer           
         LoadI                                  
         PushI        4                         

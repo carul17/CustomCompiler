@@ -164,6 +164,52 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	
 	@Override
+	public void visitLeave(FunctionInvocationNode node) {
+		
+			FunctionType type = (FunctionType)node.child(0).getType();
+			Type returnType = type.getReturnType();
+			
+			if (returnType == PrimitiveType.VOID) {
+				
+				ParseNode parent = node.getParent();
+				while (parent != null && !(parent instanceof CallStatementNode)) {
+					parent = parent.getParent();
+				}
+				
+				if (parent == null || !(parent instanceof CallStatementNode)) {
+					functionInvocationError(node, "Cannot use VOID function in invocation");
+					return;
+				}
+			}
+
+			checkArgs(node, type.getSignature());
+	}
+	
+	private void checkArgs(ParseNode node, FunctionSignature signature) {
+		FunctionInvocationNode invocationNode = (FunctionInvocationNode) node;
+
+		
+		if (signature == null) {
+			functionInvocationError(node, "No signature for function");
+			return;
+		}
+		
+	
+		List<Type> childTypes = new ArrayList<Type>();
+		for(ParseNode child : invocationNode.child(1).getChildren()) {
+			childTypes.add(child.getType());
+		}
+		
+		if (signature.accepts(childTypes)) {
+			
+			node.setType(signature.resultType());
+		} else {
+			
+			typeCheckError(invocationNode, childTypes);
+		}
+	}
+	
+	@Override
 	public void visitLeave(ParameterNode node) {
 		TypeNode typeNode = (TypeNode) node.child(0);
 		IdentifierNode id = (IdentifierNode) node.child(1);
@@ -181,12 +227,36 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	
 	@Override
 	public void visitLeave(CallStatementNode node) {
-		//hand;e expression list
+		if(!(node.child(0) instanceof FunctionInvocationNode)){
+			typeCheckError(node, Arrays.asList(node.child(0).getType()));
+		}
 	}
-	
 	@Override
 	public void visitLeave(ReturnStatementNode node) {
-		//hand;e expression list
+		ParseNode parentFunction = node.getAncestorFunction();
+		if(parentFunction == null) {
+			Token token = node.getToken();
+			logError("Return statement can only be in function" + token.getLocation());
+			node.setType(PrimitiveType.ERROR);
+			return;
+		}
+		Type fReturnType = ((FunctionType)parentFunction.getType()).getReturnType();
+		Type returnType;
+		if(node.nChildren() == 0) {
+			returnType = PrimitiveType.VOID;
+		} else {
+			returnType = node.child(0).getType();
+		}
+		
+		if(returnType == fReturnType) {
+			node.setType(returnType);
+		} else {
+			node.setType(PrimitiveType.ERROR);
+			Token token = node.getToken();
+			logError("Cannot return type " + returnType.infoString() + " from function with return type "
+					+ fReturnType.infoString() + " at " + token.getLocation());
+		}
+		
 	}
 	
 	
@@ -414,6 +484,12 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	private void multipleInterpretationError(){
 		logError("multiple interpretations of operator possible");
+	}
+	
+	private void functionInvocationError(ParseNode node, String message) {
+		Token token = node.getToken();
+		logError(message + " at " + token.getLocation());
+		node.setType(PrimitiveType.ERROR);
 	}
 
 }

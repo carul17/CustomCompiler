@@ -21,6 +21,8 @@ public class Parser {
 	private Token nowReading;
 	private Token previouslyRead;
 	
+	private int paramFlag = 0;
+	
 	public static ParseNode parse(Scanner scanner) {
 		Parser parser = new Parser(scanner);
 		return parser.parse();
@@ -73,7 +75,9 @@ public class Parser {
 		Token token = nowReading;
 		expect(Keyword.SUBR);
 		ParseNode type = parseType();
+		paramFlag = 1;
 		ParseNode identifier = parseIdentifier();
+		paramFlag = 0;
 		expect(Punctuator.OPEN_ROUND_BRACE);
 		
 		ParseNode parameterList = parseParamterList();
@@ -226,12 +230,12 @@ public class Parser {
 		}
 		Token token = nowReading;
 		expect(Keyword.CALL);
-		ParseNode identifier = parseIdentifier();
-		expect(Punctuator.OPEN_ROUND_BRACE);
-		ParseNode expresstionList = parseExpressionList();
-		expect(Punctuator.CLOSE_ROUND_BRACE);
+		
+		
+		ParseNode invocation = parseIdentifier();
+		
 		expect(Punctuator.TERMINATOR);
-		return CallStatementNode.withChildren(token, identifier, expresstionList);
+		return CallStatementNode.withChildren(token,  invocation);
 	}
 	
 	private boolean startsCallStatement(Token token) {
@@ -859,9 +863,21 @@ public class Parser {
 		if(!startsIdentifier(nowReading)) {
 			return syntaxErrorNode("identifier");
 		}
+		ParseNode node = new IdentifierNode(nowReading);
 		readToken();
-		return new IdentifierNode(previouslyRead);
+		if(nowReading.isLextant(Punctuator.OPEN_ROUND_BRACE) && paramFlag == 0) {
+			Token token = previouslyRead;
+			expect(Punctuator.OPEN_ROUND_BRACE);
+			ParseNode exprList = parseExpressionList();
+			expect(Punctuator.CLOSE_ROUND_BRACE);
+			
+			return FunctionInvocationNode.withChildren(token, node, exprList);
+		}
+		
+		return node;
 	}
+	
+
 	private boolean startsIdentifier(Token token) {
 		return token instanceof IdentifierToken;
 	}

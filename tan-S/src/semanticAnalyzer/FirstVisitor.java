@@ -7,10 +7,16 @@ import parseTree.nodeTypes.*;
 import semanticAnalyzer.types.FunctionType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
+import semanticAnalyzer.signatures.FunctionSignature;
 import symbolTable.Binding;
 import symbolTable.Scope;
 import semanticAnalyzer.SemanticAnalyzer;
 import tokens.Token;
+import java.util.List;
+
+import asmCodeGenerator.codeStorage.ASMOpcode;
+
+import java.util.ArrayList;
 
 public class FirstVisitor extends ParseNodeVisitor.Default {
 	
@@ -23,19 +29,28 @@ public class FirstVisitor extends ParseNodeVisitor.Default {
 	 
 	@Override
 	public void visitEnter(FunctionDefinitionNode node) {
-		TypeNode typeNode = (TypeNode) node.child(0);
-		IdentifierNode iden = (IdentifierNode) node.child(1);
-		ParameterListNode pList = (ParameterListNode) node.child(2);
-		Type type = PrimitiveType.getTypeFromString(typeNode.getTypeString());
-		Type fType = FunctionType.create(type, pList.getTypes());
-		iden.setType(fType);
-		SemanticAnalysisVisitor.addBinding(iden, fType, null, -1);
-		enterSubscope(node);
+		
+		
+		
+		
+		
 	}
 	
 	@Override
 	public void visitLeave(FunctionDefinitionNode node) {
-		leaveScope(node);
+		TypeNode typeNode = (TypeNode) node.child(0);
+		IdentifierNode id = (IdentifierNode) node.child(1);
+		ParameterListNode pList = (ParameterListNode) node.child(2);
+		
+		Type returnType = PrimitiveType.getTypeFromString(typeNode.getTypeString());
+		Type fType = FunctionType.create(returnType, pList.getTypes());
+		FunctionSignature signature = new FunctionSignature(ASMOpcode.Nop, pList.getTypes(), returnType);
+		FunctionType funcType = (FunctionType) fType;
+		funcType.setReturnType(returnType);
+		id.setType(fType);
+		node.setType(fType);
+		node.setSignature(signature);
+		SemanticAnalysisVisitor.addBinding(id, fType, null, -1);
 	}
 	
 	/*@Override

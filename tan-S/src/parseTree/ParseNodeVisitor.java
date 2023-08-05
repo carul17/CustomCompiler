@@ -54,6 +54,9 @@ public interface ParseNodeVisitor {
 	void visitEnter(FunctionDefinitionNode node);
 	void visitLeave(FunctionDefinitionNode node);
 	
+	void visitEnter(FunctionInvocationNode node);
+	void visitLeave(FunctionInvocationNode node);
+	
 	void visitEnter(ExpressionListNode node);
 	void visitLeave(ExpressionListNode node);
 	
@@ -188,6 +191,12 @@ public interface ParseNodeVisitor {
 			defaultVisitEnter(node);
 		}
 		public void visitLeave(FunctionDefinitionNode node) {
+			defaultVisitLeave(node);
+		}
+		public void visitEnter(FunctionInvocationNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(FunctionInvocationNode node) {
 			defaultVisitLeave(node);
 		}
 		public void visitEnter(ExpressionListNode node) {

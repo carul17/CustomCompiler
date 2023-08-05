@@ -23,6 +23,7 @@ import static semanticAnalyzer.types.PrimitiveType.*;
 import semanticAnalyzer.types.ArrayType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
+import semanticAnalyzer.types.FunctionType;
 import symbolTable.Binding;
 import symbolTable.Scope;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.*;
@@ -304,30 +305,17 @@ public class ASMCodeGenerator {
 		public void visitLeave(CallStatementNode node) {
 			newVoidCode(node);
 			
-			ExpressionListNode arguments = (ExpressionListNode) node.child(1);
-			
-			for(int i = arguments.nChildren() - 1; i >= 0; i-- ) {
-				Macros.loadIFrom(code,  RunTime.STACK_POINTER);
-				code.add(PushI, arguments.child(i).getType().getSize());
-				code.add(Subtract);
-				Macros.storeITo(code, RunTime.STACK_POINTER);
-				Macros.loadIFrom(code, RunTime.STACK_POINTER);
-				code.append(removeValueCode(arguments.child(i)));
-				code.add(StoreI);
-				
-				
-			}
-			ASMCodeFragment value = removeAddressCode(node.child(0));
-			code.append(value);
-			code.add(LoadI);
-			code.add(CallV); 
+			FunctionInvocationNode invocation = (FunctionInvocationNode)node.child(0);
+			code.append(removeValueCode(invocation));
+			code.add(Pop);
 		}
 		
 		public void visitLeave(ReturnStatementNode node) {
+			
 			FunctionDefinitionNode func = node.getAncestorFunction();
 			assert func != null;
 			newVoidCode(node);
-			if(node.nChildren() == 1) {
+			if(node.nChildren() == 1 && node.getType() != PrimitiveType.VOID) {
 				code.append(removeValueCode(node.child(0)));
 			}
 			
@@ -342,18 +330,17 @@ public class ASMCodeGenerator {
 			String endLabel = node.getEndLabel();
 			
 			fCode.add(Label, label);
-			//fCode.add(PStack);
+			
+			
 			
 			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
 			fCode.add(PushI, 4);
-			//fCode.add(PStack);
 			fCode.add(Subtract);
 			Macros.loadIFrom(fCode, RunTime.FRAME_POINTER);
-			//fCode.add(PStack);
 			fCode.add(StoreI);
 			
-			Macros.loadIFrom(fCode,  RunTime.STACK_POINTER);
 			
+			Macros.loadIFrom(fCode,  RunTime.STACK_POINTER);
 			fCode.add(PushI, 8);
 			fCode.add(Subtract);
 			
@@ -361,23 +348,15 @@ public class ASMCodeGenerator {
 			fCode.add(StoreI);
 			
 			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
-			
-			
 			Macros.storeITo(fCode, RunTime.FRAME_POINTER);
 			
 			
 			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
-			
 			fCode.add(PushI, 8);
 			fCode.add(Subtract);
-			Macros.storeITo(fCode, RunTime.STACK_POINTER);
 			
-			
-			//local var
-			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
 			
 			fCode.add(PushI, block.getScope().getAllocatedSize());
-			
 			fCode.add(Subtract);
 			Macros.storeITo(fCode,  RunTime.STACK_POINTER);
 			
@@ -387,25 +366,115 @@ public class ASMCodeGenerator {
 			
 			//end
 			fCode.add(Label, endLabel);
+			
 			Macros.loadIFrom(fCode, RunTime.FRAME_POINTER);
 			fCode.add(PushI, 8);
 			fCode.add(Subtract);
 			fCode.add(LoadI);
 			
 			Macros.loadIFrom(fCode, RunTime.FRAME_POINTER);
+			Macros.storeITo(fCode, RunTime.STACK_POINTER);
+			
+			
+			Macros.loadIFrom(fCode, RunTime.FRAME_POINTER);
 			fCode.add(PushI, 4);
 			fCode.add(Subtract);
 			fCode.add(LoadI);
+			
 			Macros.storeITo(fCode, RunTime.FRAME_POINTER);
 			
-			fCode.add(Return);
 			
+			FunctionType fType = (FunctionType)node.getType();
+			Type returnType = fType.getReturnType();
+			
+			if(returnType != PrimitiveType.VOID) {
+				
+				fCode.add(Exchange);
+				Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
+				fCode.add(PushI, 4);
+				fCode.add(Subtract);
+				Macros.storeITo(fCode, RunTime.STACK_POINTER);
+				
+				Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
+				fCode.add(Exchange);
+				fCode.add(opcodeForStore(returnType));
+				
+			}
+			
+			fCode.add(Return);
+		
 			function.append(fCode);
+			
 			newVoidCode(node);
 			code.append(removeAddressCode(node.child(1)));
 			
 			code.add(PushD, label);
 			code.add(StoreI);
+		
+		}
+		
+		public void visitLeave(FunctionInvocationNode node) {
+			newValueCode(node);
+						
+			// Push arguments onto Frame Stack
+			IdentifierNode id = (IdentifierNode) node.child(0);
+			ExpressionListNode arguments = (ExpressionListNode) node.child(1);
+			
+			int argListSize = 0;
+			for(int i = 0; i < arguments.nChildren(); i++ ) {
+				Type type = arguments.child(i).getType();
+				int argSize = type.getSize();
+				argListSize += argSize;
+				
+				Macros.loadIFrom(code,  RunTime.STACK_POINTER);
+				
+				code.add(PushI, argSize);
+				
+				code.add(Subtract);
+				Macros.storeITo(code, RunTime.STACK_POINTER);
+				Macros.loadIFrom(code, RunTime.STACK_POINTER);
+				code.append(removeValueCode(arguments.child(i)));
+				
+				
+				code.add(opcodeForStore(type));
+			}
+			
+			
+			
+			code.append(removeAddressCode(id));
+			
+			code.add(LoadI);	
+			
+			code.add(CallV);
+			
+			
+			Type returnType = node.getType();
+			
+			if(returnType != PrimitiveType.VOID) {
+				
+				Macros.loadIFrom(code, RunTime.STACK_POINTER);
+				code.add(opcodeForLoad(returnType));
+			
+				
+				
+			} else {
+				code.add(PushI, 0);
+				
+			}
+			
+			
+			Macros.loadIFrom(code, RunTime.STACK_POINTER);
+			
+			
+		
+			code.add(PushI, returnType.getSize() + argListSize);
+		
+		
+			code.add(Add);
+		
+			Macros.storeITo(code, RunTime.STACK_POINTER);
+		
+			
 		}
 		
 		public void visitLeave(IfStatementNode node) {
@@ -525,10 +594,38 @@ public class ASMCodeGenerator {
 			if(type instanceof ArrayType) {
 				return StoreI;
 			}
+			if(type == VOID) {
+				return Nop;
+			}
 			assert false: "Type " + type + " unimplemented in opcodeForStore()";
 			return null;
 		}
 
+		private ASMOpcode opcodeForLoad(Type type) {
+			if(type == INTEGER) {
+				return LoadI;
+			}
+			if(type == BOOLEAN) {
+				return LoadC;
+			}
+			if(type == FLOATING) {
+				return LoadF;
+			}
+			if(type == CHARACTER) {
+				return LoadC;
+			}
+			if(type == STRING) {
+				return LoadI;
+			}
+			if(type == VOID) {
+				return Nop;
+			}
+			if(type instanceof ArrayType) {
+				return LoadI;
+			}
+			assert false: "Type " + type + " unimplemented in opcodeForStore()";
+			return null;
+		}
 
 		///////////////////////////////////////////////////////////////////////////
 		// expressions
@@ -597,7 +694,7 @@ public class ASMCodeGenerator {
 					code.add(signature.promotion(i).codeFor());
 					
 					//print for debugging
-					//code.add(PStack);
+					//
 					
 					
 					}
@@ -994,14 +1091,26 @@ public class ASMCodeGenerator {
 			
 			
 			binding.generateAddress(code);
-			//code.add(PStack);
+			
+
 			if(node.findVariableBinding().getIsParam() == true && !(node.getParent() instanceof ParameterNode)) {
-				//System.out.println(node.getToken().getLexeme());
-				code.add(LoadI);
-				code.add(PushI, 4);
-				code.add(Subtract);
-				//code.add(PStack);
-				//code.add(LoadI);
+				
+				int numParam = 0;
+				FunctionDefinitionNode func = node.getAncestorFunction();
+				if(func != null) {
+					ParseNode exprList = func.child(2);
+					for(ParseNode child : exprList.getChildren()) {
+						numParam += child.getType().getSize();
+					}
+					
+				}
+			
+				code.add(PushI, numParam);
+				
+				code.add(Add);
+				
+				//code.add(opcodeForLoad(node.getType()));
+				
 			}
 		}		
 		public void visit(IntegerConstantNode node) {
@@ -1110,7 +1219,7 @@ public class ASMCodeGenerator {
 			}
 			
 			//code.add(PushD, dlabel);
-			//code.add(PStack);
+			//
 		}
 	}
 

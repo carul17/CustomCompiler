@@ -16,10 +16,11 @@ public class CallStatementNode extends ParseNode {
 		visitor.visitLeave(this);
 	}
 
-	public static ParseNode withChildren(Token nowReading, ParseNode identifier, ParseNode expresstionList) {
+	
+	
+	public static ParseNode withChildren(Token nowReading, ParseNode functionInvocationNode) {
 		CallStatementNode node = new CallStatementNode(nowReading);
-		node.appendChild(identifier);
-		node.appendChild(expresstionList);
+		node.appendChild(functionInvocationNode);
 		return node;
 	}
 

@@ -6,6 +6,7 @@ import asmCodeGenerator.Labeller;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
+import semanticAnalyzer.signatures.FunctionSignature;
 import tokens.Token;
 
 public class FunctionDefinitionNode extends ParseNode {
@@ -14,7 +15,8 @@ public class FunctionDefinitionNode extends ParseNode {
 	Labeller labeller = new Labeller("function");
 	String label;
 	String endLabel;
-	ASMCodeFragment fCode;
+	protected FunctionSignature signature;
+	
 	
 	public FunctionDefinitionNode(Token token) {
 		super(token);
@@ -78,9 +80,8 @@ public class FunctionDefinitionNode extends ParseNode {
 
 
 
-	public void setFrag(ASMCodeFragment fCode) {
-		this.fCode = fCode;
-		
+	public void setSignature(FunctionSignature signature) {
+		this.signature = signature;
 	}
 	
 	
