@@ -991,7 +991,18 @@ public class ASMCodeGenerator {
 			newAddressCode(node);
 			Binding binding = node.getBinding();
 			
+			
+			
 			binding.generateAddress(code);
+			//code.add(PStack);
+			if(node.findVariableBinding().getIsParam() == true && !(node.getParent() instanceof ParameterNode)) {
+				//System.out.println(node.getToken().getLexeme());
+				code.add(LoadI);
+				code.add(PushI, 4);
+				code.add(Subtract);
+				//code.add(PStack);
+				//code.add(LoadI);
+			}
 		}		
 		public void visit(IntegerConstantNode node) {
 			newValueCode(node);

@@ -13,6 +13,7 @@ import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import symbolTable.Scope;
+import symbolTable.SymbolTable;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.runtime.RunTime;
@@ -44,8 +45,7 @@ public class PrintStatementGenerator {
 
 	private void appendPrintCode(ParseNode node) {
 		code.append(visitor.removeValueCode(node));
-		
-		
+		//ifParamIdentifier(node);
 		convertToStringIfBoolean(node);
 		convertToValueIfString(node);
 		convertToValueIfArray(node);
@@ -97,6 +97,20 @@ public class PrintStatementGenerator {
 			String format = printFormat(node.getType());
 			code.add(PushD, format);
 			code.add(Printf);
+		}
+	}
+	
+	private void ifParamIdentifier(ParseNode node) {
+		if(node instanceof IdentifierNode) {
+			
+			IdentifierNode id = (IdentifierNode)node;
+			Binding binding = id.findVariableBinding();
+			if(binding.getIsParam() == true) {
+				
+				code.add(PushI, 4);
+				code.add(Subtract);
+				code.add(LoadI);
+			}
 		}
 	}
 	private void convertToValueIfString(ParseNode node) {

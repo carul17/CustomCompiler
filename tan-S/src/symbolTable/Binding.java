@@ -12,6 +12,7 @@ public class Binding {
 	private String lexeme;
 	private Constancy constancy;
 	private int numElements;
+	private boolean isParam;
 	
 	public Binding(Type type, TextLocation location, MemoryLocation memoryLocation, String lexeme, Constancy constancy, int numElements ) {
 		super();
@@ -21,6 +22,14 @@ public class Binding {
 		this.lexeme = lexeme;
 		this.setConstancy(constancy);
 		this.setNumElements(numElements);
+		this.isParam = false;
+	}
+	
+	public void setIsParam(Boolean value) {
+		this.isParam = value;
+	}
+	public Boolean getIsParam() {
+		return isParam;
 	}
 	
 	public enum Constancy{

@@ -169,6 +169,8 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		IdentifierNode id = (IdentifierNode) node.child(1);
 		id.setType(typeNode.getType());
 		addBinding(id, typeNode.getType(), null, -1);
+		Binding binding = id.getBinding();
+		binding.setIsParam(true);
 	}
 	
 	

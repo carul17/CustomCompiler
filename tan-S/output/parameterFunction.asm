@@ -199,7 +199,7 @@
         StoreI                                 
         PushD        $$stack-pointer           
         LoadI                                  
-        PushI        0                         
+        PushI        1                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
@@ -235,69 +235,23 @@
         StoreI                                 
         PushD        $$stack-pointer           
         LoadI                                  
-        PushI        4                         
+        PushI        0                         
         Subtract                               
         PushD        $$stack-pointer           
         Exchange                               
         StoreI                                 
-        Label        -compare-3-arg1           
         PushD        $$frame-pointer           
         LoadI                                  
-        PushI        4                         
-        Add                                    %% n
-        Nop                                    
+        PushI        -4                        
+        Add                                    %% a
         LoadI                                  
-        Label        -compare-3-arg2           
-        PushI        2                         
-        Nop                                    
-        Label        -compare-3-sub            
+        PushI        4                         
         Subtract                               
-        JumpPos      -compare-3-true           
-        Jump         -compare-3-false          
-        Label        -compare-3-true           
-        PushI        1                         
-        Jump         -compare-3-join           
-        Label        -compare-3-false          
-        PushI        0                         
-        Jump         -compare-3-join           
-        Label        -compare-3-join           
-        JumpFalse    -if-4-end                 
-        PushD        $$frame-pointer           
-        LoadI                                  
-        PushI        4                         
-        Add                                    %% n
         LoadI                                  
         PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        Jump         -function-1-subrend       
-        Jump         -if-4-end                 
-        Label        -if-4-end                 
-        PushD        $$stack-pointer           
-        LoadI                                  
-        PushI        4                         
-        Subtract                               
-        PushD        $$stack-pointer           
-        Exchange                               
-        StoreI                                 
-        PushD        $$stack-pointer           
-        LoadI                                  
-        PushD        $$frame-pointer           
-        LoadI                                  
-        PushI        4                         
-        Add                                    %% n
-        Nop                                    
-        LoadI                                  
-        PushI        1                         
-        Nop                                    
-        Add                                    
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% f
-        LoadI                                  
-        CallV                                  
         Label        -function-1-subrend       
         PushD        $$frame-pointer           
         LoadI                                  

@@ -1,0 +1,9 @@
+subr int f(int a){
+	var b:= a + 5;
+	return b;
+}
+
+main {
+	var c := f(1);
+	print c \n;
+}

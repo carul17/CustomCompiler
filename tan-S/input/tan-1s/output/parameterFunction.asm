@@ -183,17 +183,12 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        8                         
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
         Add                                    %% f
         PushD        -function-1-subr          
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% a
-        PushI        1                         
         StoreI                                 
         PushD        $$stack-pointer           
         LoadI                                  
@@ -204,10 +199,7 @@
         StoreI                                 
         PushD        $$stack-pointer           
         LoadI                                  
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% a
-        LoadI                                  
+        PushI        1                         
         StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
@@ -257,7 +249,26 @@
         PushI        -4                        
         Add                                    %% a
         LoadI                                  
+        PushI        4                         
+        Subtract                               
+        Nop                                    
+        LoadI                                  
+        PushI        5                         
+        Nop                                    
+        Add                                    
         StoreI                                 
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        -4                        
+        Add                                    %% a
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        LoadI                                  
+        PushD        $print-format-integer     
+        Printf                                 
+        PushD        $print-format-newline     
+        Printf                                 
         PushD        $$frame-pointer           
         LoadI                                  
         PushI        -12                       

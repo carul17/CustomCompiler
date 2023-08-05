@@ -1,11 +1,12 @@
 subr void f(int a) {
-	var b := a;
+	var b := a + 5;
+	print a \n;
 	print b \n;
 
 }
 
 main {
-	var a := 1;
 	
-	call f(a);
+	
+	call f(1);
 }
