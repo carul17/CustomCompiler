@@ -21,6 +21,18 @@
         PushD        $heap-first-free          
         Exchange                               
         StoreI                                 
+        DLabel       $$frame-pointer           
+        DataZ        4                         
+        DLabel       $$stack-pointer           
+        DataZ        4                         
+        Memtop                                 
+        Duplicate                              
+        PushD        $$frame-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
@@ -171,71 +183,136 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% b
-        PushI        3                         
+        Add                                    %% f
+        PushD        -function-1-subr          
         StoreI                                 
-        PushD        $global-memory-block      
+        PushD        $$stack-pointer           
+        LoadI                                  
         PushI        4                         
-        Add                                    %% j
-        PushD        $global-memory-block      
-        PushI        0                         
-        Add                                    %% b
-        LoadI                                  
-        StoreI                                 
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% }
-        PushI        6                         
-        StoreI                                 
-        Label        -for-1-start              
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
-        LoadI                                  
-        PushD        $global-memory-block      
-        PushI        8                         
-        Add                                    %% }
-        LoadI                                  
         Subtract                               
-        JumpPos      -for-1-end                
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        0                         
+        StoreI                                 
         PushD        $global-memory-block      
         PushI        0                         
-        Add                                    %% b
-        PushI        1                         
+        Add                                    %% f
+        LoadI                                  
+        CallV                                  
+        Halt                                   
+        Label        -function-1-subr          
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        PushD        $$frame-pointer           
+        LoadI                                  
         StoreI                                 
-        DLabel       -string-2-hi              
-        DataI        3                         
-        DataI        9                         
-        DataI        2                         
-        DataC        104                       %% "hi"
-        DataC        105                       
-        DataC        0                         
-        PushD        -string-2-hi              
-        PushI        12                        
-        Add                                    
-        PushD        $print-format-string      
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        8                         
+        Subtract                               
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushD        $$frame-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        8                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
+        Label        -compare-3-arg1           
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        4                         
+        Add                                    %% n
+        Nop                                    
+        LoadI                                  
+        Label        -compare-3-arg2           
+        PushI        2                         
+        Nop                                    
+        Label        -compare-3-sub            
+        Subtract                               
+        JumpPos      -compare-3-true           
+        Jump         -compare-3-false          
+        Label        -compare-3-true           
+        PushI        1                         
+        Jump         -compare-3-join           
+        Label        -compare-3-false          
+        PushI        0                         
+        Jump         -compare-3-join           
+        Label        -compare-3-join           
+        JumpFalse    -if-4-end                 
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        4                         
+        Add                                    %% n
+        LoadI                                  
+        PushD        $print-format-integer     
         Printf                                 
         PushD        $print-format-newline     
         Printf                                 
-        Label        -for-1-increment          
-        PushD        $global-memory-block      
-        PushI        4                         
-        Add                                    %% j
+        Jump         -function-1-subrend       
+        Jump         -if-4-end                 
+        Label        -if-4-end                 
+        PushD        $$stack-pointer           
         LoadI                                  
-        PushI        1                         
-        Add                                    
-        PushD        $global-memory-block      
         PushI        4                         
-        Add                                    %% j
+        Subtract                               
+        PushD        $$stack-pointer           
         Exchange                               
         StoreI                                 
-        Jump         -for-1-start              
-        Label        -for-1-end                
-        Halt                                   
+        PushD        $$stack-pointer           
+        LoadI                                  
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        4                         
+        Add                                    %% n
+        Nop                                    
+        LoadI                                  
+        PushI        1                         
+        Nop                                    
+        Add                                    
+        StoreI                                 
+        PushD        $global-memory-block      
+        PushI        0                         
+        Add                                    %% f
+        LoadI                                  
+        CallV                                  
+        Label        -function-1-subrend       
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        8                         
+        Subtract                               
+        LoadI                                  
+        PushD        $$frame-pointer           
+        LoadI                                  
+        PushI        4                         
+        Subtract                               
+        LoadI                                  
+        PushD        $$frame-pointer           
+        Exchange                               
+        StoreI                                 
+        Return                                 
         Label        -mem-manager-make-tags    
         DLabel       $mmgr-tags-size           
         DataZ        4                         

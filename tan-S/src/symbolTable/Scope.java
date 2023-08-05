@@ -20,13 +20,28 @@ public class Scope {
 		return new Scope(programScopeAllocator(), nullInstance());
 	}
 	public Scope createSubscope() {
-		return new Scope(allocator, this);
+		return new Scope(allocator.subscopeAllocator(), this);
 	}
-	
+	public static Scope createParameterScope() {
+		return new Scope(parameterScopeAllocator(), nullInstance());
+	}
+	public Scope createFunctionScope() {
+		return new Scope(functionScopeAllocator(), this);
+	}
 	private static MemoryAllocator programScopeAllocator() {
 		return new PositiveMemoryAllocator(
 				MemoryAccessMethod.DIRECT_ACCESS_BASE, 
 				MemoryLocation.GLOBAL_VARIABLE_BLOCK);
+	}
+	private static MemoryAllocator functionScopeAllocator() {
+		return new NegativeMemoryAllocator(
+				MemoryAccessMethod.INDIRECT_ACCESS_BASE, 
+				MemoryLocation.FRAME_POINTER,
+				-8);
+	}
+	private static MemoryAllocator parameterScopeAllocator() {
+		return new NegativeMemoryAllocator(MemoryAccessMethod.INDIRECT_ACCESS_BASE,
+				MemoryLocation.FRAME_POINTER);
 	}
 	
 //////////////////////////////////////////////////////////////////////
@@ -77,6 +92,12 @@ public class Scope {
 	private Binding allocateNewBinding(Type type, TextLocation textLocation, String lexeme, Constancy constancy, int numElements) {
 		MemoryLocation memoryLocation = allocator.allocate(type.getSize());
 		return new Binding(type, textLocation, memoryLocation, lexeme, constancy, numElements);
+	}
+	public void updateBindings() {
+		int FRAME_POINTER_SIZE = 4;
+		for(Binding binding : symbolTable.values()) {
+			binding.getMemoryLocation().shiftOffset(getAllocatedSize() + FRAME_POINTER_SIZE);
+		}
 	}
 	
 ///////////////////////////////////////////////////////////////////////

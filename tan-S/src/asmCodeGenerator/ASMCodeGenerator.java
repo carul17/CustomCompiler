@@ -156,6 +156,7 @@ public class ASMCodeGenerator {
 			}	
 		}
 		private void turnAddressIntoValue(ASMCodeFragment code, ParseNode node) {
+			
 			if(node.getType() == INTEGER) {
 				code.add(LoadI);
 			}	
@@ -302,23 +303,107 @@ public class ASMCodeGenerator {
 		
 		public void visitLeave(CallStatementNode node) {
 			newVoidCode(node);
+			
+			ExpressionListNode arguments = (ExpressionListNode) node.child(1);
+			
+			for(int i = arguments.nChildren() - 1; i >= 0; i-- ) {
+				Macros.loadIFrom(code,  RunTime.STACK_POINTER);
+				code.add(PushI, arguments.child(i).getType().getSize());
+				code.add(Subtract);
+				Macros.storeITo(code, RunTime.STACK_POINTER);
+				Macros.loadIFrom(code, RunTime.STACK_POINTER);
+				code.append(removeValueCode(arguments.child(i)));
+				code.add(StoreI);
+				
+				
+			}
 			ASMCodeFragment value = removeAddressCode(node.child(0));
-			//ASMCodeFragment rvalue = removeAddressCode(node.child(1));
 			code.append(value);
 			code.add(LoadI);
-			code.add(CallV);
+			code.add(CallV); 
+		}
+		
+		public void visitLeave(ReturnStatementNode node) {
+			FunctionDefinitionNode func = node.getAncestorFunction();
+			assert func != null;
+			newVoidCode(node);
+			if(node.nChildren() == 1) {
+				code.append(removeValueCode(node.child(0)));
+			}
+			
+			code.add(Jump, func.getEndLabel());
+			
 		}
 		
 		public void visitLeave(FunctionDefinitionNode node) {
 			ASMCodeFragment fCode = new ASMCodeFragment(GENERATES_VOID);
-			Labeller labeller = new Labeller("function");
-			String label = labeller.newLabel(node.getToken().getLexeme());
+			BlockStatementNode block = (BlockStatementNode)node.child(3);
+			String label = node.getLabel();
+			String endLabel = node.getEndLabel();
+			
 			fCode.add(Label, label);
+			//fCode.add(PStack);
+			
+			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
+			fCode.add(PushI, 4);
+			//fCode.add(PStack);
+			fCode.add(Subtract);
+			Macros.loadIFrom(fCode, RunTime.FRAME_POINTER);
+			//fCode.add(PStack);
+			fCode.add(StoreI);
+			
+			Macros.loadIFrom(fCode,  RunTime.STACK_POINTER);
+			
+			fCode.add(PushI, 8);
+			fCode.add(Subtract);
+			
+			fCode.add(Exchange);
+			fCode.add(StoreI);
+			
+			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
+			
+			
+			Macros.storeITo(fCode, RunTime.FRAME_POINTER);
+			
+			
+			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
+			
+			fCode.add(PushI, 8);
+			fCode.add(Subtract);
+			Macros.storeITo(fCode, RunTime.STACK_POINTER);
+			
+			
+			//local var
+			Macros.loadIFrom(fCode, RunTime.STACK_POINTER);
+			
+			fCode.add(PushI, block.getScope().getAllocatedSize());
+			
+			fCode.add(Subtract);
+			Macros.storeITo(fCode,  RunTime.STACK_POINTER);
+			
+			
 			fCode.append(removeVoidCode(node.child(3)));
+			
+			
+			//end
+			fCode.add(Label, endLabel);
+			Macros.loadIFrom(fCode, RunTime.FRAME_POINTER);
+			fCode.add(PushI, 8);
+			fCode.add(Subtract);
+			fCode.add(LoadI);
+			
+			Macros.loadIFrom(fCode, RunTime.FRAME_POINTER);
+			fCode.add(PushI, 4);
+			fCode.add(Subtract);
+			fCode.add(LoadI);
+			Macros.storeITo(fCode, RunTime.FRAME_POINTER);
+			
 			fCode.add(Return);
+			
 			function.append(fCode);
 			newVoidCode(node);
 			code.append(removeAddressCode(node.child(1)));
+			
 			code.add(PushD, label);
 			code.add(StoreI);
 		}
@@ -377,26 +462,32 @@ public class ASMCodeGenerator {
 			ASMCodeFragment initial = removeValueCode(node.child(1));
 			ASMCodeFragment endValue = removeValueCode(node.child(2));
 			ASMCodeFragment block = removeVoidCode(node.child(3));
+			ASMCodeFragment endId = removeAddressCode(node.child(4));	
+			Type type = node.getType();
 			
 			code.append(id);
-			
 			code.append(initial);
-			
-			Type type = node.getType();
 			code.add(opcodeForStore(type));
-			Binding binding = ((IdentifierNode)node.child(0)).getBinding();
 			
+			code.append(endId);
+			code.append(endValue);
+			code.add(opcodeForStore(type));
+			
+			Binding binding = ((IdentifierNode)node.child(0)).getBinding();
+			Binding endBinding = ((IdentifierNode)node.child(4)).getBinding();
 			
 			//code.append(initial);
 			//code.append(id);
 			
 			
 			code.add(Label, node.getStartLabel());
+			
 			binding.generateAddress(code);
 			code.add(LoadI);
-			
 
-			code.append(endValue);
+			endBinding.generateAddress(code);
+			code.add(LoadI);
+			
 			code.add(Subtract);
 			code.add(JumpPos, node.getEndLabel());
 			code.append(block);

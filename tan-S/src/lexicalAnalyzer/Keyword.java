@@ -25,6 +25,7 @@ public enum Keyword implements Lextant {
 	TO("to"),
 	BREAK("break"),
 	CONTINUE("continue"),
+	RETURN("return"),
 	NEW("new"),
 	LENGTH("length"),
 	CALL("call"),

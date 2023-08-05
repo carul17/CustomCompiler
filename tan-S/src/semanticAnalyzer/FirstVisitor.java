@@ -3,36 +3,9 @@ package semanticAnalyzer;
 import parseTree.ParseNode;
 import semanticAnalyzer.SemanticAnalysisVisitor;
 import parseTree.ParseNodeVisitor;
-import parseTree.nodeTypes.ArrayNode;
-import parseTree.nodeTypes.AssignmentStatementNode;
-import parseTree.nodeTypes.BlockStatementNode;
-import parseTree.nodeTypes.BooleanConstantNode;
-import parseTree.nodeTypes.BreakNode;
-import parseTree.nodeTypes.CallStatementNode;
-import parseTree.nodeTypes.CharacterNode;
-import parseTree.nodeTypes.ContinueNode;
-import parseTree.nodeTypes.DeclarationNode;
-import parseTree.nodeTypes.ErrorNode;
-import parseTree.nodeTypes.ExpressionListNode;
-import parseTree.nodeTypes.FloatingConstantNode;
-import parseTree.nodeTypes.ForNode;
-import parseTree.nodeTypes.FunctionDefinitionNode;
-import parseTree.nodeTypes.FunctionTypeNode;
-import parseTree.nodeTypes.IdentifierNode;
-import parseTree.nodeTypes.IfStatementNode;
-import parseTree.nodeTypes.IntegerConstantNode;
-import parseTree.nodeTypes.MainBlockNode;
-import parseTree.nodeTypes.NewlineNode;
-import parseTree.nodeTypes.OperatorNode;
-import parseTree.nodeTypes.ParameterListNode;
-import parseTree.nodeTypes.PrintStatementNode;
-import parseTree.nodeTypes.ProgramNode;
-import parseTree.nodeTypes.SpaceNode;
-import parseTree.nodeTypes.StringNode;
-import parseTree.nodeTypes.TabNode;
-import parseTree.nodeTypes.TypeNode;
-import parseTree.nodeTypes.WhileNode;
+import parseTree.nodeTypes.*;
 import semanticAnalyzer.types.FunctionType;
+import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
 import symbolTable.Scope;
@@ -45,19 +18,59 @@ public class FirstVisitor extends ParseNodeVisitor.Default {
 	public void visitEnter(ProgramNode node) {
 		enterProgramScope(node);
 	}
+	
+	
 	 
 	@Override
-	public void visitLeave(FunctionDefinitionNode node) {
-		TypeNode type = (TypeNode) node.child(0);
+	public void visitEnter(FunctionDefinitionNode node) {
+		TypeNode typeNode = (TypeNode) node.child(0);
 		IdentifierNode iden = (IdentifierNode) node.child(1);
 		ParameterListNode pList = (ParameterListNode) node.child(2);
-		Type fType = FunctionType.create(type.getType(), pList.getTypes());
-		SemanticAnalysisVisitor.addBinding(iden, fType, null, 0);
-		
+		Type type = PrimitiveType.getTypeFromString(typeNode.getTypeString());
+		Type fType = FunctionType.create(type, pList.getTypes());
+		iden.setType(fType);
+		SemanticAnalysisVisitor.addBinding(iden, fType, null, -1);
+		enterSubscope(node);
 	}
 	
+	@Override
+	public void visitLeave(FunctionDefinitionNode node) {
+		leaveScope(node);
+	}
+	
+	/*@Override
+	public void visitLeave(ParameterListNode node) {
+		for(ParseNode child : node.getChildren()) {
+			TypeNode typeNode = (TypeNode)child.child(0);
+			IdentifierNode id = (IdentifierNode)child.child(1);
+			SemanticAnalysisVisitor.addBinding(id, typeNode.getType(), null, -1);
+		}
+	}*/
+	
+	@Override
+	public void visitLeave(ParameterNode node) {
+		TypeNode typeNode = (TypeNode) node.child(0);
+		node.setType(typeNode.getType());
+	}
+	
+	@Override
+	public void visitLeave(TypeNode node) {
+		node.setType(PrimitiveType.getTypeFromString(node.getTypeString()));
+	}
+	
+	
+	////// Helpers ///////
 	private void enterProgramScope(ParseNode node) {
 		Scope scope = Scope.createProgramScope();
 		node.setScope(scope);
 	}	
+	@SuppressWarnings("unused")
+	private void enterSubscope(ParseNode node) {
+		Scope baseScope = node.getLocalScope();
+		Scope scope = baseScope.createSubscope();
+		node.setScope(scope);
+	}		
+	private void leaveScope(ParseNode node) {
+		node.getScope().leave();
+	}
 }

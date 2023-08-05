@@ -2,6 +2,7 @@ package asmCodeGenerator;
 
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
 import parseTree.ParseNode;
+import parseTree.nodeTypes.FunctionDefinitionNode;
 import parseTree.nodeTypes.IdentifierNode;
 import parseTree.nodeTypes.NewlineNode;
 import parseTree.nodeTypes.PrintStatementNode;
@@ -11,6 +12,7 @@ import semanticAnalyzer.types.ArrayType;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
+import symbolTable.Scope;
 import asmCodeGenerator.ASMCodeGenerator.CodeVisitor;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 import asmCodeGenerator.runtime.RunTime;
@@ -42,6 +44,7 @@ public class PrintStatementGenerator {
 
 	private void appendPrintCode(ParseNode node) {
 		code.append(visitor.removeValueCode(node));
+		
 		
 		convertToStringIfBoolean(node);
 		convertToValueIfString(node);

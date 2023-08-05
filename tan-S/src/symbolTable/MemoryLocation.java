@@ -5,7 +5,7 @@ import asmCodeGenerator.runtime.RunTime;
 
 public class MemoryLocation {
 	public static final String GLOBAL_VARIABLE_BLOCK = RunTime.GLOBAL_MEMORY_BLOCK;
-	public static final String FRAME_POINTER = "Frame pointer not yet implemented in RunTime.";
+	public static final String FRAME_POINTER = RunTime.FRAME_POINTER;
 	
 	private MemoryAccessMethod accessor;
 	private String baseAddress;
@@ -18,6 +18,9 @@ public class MemoryLocation {
 		this.offset = offset;
 	}
 
+	public void shiftOffset(int shift) {
+		offset += shift;
+	}
 	public MemoryAccessMethod getAccessor() {
 		return accessor;
 	}
@@ -54,6 +57,9 @@ public class MemoryLocation {
 			if(instance==null)
 				instance = new NullMemoryLocation();
 			return instance;
+		}
+		@Override
+		public void shiftOffset(int shift) {
 		}
 	}
 }

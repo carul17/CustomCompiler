@@ -5,6 +5,7 @@ import java.util.List;
 
 import inputHandler.Locator;
 import inputHandler.TextLocation;
+import parseTree.nodeTypes.FunctionDefinitionNode;
 import semanticAnalyzer.types.PrimitiveType;
 import semanticAnalyzer.types.Type;
 import symbolTable.Binding;
@@ -133,6 +134,15 @@ public class ParseNode implements Locator {
 	}
 	public int nChildren() {
 		return children.size();
+	}
+	
+	public FunctionDefinitionNode getAncestorFunction() {
+		for(ParseNode node : pathToRoot()) {
+			if(node.getClass() == FunctionDefinitionNode.class) {
+				return (FunctionDefinitionNode)node;
+			}
+		}
+		return null;
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////

@@ -1,13 +1,21 @@
 package parseTree.nodeTypes;
 
+import asmCodeGenerator.Labeller;
 import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import tokens.Token;
 
 public class FunctionDefinitionNode extends ParseNode {
 
+	
+	Labeller labeller = new Labeller("function");
+	String label;
+	String endLabel;
+	
 	public FunctionDefinitionNode(Token token) {
 		super(token);
+		label = labeller.newLabel(token.getLexeme());
+		endLabel = labeller.newLabel(token.getLexeme() + "end");
 	}
 	
 	
@@ -21,12 +29,23 @@ public class FunctionDefinitionNode extends ParseNode {
 
 
 	public static ParseNode withChildren(Token token, ParseNode type, ParseNode identifier, ParseNode parameterList, ParseNode blockStatement) {
-		FunctionDefinitionNode fucntionDefinition = new FunctionDefinitionNode(token);
-		fucntionDefinition.appendChild(type);
-		fucntionDefinition.appendChild(identifier);
-		fucntionDefinition.appendChild(parameterList);
-		fucntionDefinition.appendChild(blockStatement);
-		return fucntionDefinition;
+		FunctionDefinitionNode functionDefinition = new FunctionDefinitionNode(token);
+		functionDefinition.appendChild(type);
+		functionDefinition.appendChild(identifier);
+		functionDefinition.appendChild(parameterList);
+		functionDefinition.appendChild(blockStatement);
+		return functionDefinition;
 	}
+
+
+	public String getLabel() {
+		return label;
+	}
+	
+	public String getEndLabel() {
+		return endLabel;
+	}
+	
+	
 
 }

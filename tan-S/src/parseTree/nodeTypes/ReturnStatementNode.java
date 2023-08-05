@@ -4,9 +4,9 @@ import parseTree.ParseNode;
 import parseTree.ParseNodeVisitor;
 import tokens.Token;
 
-public class ParameterNode extends ParseNode{
+public class ReturnStatementNode extends ParseNode {
 
-	public ParameterNode(Token token) {
+	public ReturnStatementNode(Token token) {
 		super(token);
 	}
 	
@@ -16,11 +16,11 @@ public class ParameterNode extends ParseNode{
 		visitor.visitLeave(this);
 	}
 
-	public static ParseNode withChildren(Token nowReading, ParseNode type, ParseNode identifier) {
-		ParameterNode node = new ParameterNode(nowReading);
-		node.appendChild(type);
-		node.appendChild(identifier);
+	public static ParseNode withChildren(Token nowReading, ParseNode expr) {
+		ReturnStatementNode node = new ReturnStatementNode(nowReading);
+		node.appendChild(expr);
 		return node;
 	}
+
 
 }

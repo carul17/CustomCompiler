@@ -1,6 +1,8 @@
 package asmCodeGenerator.runtime;
 import static asmCodeGenerator.codeStorage.ASMCodeFragment.CodeType.*;
 import static asmCodeGenerator.codeStorage.ASMOpcode.*;
+
+import asmCodeGenerator.Macros;
 import asmCodeGenerator.codeStorage.ASMCodeFragment;
 public class RunTime {
 	public static final String EAT_LOCATION_ZERO      = "$eat-location-zero";		// helps us distinguish null pointers from real ones.
@@ -18,6 +20,8 @@ public class RunTime {
 	public static final String GLOBAL_MEMORY_BLOCK    = "$global-memory-block";
 	public static final String USABLE_MEMORY_START    = "$usable-memory-start";
 	public static final String MAIN_PROGRAM_LABEL     = "$$main";
+	public static final String FRAME_POINTER          = "$$frame-pointer";
+	public static final String STACK_POINTER          = "$$stack-pointer";
 	
 	public static final String GENERAL_RUNTIME_ERROR = "$$general-runtime-error";
 	public static final String INTEGER_DIVIDE_BY_ZERO_RUNTIME_ERROR = "$$i-divide-by-zero";
@@ -26,6 +30,7 @@ public class RunTime {
 
 	private ASMCodeFragment environmentASM() {
 		ASMCodeFragment result = new ASMCodeFragment(GENERATES_VOID);
+		result.append(stackAndFrame());
 		result.append(jumpToMain());
 		result.append(stringsForPrintf());
 		result.append(runtimeErrors());
@@ -33,6 +38,17 @@ public class RunTime {
 		return result;
 	}
 	
+	private ASMCodeFragment stackAndFrame() {
+		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
+		Macros.declareI(frag,  FRAME_POINTER);
+		Macros.declareI(frag,  STACK_POINTER);
+		frag.add(Memtop);
+		frag.add(Duplicate);
+		Macros.storeITo(frag, FRAME_POINTER);
+		Macros.storeITo(frag, STACK_POINTER);
+		return frag;
+	}
+
 	private ASMCodeFragment jumpToMain() {
 		ASMCodeFragment frag = new ASMCodeFragment(GENERATES_VOID);
 		frag.add(Jump, MAIN_PROGRAM_LABEL);

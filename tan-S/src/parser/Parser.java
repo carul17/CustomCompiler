@@ -75,7 +75,9 @@ public class Parser {
 		ParseNode type = parseType();
 		ParseNode identifier = parseIdentifier();
 		expect(Punctuator.OPEN_ROUND_BRACE);
+		
 		ParseNode parameterList = parseParamterList();
+		
 		expect(Punctuator.CLOSE_ROUND_BRACE);
 		ParseNode blockStatement = parseBlockStatement();
 		return FunctionDefinitionNode.withChildren(token, type, identifier, parameterList, blockStatement);
@@ -90,6 +92,9 @@ public class Parser {
 		while(startsParameter(nowReading)) {
 			ParseNode parameter = parseParameter();
 			parameterList.appendChild(parameter);
+			if(nowReading.isLextant(Punctuator.COMMA)) {
+				readToken();
+			}
 		}
 		return parameterList;
 	}
@@ -98,9 +103,10 @@ public class Parser {
 			return syntaxErrorNode("parameter");
 		}
 		Token token = nowReading;
+		//System.out.println(nowReading.getLexeme());
 		ParseNode type = parseType();
 		ParseNode identifier = parseIdentifier();
-		return ParameterNode.make(token, type, identifier);
+		return ParameterNode.withChildren(token, type, identifier);
 	}
 	private boolean startsParameter(Token token) {
 		return startNotVoidType(token);
@@ -207,6 +213,9 @@ public class Parser {
 		if(startsFor(nowReading)) {
 			return parseFor();
 		}
+		if(startsReturn(nowReading)) {
+			return parseReturn();
+		}
 		
 		return syntaxErrorNode("statement");
 	}
@@ -227,6 +236,25 @@ public class Parser {
 	
 	private boolean startsCallStatement(Token token) {
 		return token.isLextant(Keyword.CALL);
+	}
+	
+	private ParseNode parseReturn() {
+		if(!startsReturn(nowReading)) {
+			return syntaxErrorNode("return statement");
+		}
+		Token token = nowReading;
+		expect(Keyword.RETURN);
+		if(startsExpression(nowReading)) {
+			ParseNode expr = parseExpression();
+			expect(Punctuator.TERMINATOR);
+			return ReturnStatementNode.withChildren(token, expr);
+		}
+		expect(Punctuator.TERMINATOR);
+		return new ReturnStatementNode(token);
+	}
+	
+	private boolean startsReturn(Token token) {
+		return token.isLextant(Keyword.RETURN);
 	}
 	
 	private ParseNode parseExpressionList() {
@@ -250,7 +278,8 @@ public class Parser {
 			   startsBreak(token)||
 			   startsContinue(token)||
 			   startsCallStatement(token) ||
-			   startsFor(token);
+			   startsFor(token) ||
+			   startsReturn(token);
 	}
 	
 	
@@ -459,7 +488,10 @@ public class Parser {
 		ParseNode block = parseBlockStatement();
 		
 		
-		return ForNode.withChildren(forToken, identifier, expression1, expression2, block);
+		Token idToken = IdentifierToken.make(";");
+		ParseNode endId = new IdentifierNode(idToken);
+		
+		return ForNode.withChildren(forToken, identifier, expression1, expression2, block, endId);
 		
 	}
 	private boolean startsFor(Token token) {

@@ -55,4 +55,8 @@ public class NegativeMemoryAllocator implements MemoryAllocator {
 		int bookmarkIndex = bookmarks.size()-1;
 		currentOffset = (int) bookmarks.remove(bookmarkIndex);
 	}
+	@Override
+	public MemoryAllocator subscopeAllocator() {
+		return new NegativeMemoryAllocator(accessor, baseAddress, currentOffset);
+	}
 }

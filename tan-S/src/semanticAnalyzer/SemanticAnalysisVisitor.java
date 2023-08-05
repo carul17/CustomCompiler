@@ -48,7 +48,13 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	public void visitLeave(MainBlockNode node) {
 	}
 	public void visitEnter(BlockStatementNode node) {
-		enterSubscope(node);
+		if(node.getParent() instanceof FunctionDefinitionNode) {
+			Scope paramScope = node.getLocalScope();
+			Scope scope = paramScope.createFunctionScope();
+			node.setScope(scope);
+		} else {
+			enterSubscope(node);
+		}
 	}
 	public void visitLeave(BlockStatementNode node) {
 		leaveScope(node);
@@ -66,7 +72,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		Scope baseScope = node.getLocalScope();
 		Scope scope = baseScope.createSubscope();
 		node.setScope(scope);
-	}		
+	}	
 	private void leaveScope(ParseNode node) {
 		node.getScope().leave();
 	}
@@ -84,29 +90,34 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	@Override
 	public void visitEnter(ForNode node) {
-		
-		IdentifierNode identifier = (IdentifierNode) node.child(0);
-		ParseNode initializer = node.child(1);
-		
-		Type type = PrimitiveType.INTEGER;
-		Constancy constancy = Constancy.IS_CONSTANT;
-		identifier.setType(type);
-		node.setType(type);
-		
 		//the binding is a member of the for loop subscope
 		enterSubscope(node);
-		addBinding(identifier, type, constancy, -1);
-		
 	}
 	
 	public void visitLeave(ForNode node) {
+		IdentifierNode identifier = (IdentifierNode) node.child(0);
+		ParseNode initializer = node.child(1);
+		ParseNode end = node.child(2);
+		IdentifierNode endId = (IdentifierNode) node.child(4);
+		
+		Type type = initializer.getType();
+		Type endType = end.getType();
+		Constancy constancy = Constancy.IS_CONSTANT;
+		if(type != PrimitiveType.INTEGER || endType != PrimitiveType.INTEGER) {
+			semanticError("for loop expects integer expressions");
+		}
+		identifier.setType(type);
+		endId.setType(endType);
+		node.setType(type);
+		
+		addBinding(identifier, type, constancy, -1);
+		addBinding(endId, endType, constancy, -1);
+		
 		leaveScope(node);
 	}
 	
-	@Override
-	public void visitLeave(TypeNode node) {
-		node.setType(PrimitiveType.getTypeFromString(node.getTypeString()));
-	}
+	
+
 	@Override
 	public void visitLeave(DeclarationNode node) {
 		if(node.child(0) instanceof ErrorNode) {
@@ -137,23 +148,29 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		addBinding(identifier, declarationType, constancy, numElements);
 	}
 	
+	///////////////FUNCTIONS////////////////////
+	
 	@Override
-	public void visitLeave(ParameterListNode node) {
-		//handle parameters
+	public void visitEnter(FunctionDefinitionNode node) {
+		Scope scope = Scope.createParameterScope();
+		node.setScope(scope);
 	}
 	
-	///////////////FUNCTIONS////////////////////
-//	@Override
-//	public void visitLeave(FunctionDefinitionNode node) {
-//		Token token = node.getToken();
-//		FunctionTypeNode type = (FunctionTypeNode) node.child(0);
-//		IdentifierNode iden = (IdentifierNode) node.child(1);
-//		ParameterListNode pList = (ParameterListNode) node.child(2);
-//		BlockStatementNode bStat = (BlockStatementNode) node.child(3);
-//		Type fType = FunctionType.create(type.getType(), pList.getTypes());
-//		addBinding(iden, fType, null, 0);
-//		
-//	}
+	@Override
+	public void visitLeave(FunctionDefinitionNode node) {
+		//Scope scope = node.getScope();
+		//scope.updateBindings();
+		leaveScope(node);
+	}
+	
+	@Override
+	public void visitLeave(ParameterNode node) {
+		TypeNode typeNode = (TypeNode) node.child(0);
+		IdentifierNode id = (IdentifierNode) node.child(1);
+		id.setType(typeNode.getType());
+		addBinding(id, typeNode.getType(), null, -1);
+	}
+	
 	
 	@Override
 	public void visitLeave(ExpressionListNode node) {
@@ -165,6 +182,13 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		//hand;e expression list
 	}
 	
+	@Override
+	public void visitLeave(ReturnStatementNode node) {
+		//hand;e expression list
+	}
+	
+	
+	@Override
 	public void visitLeave(AssignmentStatementNode node) {
 		if(node.child(0) instanceof ErrorNode) {
 			node.setType(PrimitiveType.ERROR);
@@ -178,7 +202,6 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 		Type expressionType = expression.getType();
 		
 		if(!expressionType.equals(identifierType)) {
-			FunctionSignatures signatures = FunctionSignatures.signaturesOf(Punctuator.ASSIGN);
 			semanticError("types don’t match in assignment statement");
 			return;
 		}
@@ -215,7 +238,7 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 			
 			childTypes = Arrays.asList(left.getType(), right.getType());		
 		}
-		
+	
 		Lextant operator = operatorFor(node);
 		
 
@@ -344,7 +367,8 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	// IdentifierNodes, with helper methods
 	@Override
 	public void visit(IdentifierNode node) {
-		if(!isBeingDeclared(node)) {	
+		if(!isBeingDeclared(node)) {
+			
 			Binding binding = node.findVariableBinding();
 			
 			node.setType(binding.getType());
@@ -354,8 +378,11 @@ public class SemanticAnalysisVisitor extends ParseNodeVisitor.Default {
 	}
 	private boolean isBeingDeclared(IdentifierNode node) {
 		ParseNode parent = node.getParent();
-		return (parent instanceof ForNode) || ((parent instanceof DeclarationNode) && (node == parent.child(0)))
-				||((parent instanceof FunctionDefinitionNode) && (node == parent.child(1))
+		
+		return (parent instanceof ParameterNode && node == parent.child(1)) || 
+				(parent instanceof ForNode && (node == parent.child(0) || node == parent.child(4))) || 
+				(parent instanceof DeclarationNode && node == parent.child(0)) ||
+				(parent instanceof FunctionDefinitionNode && node == parent.child(1)
 				);
 	}
 	public static void addBinding(IdentifierNode identifierNode, Type type, symbolTable.Binding.Constancy constancy, int numElements) {

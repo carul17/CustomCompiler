@@ -26,12 +26,13 @@ public class ForNode extends ParseNode {
 	////////////////////////////////////////////////////////////
 	// convenience factory
 	
-	public static ForNode withChildren(Token token, ParseNode identifier, ParseNode expression1, ParseNode expression2, ParseNode block) {
+	public static ForNode withChildren(Token token, ParseNode identifier, ParseNode expression1, ParseNode expression2, ParseNode block, ParseNode endId) {
 		ForNode node = new ForNode(token);
 		node.appendChild(identifier);
 		node.appendChild(expression1);
 		node.appendChild(expression2);
 		node.appendChild(block);
+		node.appendChild(endId);
 		return node;
 	}
 	

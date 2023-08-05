@@ -8,4 +8,5 @@ public interface MemoryAllocator {
 	public void saveState();
 	public void restoreState();
 	public int getMaxAllocatedSize();
+	public MemoryAllocator subscopeAllocator();
 }

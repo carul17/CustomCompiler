@@ -53,6 +53,13 @@ public class IdentifierNode extends ParseNode {
 				declarationScope = current.getScope();
 				return current.bindingOf(identifier);
 			}
+			/*if(current instanceof BlockStatementNode && current.getParent() instanceof FunctionDefinitionNode) {
+				ParameterListNode pList = (ParameterListNode) current.getParent().child(2);
+				if(pList.containsBindingOf(identifier)) {
+					declarationScope = pList.getScope();
+					return pList.bindingOf(identifier);
+				}
+			}*/
 		}
 		useBeforeDefineError();
 		return Binding.nullInstance();

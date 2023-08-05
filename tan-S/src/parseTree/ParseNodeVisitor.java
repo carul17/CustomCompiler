@@ -48,6 +48,9 @@ public interface ParseNodeVisitor {
 	void visitEnter(ParameterListNode node);
 	void visitLeave(ParameterListNode node);
 	
+	void visitEnter(ParameterNode node);
+	void visitLeave(ParameterNode node);
+	
 	void visitEnter(FunctionDefinitionNode node);
 	void visitLeave(FunctionDefinitionNode node);
 	
@@ -56,6 +59,9 @@ public interface ParseNodeVisitor {
 	
 	void visitEnter(CallStatementNode node);
 	void visitLeave(CallStatementNode node);
+	
+	void visitEnter(ReturnStatementNode node);
+	void visitLeave(ReturnStatementNode node);
 
 
 
@@ -166,36 +172,40 @@ public interface ParseNodeVisitor {
 		public void visitLeave(ArrayNode node) {
 			defaultVisitLeave(node);
 		}
-		
 		public void visitEnter(ParameterListNode node) {
 			defaultVisitEnter(node);	
 		}
 		public void visitLeave(ParameterListNode node) {
 			defaultVisitLeave(node);
 		}
-		@Override
+		public void visitEnter(ParameterNode node) {
+			defaultVisitEnter(node);	
+		}
+		public void visitLeave(ParameterNode node) {
+			defaultVisitLeave(node);
+		}
 		public void visitEnter(FunctionDefinitionNode node) {
 			defaultVisitEnter(node);
 		}
-		@Override
 		public void visitLeave(FunctionDefinitionNode node) {
 			defaultVisitLeave(node);
-			
 		}
-		@Override
 		public void visitEnter(ExpressionListNode node) {
 			defaultVisitEnter(node);
 		}
-		@Override
 		public void visitLeave(ExpressionListNode node) {
 			defaultVisitLeave(node);
 		}
-		@Override
 		public void visitEnter(CallStatementNode node) {
 			defaultVisitEnter(node);
 		}
-		@Override
 		public void visitLeave(CallStatementNode node) {
+			defaultVisitLeave(node);
+		}
+		public void visitEnter(ReturnStatementNode node) {
+			defaultVisitEnter(node);
+		}
+		public void visitLeave(ReturnStatementNode node) {
 			defaultVisitLeave(node);
 		}
 		
