@@ -21,6 +21,18 @@
         PushD        $heap-first-free          
         Exchange                               
         StoreI                                 
+        DLabel       $$frame-pointer           
+        DataZ        4                         
+        DLabel       $$stack-pointer           
+        DataZ        4                         
+        Memtop                                 
+        Duplicate                              
+        PushD        $$frame-pointer           
+        Exchange                               
+        StoreI                                 
+        PushD        $$stack-pointer           
+        Exchange                               
+        StoreI                                 
         Jump         $$main                    
         DLabel       $eat-location-zero        
         DataZ        8                         
@@ -171,7 +183,7 @@
         Jump         $$general-runtime-error   
         DLabel       $usable-memory-start      
         DLabel       $global-memory-block      
-        DataZ        12                        
+        DataZ        4                         
         Label        $$main                    
         PushD        $global-memory-block      
         PushI        0                         

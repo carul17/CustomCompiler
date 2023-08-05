@@ -1,4 +1,4 @@
-subr void f(){
+subr int f(){
 	print 5+5 \n;
 }
 
